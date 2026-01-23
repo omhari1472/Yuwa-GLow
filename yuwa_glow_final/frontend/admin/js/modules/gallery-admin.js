@@ -8,12 +8,24 @@ const GalleryAdminModule = {
         this.checkAuth();
         this.initEventListeners();
         await this.loadItems();
+        this.initTypeDropdown();
     },
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
     async loadItems() {
         const res = await API.admin.gallery.list();
         if (res.success) { this.items = res.data.data; this.render(); }
     },
+
+    initTypeDropdown(selectedValue = 'image') {
+        UI.initDropdown('gallery-type-dropdown', [
+            { value: 'image', text: 'Premium Image', selected: selectedValue === 'image' },
+            { value: 'video', text: 'Video (YouTube/Vimeo)', selected: selectedValue === 'video' }
+        ], (value) => {
+            document.getElementById('image-field').style.display = value === 'image' ? 'block' : 'none';
+            document.getElementById('video-field').style.display = value === 'video' ? 'block' : 'none';
+        });
+    },
+
     render() {
         const container = document.getElementById('gallery-list');
         if (!container) return;
@@ -45,25 +57,45 @@ const GalleryAdminModule = {
     },
     formatEmbedUrl(url) { if (url.includes('youtube.com/watch?v=')) return url.replace('watch?v=', 'embed/'); return url; },
     initEventListeners() {
-        document.getElementById('open-add-modal')?.addEventListener('click', () => { document.getElementById('gallery-form').reset(); document.getElementById('gallery-image-preview').innerHTML = ''; UI.modal.open('gallery-modal'); });
-        document.getElementById('g-type').onchange = (e) => {
-            document.getElementById('image-field').style.display = e.target.value === 'image' ? 'block' : 'none';
-            document.getElementById('video-field').style.display = e.target.value === 'video' ? 'block' : 'none';
-        };
+        document.getElementById('open-add-modal')?.addEventListener('click', () => { 
+            document.getElementById('gallery-form').reset(); 
+            document.getElementById('gallery-image-preview').innerHTML = ''; 
+            this.initTypeDropdown('image');
+            UI.modal.open('gallery-modal'); 
+        });
+
+        const imageInput = document.getElementById('gallery-image-upload');
+        if (imageInput) {
+            imageInput.onchange = () => {
+                const preview = document.getElementById('gallery-image-preview');
+                preview.innerHTML = '';
+                if (imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'preview-item';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                }
+            };
+        }
+
         document.getElementById('gallery-form').onsubmit = async (e) => {
             e.preventDefault();
             const res = await API.admin.gallery.create(new FormData(e.target));
-            if (res.success) { UI.modal.close('gallery-modal'); this.loadItems(); e.target.reset(); UI.notify('Media added to gallery!'); }
+            if (res.success) { UI.modal.close('gallery-modal'); this.loadItems(); UI.notify('Media added to gallery!'); }
             else { UI.notify(res.message, 'error'); }
         };
     },
     async delete(id) {
         UI.confirm({
             title: 'Remove Media',
-            message: 'Are you sure you want to delete this item?',
+            message: 'Delete this item?',
             onConfirm: async () => {
                 const res = await API.admin.gallery.delete(id);
-                if (res.success) { this.loadItems(); UI.notify('Gallery item removed'); }
+                if (res.success) { this.loadItems(); UI.notify('Removed'); }
             }
         });
     },

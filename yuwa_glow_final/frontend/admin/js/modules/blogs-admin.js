@@ -8,12 +8,21 @@ const BlogsAdminModule = {
         this.checkAuth();
         this.initEventListeners();
         await this.loadBlogs();
+        this.initStatusDropdown();
     },
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
     async loadBlogs() {
         const res = await API.admin.blogs.list();
-        if (res.success) { this.blogs = res.data.data; this.render(); }
+        if (res.success) { this.blogs = res.data.data || []; this.render(); }
     },
+
+    initStatusDropdown(selectedValue = 'draft') {
+        UI.initDropdown('blog-status-dropdown', [
+            { value: 'draft', text: 'Draft (Private)', selected: selectedValue === 'draft' },
+            { value: 'published', text: 'Published (Live)', selected: selectedValue === 'published' }
+        ]);
+    },
+
     render() {
         const container = document.getElementById('blogs-list');
         if (!container) return;
@@ -66,27 +75,33 @@ const BlogsAdminModule = {
             const id = document.getElementById('blog-id').value;
             if (id) formData.append('_method', 'PATCH');
             let res = id ? await API.admin.blogs.update(id, formData) : await API.admin.blogs.create(formData);
-            if (res.success) { UI.modal.close('blog-modal'); this.loadBlogs(); UI.notify(`Blog ${id ? 'updated' : 'published'} successfully!`); }
+            if (res.success) { UI.modal.close('blog-modal'); this.loadBlogs(); UI.notify('Saved!'); }
             else { UI.notify(res.message, 'error'); }
         };
     },
-    openAddModal() { document.getElementById('blog-form').reset(); document.getElementById('blog-id').value = ''; document.getElementById('blog-image-preview').innerHTML = ''; UI.modal.open('blog-modal'); },
+    openAddModal() { 
+        document.getElementById('blog-form').reset(); 
+        document.getElementById('blog-id').value = ''; 
+        document.getElementById('blog-image-preview').innerHTML = ''; 
+        this.initStatusDropdown('draft');
+        UI.modal.open('blog-modal'); 
+    },
     openEditModal(id) {
         const b = this.blogs.find(x => x.id === id);
         if (!b) return;
         document.getElementById('blog-id').value = b.id;
         document.getElementById('b-title').value = b.title;
         document.getElementById('b-content').value = b.content;
-        document.getElementById('b-status').value = b.status;
+        this.initStatusDropdown(b.status);
         UI.modal.open('blog-modal');
     },
     async delete(id) {
         UI.confirm({
-            title: 'Delete Blog Post',
-            message: 'Are you sure you want to remove this story?',
+            title: 'Delete post',
+            message: 'Are you sure?',
             onConfirm: async () => {
                 const res = await API.admin.blogs.delete(id);
-                if (res.success) { this.loadBlogs(); UI.notify('Blog post deleted'); }
+                if (res.success) { this.loadBlogs(); UI.notify('Deleted'); }
             }
         });
     },
