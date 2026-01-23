@@ -4,57 +4,60 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductCategory;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use ApiResponse;
+
     public function index()
     {
-        return response()->json(ProductCategory::all());
+        return $this->successResponse(ProductCategory::all());
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:100|unique:product_categories,name',
             'status' => 'nullable|in:active,inactive',
         ]);
 
         $category = ProductCategory::create($validated);
 
-        return response()->json($category, 201);
+        return $this->successResponse($category, 'Category created successfully', 201);
     }
 
     public function show(ProductCategory $category)
     {
-        return response()->json($category);
+        return $this->successResponse($category);
     }
 
     public function update(Request $request, ProductCategory $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:100|unique:product_categories,name,' . $category->id,
             'status' => 'nullable|in:active,inactive',
         ]);
 
         $category->update($validated);
 
-        return response()->json($category);
+        return $this->successResponse($category);
     }
 
     public function destroy(ProductCategory $category)
     {
         if ($category->products()->count() > 0) {
-            return response()->json(['message' => 'Cannot delete category with products'], 400);
+            return $this->errorResponse('Cannot delete category with products', 400);
         }
         
         $category->delete();
 
-        return response()->json(['message' => 'Category deleted successfully']);
+        return $this->successResponse([], 'Category deleted successfully');
     }
 
     public function getActive()
     {
-        return response()->json(ProductCategory::where('status', 'active')->get());
+        return $this->successResponse(ProductCategory::where('status', 'active')->get());
     }
 }

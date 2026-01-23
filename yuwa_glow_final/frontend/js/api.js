@@ -57,9 +57,9 @@ const API = {
     // Public Data
     getProducts: () => apiFetch('/products/active'),
     getCategories: () => apiFetch('/categories/active'),
-    getBlogs: () => apiFetch('/blogs'),
+    getBlogs: () => apiFetch('/blogs/published'),
     getBlog: (slug) => apiFetch(`/blogs/${slug}`),
-    getCareers: () => apiFetch('/careers'),
+    getCareers: () => apiFetch('/careers/open'),
     getGallery: () => apiFetch('/gallery'),
     getDashboardStats: () => apiFetch('/dashboard/stats'),
 
@@ -102,6 +102,12 @@ const API = {
             list: () => apiFetch('/gallery'),
             create: (formData) => apiFetch('/gallery', { method: 'POST', body: formData }),
             delete: (id) => apiFetch(`/gallery/${id}`, { method: 'DELETE' }),
+        },
+        careers: {
+            list: () => apiFetch('/careers'),
+            create: (data) => apiFetch('/careers', { method: 'POST', body: JSON.stringify(data) }),
+            update: (id, data) => apiFetch(`/careers/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+            delete: (id) => apiFetch(`/careers/${id}`, { method: 'DELETE' }),
         }
     }
 };

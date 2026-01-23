@@ -22,10 +22,13 @@
             <header class="main-header">
                 <div class="header-title">
                     <h1>Gallery Management</h1>
-                    <p class="text-muted">Images and Videos for your showcase</p>
+                    <p class="text-muted">Showcase your brand's visual story</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary" id="open-add-modal">Add Media</button>
+                    <button class="btn btn-primary" id="open-add-modal">
+                        <svg class="nav-icon" style="width:18px;height:18px;margin-right:8px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                        Add Media
+                    </button>
                 </div>
             </header>
 
@@ -44,31 +47,46 @@
                 <h2>Add Gallery Media</h2>
                 <button class="close-modal" onclick="UI.modal.close('gallery-modal')">&times;</button>
             </div>
-            <form id="gallery-form">
+            <form id="gallery-form" class="admin-form">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" name="title" required>
+                        <label>Media Title</label>
+                        <input type="text" name="title" required placeholder="e.g. Summer Collection Shoot">
                     </div>
                     <div class="form-group">
                         <label>Media Type</label>
                         <select name="type" id="g-type">
-                            <option value="image">Image</option>
-                            <option value="video">Video (Link)</option>
+                            <option value="image">Premium Image</option>
+                            <option value="video">Video (YouTube/Vimeo)</option>
                         </select>
                     </div>
+                    
+                    <!-- Image Upload -->
                     <div class="form-group" id="image-field">
-                        <label>Upload Image</label>
-                        <input type="file" name="image" accept="image/*">
+                        <label>Upload High-Res Image</label>
+                        <div class="file-input-wrapper">
+                            <div class="file-input-label">
+                                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                                <span>Select Media File</span>
+                            </div>
+                            <input type="file" name="image" accept="image/*" id="gallery-image-upload">
+                        </div>
+                        <div id="gallery-image-preview" class="image-preview-container"></div>
                     </div>
+
+                    <!-- Video Link -->
                     <div class="form-group" id="video-field" style="display:none">
-                        <label>YouTube/Vimeo URL</label>
-                        <input type="url" name="media_url" placeholder="https://youtube.com/...">
+                        <label>Source Video Link</label>
+                        <div class="input-with-icon">
+                            <svg class="field-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10,15L15.19,12L10,9V15M21.56,7.17C21.67,7.64 21.7,8.11 21.73,8.58C21.76,9.05 21.78,9.53 21.78,10V14C21.78,14.47 21.76,14.95 21.73,15.42C21.7,15.89 21.67,16.36 21.56,16.83C21.43,17.29 21.24,17.73 20.91,18.12C20.58,18.5 20.16,18.8 19.61,18.91C19.13,19.03 18.65,19.05 18.17,19.08C17.7,19.1 17.22,19.11 16.75,19.11H7.25C6.78,19.11 6.3,19.1 5.83,19.08C5.35,19.05 4.87,19.03 4.39,18.91C3.84,18.8 3.42,18.5 3.09,18.12C2.76,17.73 2.57,17.29 2.44,16.83C2.33,16.36 2.3,15.89 2.27,15.42C2.24,14.95 2.22,14.47 2.22,14V10C2.22,9.53 2.24,9.05 2.27,8.58C2.3,8.11 2.33,7.64 2.44,7.17C2.57,6.71 2.76,6.27 3.09,5.88C3.42,5.5 3.84,5.2 4.39,5.09C4.87,4.97 5.35,4.95 5.83,4.92C6.3,4.9 6.78,4.89 7.25,4.89H16.75C17.22,4.89 17.7,4.9 18.17,4.92C18.65,4.95 19.13,4.97 19.61,5.09C20.16,5.2 20.58,5.5 20.91,5.88C21.24,6.27 21.43,6.71 21.56,7.17Z" /></svg>
+                            <input type="url" name="media_url" placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+                        <p class="input-hint">Support for YouTube and Vimeo URLs. Paste the browser address bar link.</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="UI.modal.close('gallery-modal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Media</button>
+                    <button type="submit" class="btn btn-primary">Save to Gallery</button>
                 </div>
             </form>
         </div>

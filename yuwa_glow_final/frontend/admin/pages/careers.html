@@ -6,9 +6,11 @@
     <title>Careers | YUWA GLOW Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
     <script type="module">
+        import CareersAdminModule from '../js/modules/careers-admin.js';
         import SidebarModule from '../js/modules/sidebar.js';
-        // Note: CareersAdminModule to be implemented or uses a general pattern
+        
         SidebarModule.render();
+        CareersAdminModule.init();
     </script>
 </head>
 <body>
@@ -19,11 +21,14 @@
         <main class="main-content">
             <header class="main-header">
                 <div class="header-title">
-                    <h1>Career Management</h1>
-                    <p class="text-muted">Manage job openings and opportunities</p>
+                    <h1>Opportunity Management</h1>
+                    <p class="text-muted">Grow your team with premium talent</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary" id="open-add-modal">Add Job Opening</button>
+                    <button class="btn btn-primary" id="open-add-modal">
+                        <svg class="nav-icon" style="width:18px;height:18px;margin-right:8px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                        Post New Opening
+                    </button>
                 </div>
             </header>
 
@@ -33,7 +38,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Job Title</th>
+                                    <th>Position</th>
                                     <th>Department</th>
                                     <th>Location</th>
                                     <th>Status</th>
@@ -41,13 +46,57 @@
                                 </tr>
                             </thead>
                             <tbody id="careers-list">
-                                <tr><td colspan="5">Loading careers...</td></tr>
+                                <!-- Dynamic Rows -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Career Modal -->
+    <div class="modal-overlay" id="career-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Job Specification</h2>
+                <button class="close-modal" onclick="UI.modal.close('career-modal')">&times;</button>
+            </div>
+            <form id="career-form" class="admin-form">
+                <input type="hidden" name="id" id="career-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" name="title" id="c-title" required placeholder="e.g. Senior Beauty Consultant">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" name="department" id="c-dept" required placeholder="e.g. Creative & Design">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" id="c-loc" required placeholder="e.g. New York / Remote">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Role Description</label>
+                        <textarea name="description" id="c-desc" rows="6" required placeholder="Outline the key responsibilities and requirements..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Availability</label>
+                        <select name="status" id="c-status">
+                            <option value="open">Open (Accepting Applications)</option>
+                            <option value="closed">Closed (Archive)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.CareerAdmin.closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Publish Opening</button>
+                </div>
+            </form>
+        </div>
     </div>
 
 </body>

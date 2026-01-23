@@ -16,9 +16,9 @@ Route::post('/login', [AuthController::class, 'login']);
 // Public visibility routes
 Route::get('/products/active', [ProductController::class, 'getActive']);
 Route::get('/categories/active', [CategoryController::class, 'getActive']);
-Route::get('/blogs', [BlogController::class, 'index']); // Filtered to published in controller
+Route::get('/blogs/published', [BlogController::class, 'getPublished']);
 Route::get('/blogs/{slug}', [BlogController::class, 'show']);
-Route::get('/careers', [CareerController::class, 'index']); // Filtered to open in controller
+Route::get('/careers/open', [CareerController::class, 'getOpen']);
 Route::get('/gallery', [GalleryController::class, 'index']);
 Route::get('/distributors', [ApplicationController::class, 'getApproved'])->defaults('type', 'distributor');
 Route::get('/stockists', [ApplicationController::class, 'getApproved'])->defaults('type', 'super_stockist');
@@ -40,13 +40,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('products', ProductController::class);
 
     // Gallery Management
-    Route::apiResource('gallery', GalleryController::class)->except(['index', 'update', 'show']);
+    Route::apiResource('gallery', GalleryController::class)->except(['index', 'show']);
 
     // Blog Management
-    Route::apiResource('blogs', BlogController::class)->except(['index', 'show']);
+    Route::apiResource('blogs', BlogController::class)->except(['show']);
 
     // Career Management
-    Route::apiResource('careers', CareerController::class)->except(['index']);
+    Route::apiResource('careers', CareerController::class);
 
     // Applications & Enquiries
     Route::get('/applications', [ApplicationController::class, 'index']);

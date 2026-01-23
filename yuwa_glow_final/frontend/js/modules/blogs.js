@@ -6,9 +6,20 @@ const BlogsModule = {
         const blogGrid = document.querySelector('.blog-grid');
         if (!blogGrid) return;
 
-        const res = await API.getBlogs();
-        if (res.success) {
-            this.renderList(blogGrid, res.data);
+        try {
+            const res = await API.getBlogs();
+            if (res.success) {
+                // Access data from standardized wrapper
+                const blogs = res.data.data || res.data || [];
+                
+                if (blogs.length === 0) {
+                    this.renderEmpty(blogGrid);
+                } else {
+                    this.renderList(blogGrid, blogs);
+                }
+            }
+        } catch (error) {
+            console.error('Error loading blogs:', error);
         }
     },
 
@@ -16,7 +27,7 @@ const BlogsModule = {
         container.innerHTML = blogs.map(blog => `
             <article class="blog-card fade-in">
                 <div class="blog-image">
-                    <img src="${blog.featured_image ? CONFIG.STORAGE_URL + blog.featured_image : 'assets/images/blog-placeholder.jpg'}" alt="${blog.title}">
+                    <img src="${blog.featured_image ? CONFIG.STORAGE_URL + blog.featured_image : 'assets/images/blog-placeholder.jpg'}" alt="${blog.title}" onerror="this.src='assets/images/placeholder.png'">
                 </div>
                 <div class="blog-content">
                     <p class="blog-date">${new Date(blog.created_at).toLocaleDateString()}</p>
@@ -26,6 +37,15 @@ const BlogsModule = {
                 </div>
             </article>
         `).join('');
+    },
+
+    renderEmpty(container) {
+        container.innerHTML = `
+            <div class="container section-padding text-center" style="grid-column: 1 / -1; padding: 100px 0;">
+                <h3 style="font-size: 24px; color: var(--dark-text);">The Journal is being updated</h3>
+                <p style="color: #6b7280; margin-top: 10px;">Our latest beauty stories and trends are coming soon.</p>
+            </div>
+        `;
     }
 };
 

@@ -6,6 +6,7 @@ const EnquiriesAdminModule = {
 
     async init() {
         this.checkAuth();
+        this.renderLoading();
         await this.loadEnquiries();
     },
 
@@ -15,12 +16,20 @@ const EnquiriesAdminModule = {
         }
     },
 
+    renderLoading() {
+        const container = document.getElementById('enquiries-list');
+        if (container) container.innerHTML = '<tr><td colspan="5" class="text-center">Loading enquiries...</td></tr>';
+    },
+
     async loadEnquiries() {
         const res = await API.admin.enquiries.list();
         if (res.success) {
-            this.enquiries = res.data.data;
-            this.render();
+            // Laravel returns { success: true, data: [...] }
+            this.enquiries = res.data.data || [];
+        } else {
+            this.enquiries = [];
         }
+        this.render();
     },
 
     render() {
@@ -28,15 +37,23 @@ const EnquiriesAdminModule = {
         if (!container) return;
 
         if (this.enquiries.length === 0) {
-            container.innerHTML = '<tr><td colspan="5" class="text-center">No enquiries found</td></tr>';
+            UI.renderEmptyState('enquiries-list', {
+                icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H5.17L4,17.17V4H20V16Z"/></svg>',
+                title: 'No Enquiries Found',
+                message: 'Your inbox is clear. When customers reach out via the contact form, their messages will appear here.'
+            });
             return;
         }
 
         container.innerHTML = this.enquiries.map(enq => `
             <tr>
-                <td><strong>${enq.name}</strong></td>
-                <td>${enq.email}</td>
-                <td>${enq.phone || 'N/A'}</td>
+                <td>
+                    <div class="user-info">
+                        <strong>${enq.name}</strong>
+                        <span>${enq.email}</span>
+                    </div>
+                </td>
+                <td>${enq.phone || '<span class="text-muted">N/A</span>'}</td>
                 <td>${new Date(enq.created_at).toLocaleDateString()}</td>
                 <td>
                     <button class="btn-icon" onclick="window.EnqAdmin.view(${enq.id})" title="View Message">
@@ -57,14 +74,14 @@ const EnquiriesAdminModule = {
         const content = document.getElementById('enq-modal-content');
         content.innerHTML = `
             <div class="detail-grid">
-                <div class="detail-item"><strong>Sender:</strong> ${enq.name}</div>
-                <div class="detail-item"><strong>Email:</strong> ${enq.email}</div>
-                <div class="detail-item"><strong>Phone:</strong> ${enq.phone || 'N/A'}</div>
-                <div class="detail-item"><strong>Received:</strong> ${new Date(enq.created_at).toLocaleString()}</div>
+                <div class="detail-item"><strong>Sender</strong>${enq.name}</div>
+                <div class="detail-item"><strong>Email</strong>${enq.email}</div>
+                <div class="detail-item"><strong>Phone</strong>${enq.phone || 'N/A'}</div>
+                <div class="detail-item"><strong>Date Received</strong>${new Date(enq.created_at).toLocaleString()}</div>
             </div>
-            <div class="detail-item" style="margin-top:20px">
-                <strong>Message:</strong>
-                <p style="white-space: pre-wrap; margin-top:10px">${enq.message}</p>
+            <div class="detail-item" style="margin-top:20px; grid-column: span 2;">
+                <strong>Message Content</strong>
+                <p style="white-space: pre-wrap; margin-top:10px; color: var(--dark-text); line-height: 1.6;">${enq.message}</p>
             </div>
         `;
         UI.modal.open('enq-modal');

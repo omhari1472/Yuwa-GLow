@@ -29,16 +29,25 @@ const ApplicationsAdminModule = {
         if (!container) return;
 
         if (this.apps.length === 0) {
-            container.innerHTML = '<tr><td colspan="6" class="text-center">No applications found</td></tr>';
+            UI.renderEmptyState('applications-list', {
+                icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12,3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>',
+                title: 'No Pending Applications',
+                message: 'All quiet on the partner front. When new candidates or business partners apply, they will appear here for review.'
+            });
             return;
         }
 
         container.innerHTML = this.apps.map(app => `
             <tr>
-                <td><span class="badge badge-${app.application_type}">${app.application_type.toUpperCase()}</span></td>
-                <td><strong>${app.name}</strong><br><small>${app.email}</small></td>
+                <td><span class="badge badge-${app.application_type}">${app.application_type.replace('_', ' ').toUpperCase()}</span></td>
+                <td>
+                    <div class="user-info">
+                        <strong>${app.name}</strong>
+                        <span>${app.email}</span>
+                    </div>
+                </td>
                 <td>${app.phone}</td>
-                <td>${app.application_type === 'career' ? (app.career?.title || 'Job Posting') : app.state}</td>
+                <td>${app.application_type === 'career' ? (app.career?.title || 'Job Posting') : `${app.state}, ${app.district || 'N/A'}`}</td>
                 <td><span class="status ${app.status}">${app.status}</span></td>
                 <td>
                     <button class="btn-icon" onclick="window.AppsAdmin.viewDetails(${app.id})" title="View Details">
@@ -58,18 +67,18 @@ const ApplicationsAdminModule = {
 
         content.innerHTML = `
             <div class="detail-grid">
-                <div class="detail-item"><strong>Applicant:</strong> ${app.name}</div>
-                <div class="detail-item"><strong>Email:</strong> ${app.email}</div>
-                <div class="detail-item"><strong>Phone:</strong> ${app.phone}</div>
-                <div class="detail-item"><strong>Type:</strong> ${app.application_type.toUpperCase()}</div>
+                <div class="detail-item"><strong>Applicant Name</strong>${app.name}</div>
+                <div class="detail-item"><strong>Email Address</strong>${app.email}</div>
+                <div class="detail-item"><strong>Phone Number</strong>${app.phone}</div>
+                <div class="detail-item"><strong>Application Type</strong>${app.application_type.replace('_', ' ').toUpperCase()}</div>
                 ${app.application_type === 'career' ? `
-                    <div class="detail-item"><strong>Job Position:</strong> ${app.career?.title || 'N/A'}</div>
-                    <div class="detail-item"><strong>Resume:</strong> <a href="${CONFIG.STORAGE_URL}${app.resume_url}" target="_blank" class="btn btn-text">Download Resume</a></div>
+                    <div class="detail-item"><strong>Job Position</strong>${app.career?.title || 'N/A'}</div>
+                    <div class="detail-item"><strong>Documents</strong><br><a href="${CONFIG.STORAGE_URL}${app.resume_url}" target="_blank" class="btn-text">View Resume PDF</a></div>
                 ` : `
-                    <div class="detail-item"><strong>State:</strong> ${app.state}</div>
-                    <div class="detail-item"><strong>District/Address:</strong> ${app.district || app.address}</div>
+                    <div class="detail-item"><strong>State</strong>${app.state}</div>
+                    <div class="detail-item"><strong>Location Details</strong>${app.district || app.address}</div>
                 `}
-                <div class="detail-item"><strong>Submitted:</strong> ${new Date(app.created_at).toLocaleString()}</div>
+                <div class="detail-item"><strong>Submission Date</strong>${new Date(app.created_at).toLocaleString()}</div>
             </div>
         `;
 
@@ -77,7 +86,7 @@ const ApplicationsAdminModule = {
             <button class="btn btn-secondary" onclick="window.AppsAdmin.closeModal()">Close</button>
             ${app.status === 'pending' ? `
                 <button class="btn btn-primary" style="background:#ef4444" onclick="window.AppsAdmin.updateStatus(${app.id}, 'rejected')">Reject</button>
-                <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">Approve</button>
+                <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">Approve Partner</button>
             ` : ''}
         `;
 
@@ -89,7 +98,6 @@ const ApplicationsAdminModule = {
         if (res.success) {
             this.closeModal();
             this.loadApplications();
-            alert(`Application ${status} successfully.`);
         }
     },
 

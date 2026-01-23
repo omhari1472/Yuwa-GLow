@@ -19,21 +19,30 @@ class BlogController extends Controller
         $this->blogService = $blogService;
     }
 
-    public function index(Request $request)
+    /**
+     * Admin Index - Returns all blogs (Draft + Published)
+     */
+    public function index()
     {
-        $query = Blog::query();
-        if (!$request->user()) {
-            $query->where('status', 'published');
-        }
-        return $this->successResponse($query->orderBy('created_at', 'desc')->get());
+        $blogs = Blog::orderBy('created_at', 'desc')->get();
+        return $this->successResponse($blogs);
+    }
+
+    /**
+     * Public Index - Returns only Published blogs
+     */
+    public function getPublished()
+    {
+        $blogs = Blog::where('status', 'published')->orderBy('created_at', 'desc')->get();
+        return $this->successResponse($blogs);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:200',
             'content' => 'required|string',
-            'status' => 'nullable|in:draft,published',
+            'status' => 'required|in:draft,published',
             'featured_image' => 'nullable|image|max:2048',
         ]);
 

@@ -14,9 +14,6 @@ class ProductService
         $this->fileUpload = $fileUpload;
     }
 
-    /**
-     * Create a new product with variants and images.
-     */
     public function createProduct(array $data)
     {
         return DB::transaction(function () use ($data) {
@@ -28,18 +25,22 @@ class ProductService
                 'status' => $data['status'] ?? 'active',
             ]);
 
-            // Handle Variants
-            if (!empty($data['variants'])) {
+            // Handle Variants safely
+            if (isset($data['variants']) && is_array($data['variants'])) {
                 foreach ($data['variants'] as $variant) {
-                    $product->variants()->create($variant);
+                    if (!empty($variant['variant_name'])) {
+                        $product->variants()->create($variant);
+                    }
                 }
             }
 
             // Handle Images
-            if (!empty($data['images'])) {
+            if (isset($data['images']) && is_array($data['images'])) {
                 foreach ($data['images'] as $image) {
-                    $path = $this->fileUpload->upload($image, 'products');
-                    $product->images()->create(['image_url' => $path]);
+                    if ($image instanceof \Illuminate\Http\UploadedFile) {
+                        $path = $this->fileUpload->upload($image, 'products');
+                        $product->images()->create(['image_url' => $path]);
+                    }
                 }
             }
 
@@ -47,27 +48,31 @@ class ProductService
         });
     }
 
-    /**
-     * Update an existing product.
-     */
     public function updateProduct(Product $product, array $data)
     {
         return DB::transaction(function () use ($product, $data) {
             $product->update([
-                'category_id' => $data['category_id'],
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'price' => $data['price'],
+                'category_id' => $data['category_id'] ?? $product->category_id,
+                'name' => $data['name'] ?? $product->name,
+                'description' => $data['description'] ?? $product->description,
+                'price' => $data['price'] ?? $product->price,
                 'status' => $data['status'] ?? $product->status,
             ]);
+
+            // If new images are provided, append them
+            if (isset($data['images']) && is_array($data['images'])) {
+                foreach ($data['images'] as $image) {
+                    if ($image instanceof \Illuminate\Http\UploadedFile) {
+                        $path = $this->fileUpload->upload($image, 'products');
+                        $product->images()->create(['image_url' => $path]);
+                    }
+                }
+            }
 
             return $product->load(['variants', 'images']);
         });
     }
 
-    /**
-     * Delete a product and its associated files.
-     */
     public function deleteProduct(Product $product)
     {
         return DB::transaction(function () use ($product) {

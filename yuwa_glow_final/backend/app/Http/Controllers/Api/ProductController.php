@@ -35,22 +35,25 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Validation could be moved to ProductRequest as well
-        $validated = $request->validate([
+        $request->validate([
             'category_id' => 'required|exists:product_categories,id',
             'name' => 'required|string|max:150',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'status' => 'nullable|in:active,inactive',
-            'variants' => 'nullable|array',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         try {
-            $product = $this->productService.createProduct($request->all());
+            // Force wrap single image/variant if they come as non-arrays
+            $data = $request->all();
+            if ($request->hasFile('images') && !is_array($data['images'])) {
+                $data['images'] = [$data['images']];
+            }
+
+            $product = $this->productService->createProduct($data);
             return $this->successResponse($product, 'Product created successfully', 201);
         } catch (\Exception $e) {
+            \Log::error('Product Store Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to create product: ' . $e->getMessage());
         }
     }
@@ -62,18 +65,12 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $validated = $request->validate([
-            'category_id' => 'required|exists:product_categories,id',
-            'name' => 'required|string|max:150',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'status' => 'nullable|in:active,inactive',
-        ]);
-
         try {
-            $updatedProduct = $this->productService.updateProduct($product, $request->all());
+            $data = $request->all();
+            $updatedProduct = $this->productService->updateProduct($product, $data);
             return $this->successResponse($updatedProduct, 'Product updated successfully');
         } catch (\Exception $e) {
+            \Log::error('Product Update Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to update product: ' . $e->getMessage());
         }
     }
@@ -81,7 +78,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
-            $this->productService.deleteProduct($product);
+            $this->productService->deleteProduct($product);
             return $this->successResponse([], 'Product deleted successfully');
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to delete product.');

@@ -21,11 +21,14 @@
         <main class="main-content">
             <header class="main-header">
                 <div class="header-title">
-                    <h1>Blog Management</h1>
-                    <p class="text-muted">Publish your stories & beauty tips</p>
+                    <h1>Editorial Management</h1>
+                    <p class="text-muted">Curate and publish beauty stories</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary" id="open-add-modal">Add New Post</button>
+                    <button class="btn btn-primary" id="open-add-modal">
+                        <svg class="nav-icon" style="width:18px;height:18px;margin-right:8px" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+                        Write New Post
+                    </button>
                 </div>
             </header>
 
@@ -35,7 +38,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                    <th>Feature Image</th>
                                     <th>Title</th>
                                     <th>Status</th>
                                     <th>Date</th>
@@ -54,37 +57,49 @@
 
     <!-- Blog Modal -->
     <div class="modal-overlay" id="blog-modal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content" style="max-width: 850px;">
             <div class="modal-header">
-                <h2 id="modal-title">Write New Blog</h2>
-                <button class="close-modal" onclick="window.BlogAdmin.closeModal()">&times;</button>
+                <h2 id="modal-title">Create Editorial</h2>
+                <button class="close-modal" onclick="UI.modal.close('blog-modal')">&times;</button>
             </div>
-            <form id="blog-form">
+            <form id="blog-form" class="admin-form">
                 <input type="hidden" name="id" id="blog-id">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Post Title</label>
-                        <input type="text" name="title" id="b-title" required>
+                        <input type="text" name="title" id="b-title" required placeholder="Enter a captivating headline">
                     </div>
-                    <div class="form-group">
-                        <label>Featured Image</label>
-                        <input type="file" name="featured_image" accept="image/*">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <div class="file-input-wrapper" style="padding: 20px;">
+                                <div class="file-input-label">
+                                    <svg viewBox="0 0 24 24" style="width:24px; height:24px;"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                                    <span>Upload Cover</span>
+                                </div>
+                                <input type="file" name="featured_image" accept="image/*" id="blog-image-upload">
+                            </div>
+                            <div id="blog-image-preview" class="image-preview-container"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Publishing Status</label>
+                            <select name="status" id="b-status">
+                                <option value="draft">Draft (Private)</option>
+                                <option value="published">Published (Live)</option>
+                            </select>
+                            <p class="text-muted" style="font-size:11px; margin-top:10px">Drafts are only visible to administrators.</p>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label>Content</label>
-                        <textarea name="content" id="b-content" rows="10" required placeholder="Write your blog content here..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select name="status" id="b-status">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                        </select>
+                        <label>Post Content</label>
+                        <textarea name="content" id="b-content" rows="12" required placeholder="Write your story here... Supports HTML."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="window.BlogAdmin.closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Post</button>
+                    <button type="button" class="btn btn-secondary" onclick="UI.modal.close('blog-modal')">Discard</button>
+                    <button type="submit" class="btn btn-primary">Save Editorial</button>
                 </div>
             </form>
         </div>

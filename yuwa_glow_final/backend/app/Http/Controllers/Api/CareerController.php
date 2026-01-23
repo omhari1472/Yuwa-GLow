@@ -4,57 +4,62 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Career;
+use App\Services\CareerService;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
 class CareerController extends Controller
 {
-    public function index(Request $request)
+    use ApiResponse;
+
+    protected $careerService;
+
+    public function __construct(CareerService $careerService)
     {
-        $query = Career::query();
-        if (!$request->user()) {
-            $query->where('status', 'open');
-        }
-        return response()->json($query->orderBy('created_at', 'desc')->get());
+        $this->careerService = $careerService;
+    }
+
+    /**
+     * Admin Index - Returns all openings (Open + Closed)
+     */
+    public function index()
+    {
+        $careers = Career::orderBy('created_at', 'desc')->get();
+        return $this->successResponse($careers);
+    }
+
+    /**
+     * Public Index - Returns only Open positions
+     */
+    public function getOpen()
+    {
+        $careers = Career::where('status', 'open')->orderBy('created_at', 'desc')->get();
+        return $this->successResponse($careers);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:150',
             'department' => 'required|string|max:100',
             'location' => 'required|string|max:100',
             'description' => 'required|string',
-            'status' => 'nullable|in:open,closed',
+            'status' => 'required|in:open,closed',
         ]);
 
-        $career = Career::create($validated);
-
-        return response()->json($career, 201);
-    }
-
-    public function show(Career $career)
-    {
-        return response()->json($career);
+        $career = $this->careerService->createCareer($request->all());
+        return $this->successResponse($career, 'Career opening created', 201);
     }
 
     public function update(Request $request, Career $career)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:150',
-            'department' => 'required|string|max:100',
-            'location' => 'required|string|max:100',
-            'description' => 'required|string',
-            'status' => 'nullable|in:open,closed',
-        ]);
-
-        $career->update($validated);
-
-        return response()->json($career);
+        $career = $this->careerService->updateCareer($career, $request->all());
+        return $this->successResponse($career, 'Career opening updated');
     }
 
     public function destroy(Career $career)
     {
-        $career->delete();
-        return response()->json(['message' => 'Job posting deleted successfully']);
+        $this->careerService->deleteCareer($career);
+        return $this->successResponse([], 'Career opening deleted');
     }
 }
