@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | YUWA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module">
+        import SidebarModule from '../js/modules/sidebar.js';
+        // Note: CareersAdminModule to be implemented or uses a general pattern
+        SidebarModule.render();
+    </script>
+</head>
+<body>
+
+    <div class="admin-grid-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Career Management</h1>
+                    <p class="text-muted">Manage job openings and opportunities</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="open-add-modal">Add Job Opening</button>
+                </div>
+            </header>
+
+            <section class="admin-section">
+                <div class="card table-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Department</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="careers-list">
+                                <tr><td colspan="5">Loading careers...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

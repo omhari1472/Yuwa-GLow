@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiries | YUWA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module">
+        import EnquiriesAdminModule from '../js/modules/enquiries-admin.js';
+        import SidebarModule from '../js/modules/sidebar.js';
+        
+        SidebarModule.render();
+        EnquiriesAdminModule.init();
+    </script>
+</head>
+<body>
+
+    <div class="admin-grid-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Contact Enquiries</h1>
+                    <p class="text-muted">Messages from your customers</p>
+                </div>
+            </header>
+
+            <section class="admin-section">
+                <div class="card table-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enquiries-list">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Enquiry Detail Modal -->
+    <div class="modal-overlay" id="enq-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Message Details</h2>
+                <button class="close-modal" onclick="window.EnqAdmin.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="enq-modal-content">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.EnqAdmin.closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

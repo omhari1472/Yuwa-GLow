@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs | YUWA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module">
+        import BlogsAdminModule from '../js/modules/blogs-admin.js';
+        import SidebarModule from '../js/modules/sidebar.js';
+        
+        SidebarModule.render();
+        BlogsAdminModule.init();
+    </script>
+</head>
+<body>
+
+    <div class="admin-grid-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Blog Management</h1>
+                    <p class="text-muted">Publish your stories & beauty tips</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="open-add-modal">Add New Post</button>
+                </div>
+            </header>
+
+            <section class="admin-section">
+                <div class="card table-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blogs-list">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Blog Modal -->
+    <div class="modal-overlay" id="blog-modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 id="modal-title">Write New Blog</h2>
+                <button class="close-modal" onclick="window.BlogAdmin.closeModal()">&times;</button>
+            </div>
+            <form id="blog-form">
+                <input type="hidden" name="id" id="blog-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Post Title</label>
+                        <input type="text" name="title" id="b-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured Image</label>
+                        <input type="file" name="featured_image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea name="content" id="b-content" rows="10" required placeholder="Write your blog content here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" id="b-status">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.BlogAdmin.closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
