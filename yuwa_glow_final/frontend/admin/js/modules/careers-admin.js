@@ -69,7 +69,16 @@ const CareersAdminModule = {
         UI.modal.open('career-modal');
     },
     closeModal() { UI.modal.close('career-modal'); },
-    async delete(id) { if (confirm('Delete this opening?')) { await API.admin.careers.delete(id); this.loadCareers(); } }
+    async delete(id) {
+        UI.confirm({
+            title: 'Delete Opening',
+            message: 'Are you sure you want to remove this job specification?',
+            onConfirm: async () => {
+                await API.admin.careers.delete(id);
+                this.loadCareers();
+            }
+        });
+    }
 };
 window.CareerAdmin = CareersAdminModule;
 export default CareersAdminModule;

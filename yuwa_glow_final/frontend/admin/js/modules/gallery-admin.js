@@ -90,7 +90,16 @@ const GalleryAdminModule = {
             if (res.success) { UI.modal.close('gallery-modal'); this.loadItems(); e.target.reset(); }
         };
     },
-    async delete(id) { if (confirm('Delete this item?')) { await API.admin.gallery.delete(id); this.loadItems(); } },
+    async delete(id) {
+        UI.confirm({
+            title: 'Remove Media',
+            message: 'Are you sure you want to delete this item from your gallery?',
+            onConfirm: async () => {
+                await API.admin.gallery.delete(id);
+                this.loadItems();
+            }
+        });
+    },
     closeModal() { UI.modal.close('gallery-modal'); }
 };
 window.GalleryAdmin = GalleryAdminModule;

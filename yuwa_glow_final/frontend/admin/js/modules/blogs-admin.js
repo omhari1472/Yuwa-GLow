@@ -98,7 +98,16 @@ const BlogsAdminModule = {
         document.getElementById('b-status').value = b.status;
         UI.modal.open('blog-modal');
     },
-    async delete(id) { if (confirm('Delete this post?')) { await API.admin.blogs.delete(id); this.loadBlogs(); } }
+    async delete(id) {
+        UI.confirm({
+            title: 'Delete Blog Post',
+            message: 'Are you sure you want to remove this story from your editorial list?',
+            onConfirm: async () => {
+                await API.admin.blogs.delete(id);
+                this.loadBlogs();
+            }
+        });
+    }
 };
 window.BlogAdmin = BlogsAdminModule;
 export default BlogsAdminModule;

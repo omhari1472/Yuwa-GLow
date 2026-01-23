@@ -88,12 +88,14 @@ const EnquiriesAdminModule = {
     },
 
     async delete(id) {
-        if (confirm('Delete this enquiry?')) {
-            const res = await API.admin.enquiries.delete(id);
-            if (res.success) {
+        UI.confirm({
+            title: 'Delete Message',
+            message: 'Are you sure you want to remove this customer enquiry permanently?',
+            onConfirm: async () => {
+                await API.admin.enquiries.delete(id);
                 this.loadEnquiries();
             }
-        }
+        });
     },
 
     closeModal() {
