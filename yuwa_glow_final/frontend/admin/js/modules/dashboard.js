@@ -23,11 +23,17 @@ const DashboardModule = {
 
     async loadStats() {
         const res = await API.getDashboardStats();
+        console.log('Raw Dashboard Stats:', res);
+
         if (res.success) {
-            this.renderStats(res.data);
-            this.renderRecentEnquiries(res.data.recent_enquiries || []);
+            // Laravel wrapper is { success: true, data: { total_products: 1, ... } }
+            // Or it could be double nested if my previous wrapper change affected it
+            const stats = res.data.data || res.data || {};
+            console.log('Processed Stats:', stats);
+            
+            this.renderStats(stats);
+            this.renderRecentEnquiries(stats.recent_enquiries || []);
         } else {
-            console.error('Stats load failed:', res.message);
             this.renderStats({ total_products: 0, total_blogs: 0, pending_applications: 0, active_distributors: 0, active_stockists: 0 });
         }
     },
@@ -49,9 +55,9 @@ const DashboardModule = {
             container.innerHTML = `
                 <tr>
                     <td colspan="4">
-                        <div class="empty-state">
+                        <div class="empty-state-mini">
                             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H5.17L4,17.17V4H20V16Z"/></svg>
-                            <p>No recent enquiries found</p>
+                            <p>No recent enquiries</p>
                         </div>
                     </td>
                 </tr>

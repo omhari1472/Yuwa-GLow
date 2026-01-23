@@ -32,37 +32,83 @@ const UI = {
             container.className = 'toast-container';
             document.body.appendChild(container);
         }
-
         const toast = document.createElement('div');
         toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
-        toast.innerHTML = `
-            <div style="flex:1">${message}</div>
-            <div style="cursor:pointer; opacity:0.5" onclick="this.parentElement.remove()">&times;</div>
-        `;
-        
+        toast.innerHTML = `<div style="flex:1">${message}</div><div style="cursor:pointer; opacity:0.5" onclick="this.parentElement.remove()">&times;</div>`;
         container.appendChild(toast);
-
         setTimeout(() => {
             toast.classList.add('fade-out');
             setTimeout(() => toast.remove(), 500);
         }, 4000);
     },
 
+    /**
+     * Premium Dropdown Initializer
+     * Transforms a container into a luxury dropdown
+     */
+    initDropdown(containerId, options, onSelect) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.classList.add('premium-dropdown');
+        const selectedValue = options.find(opt => opt.selected)?.value || '';
+        const selectedText = options.find(opt => opt.selected)?.text || 'Select Option';
+
+        container.innerHTML = `
+            <div class="dropdown-selected">${selectedText}</div>
+            <ul class="dropdown-options">
+                ${options.map(opt => `
+                    <li class="dropdown-option ${opt.selected ? 'selected' : ''}" data-value="${opt.value}">
+                        ${opt.text}
+                    </li>
+                `).join('')}
+            </ul>
+            <input type="hidden" name="${container.dataset.name || ''}" value="${selectedValue}">
+        `;
+
+        const selectedBox = container.querySelector('.dropdown-selected');
+        const optionsList = container.querySelector('.dropdown-options');
+        const hiddenInput = container.querySelector('input');
+
+        // Toggle Open
+        selectedBox.onclick = (e) => {
+            e.stopPropagation();
+            const isActive = container.classList.contains('active');
+            // Close all other dropdowns
+            document.querySelectorAll('.premium-dropdown').forEach(d => d.classList.remove('active'));
+            if (!isActive) container.classList.add('active');
+        };
+
+        // Handle Selection
+        container.querySelectorAll('.dropdown-option').forEach(option => {
+            option.onclick = (e) => {
+                e.stopPropagation();
+                const value = option.dataset.value;
+                const text = option.innerText;
+
+                selectedBox.innerText = text;
+                hiddenInput.value = value;
+                
+                container.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                container.classList.remove('active');
+                
+                if (onSelect) onSelect(value, text);
+            };
+        });
+
+        // Close on outside click
+        window.addEventListener('click', () => container.classList.remove('active'));
+    },
+
     renderEmptyState(containerId, { icon, title, message, btnText, btnId }) {
         const container = document.getElementById(containerId);
         if (!container) return;
         const isTable = container.tagName === 'TBODY';
-        const content = `
-            <div class="empty-state-container">
-                <div class="empty-state-icon">${icon}</div>
-                <h3>${title}</h3>
-                <p>${message}</p>
-                ${btnText ? `<button class="btn btn-primary" id="${btnId}">${btnText}</button>` : ''}
-            </div>
-        `;
+        const content = `<div class="empty-state-container"><div class="empty-state-icon">${icon}</div><h3>${title}</h3><p>${message}</p>${btnText ? `<button class="btn btn-primary" id="${btnId}">${btnText}</button>` : ''}</div>`;
         if (isTable) {
-            const table = container.closest('table');
-            const colspan = table ? table.querySelectorAll('thead th').length : 5;
+            const colspan = container.closest('table').querySelectorAll('thead th').length;
             container.innerHTML = `<tr><td colspan="${colspan}">${content}</td></tr>`;
         } else {
             container.innerHTML = content;

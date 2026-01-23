@@ -4,11 +4,13 @@ import UI from '../utils.js';
 
 const ProductsAdminModule = {
     products: [],
+    categories: [],
     
     async init() {
         this.checkAuth();
         this.initEventListeners();
-        Promise.all([this.loadProducts(), this.loadCategories()]);
+        await Promise.all([this.loadProducts(), this.loadCategories()]);
+        this.initStatusDropdown();
     },
 
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
@@ -20,16 +22,34 @@ const ProductsAdminModule = {
 
     async loadCategories() {
         const res = await API.admin.categories.list();
-        if (res.success) {
-            const select = document.getElementById('product-category');
-            if (select) {
-                const categories = res.data.data || [];
-                let options = '<option value="">Select Category</option>';
-                options += categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
-                options += '<option value="new" style="font-weight:bold; color:var(--primary-gold)">+ Add New Category</option>';
-                select.innerHTML = options;
-            }
+        if (res.success) { 
+            this.categories = res.data.data || [];
+            this.initCategoryDropdown();
         }
+    },
+
+    initStatusDropdown(selectedValue = 'active') {
+        UI.initDropdown('product-status-dropdown', [
+            { value: 'active', text: 'Active (Visible)', selected: selectedValue === 'active' },
+            { value: 'inactive', text: 'Inactive (Hidden)', selected: selectedValue === 'inactive' }
+        ]);
+    },
+
+    initCategoryDropdown(selectedId = null) {
+        const options = this.categories.map(cat => ({
+            value: cat.id,
+            text: cat.name,
+            selected: cat.id == selectedId
+        }));
+        options.push({ value: 'new', text: '+ Add New Category' });
+
+        UI.initDropdown('product-category-dropdown', options, (value) => {
+            const newCatGroup = document.getElementById('new-category-group');
+            if (newCatGroup) {
+                newCatGroup.style.display = value === 'new' ? 'block' : 'none';
+                if (value === 'new') document.getElementById('new-category-name').focus();
+            }
+        });
     },
 
     render() {
@@ -50,7 +70,7 @@ const ProductsAdminModule = {
             <tr>
                 <td><img src="${p.images && p.images[0] ? CONFIG.STORAGE_URL + p.images[0].image_url : '../../assets/images/placeholder.png'}" class="table-thumb"></td>
                 <td><div class="user-info"><strong>${p.name}</strong><span>ID: #${p.id}</span></div></td>
-                <td><span class="badge">${p.category?.name || 'Uncategorized'}</span></td>
+                <td><span class="badge">${p.category?.name || 'N/A'}</span></td>
                 <td><strong>$${p.price}</strong></td>
                 <td><span class="status ${p.status}">${p.status}</span></td>
                 <td>
@@ -63,14 +83,8 @@ const ProductsAdminModule = {
 
     initEventListeners() {
         document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());
-        const categorySelect = document.getElementById('product-category');
-        categorySelect?.addEventListener('change', (e) => {
-            const newCatGroup = document.getElementById('new-category-group');
-            if (newCatGroup) {
-                newCatGroup.style.display = e.target.value === 'new' ? 'block' : 'none';
-                if (e.target.value === 'new') document.getElementById('new-category-name').focus();
-            }
-        });
+        
+        // Image Preview Logic
         const imageInput = document.getElementById('image-upload');
         if (imageInput) {
             imageInput.onchange = () => {
@@ -88,18 +102,27 @@ const ProductsAdminModule = {
                 });
             };
         }
+
         const form = document.getElementById('product-form');
         if (form) {
             form.onsubmit = async (e) => {
                 e.preventDefault();
                 const formData = new FormData(form);
+                
+                // Handle Custom Category Creation
                 if (formData.get('category_id') === 'new') {
-                    const catRes = await API.admin.categories.create({ name: formData.get('new_category_name'), status: 'active' });
-                    if (catRes.success) { formData.set('category_id', catRes.data.data.id); await this.loadCategories(); }
+                    const newCatName = formData.get('new_category_name');
+                    const catRes = await API.admin.categories.create({ name: newCatName, status: 'active' });
+                    if (catRes.success) {
+                        formData.set('category_id', catRes.data.data.id);
+                        await this.loadCategories();
+                    }
                 }
+
                 const id = document.getElementById('product-id').value;
                 if (id) formData.append('_method', 'PATCH');
                 let res = id ? await API.admin.products.update(id, formData) : await API.admin.products.create(formData);
+
                 if (res.success) {
                     this.closeModal();
                     this.loadProducts();
@@ -112,13 +135,12 @@ const ProductsAdminModule = {
     },
 
     openAddModal() {
-        const form = document.getElementById('product-form');
-        if (form) form.reset();
+        document.getElementById('product-form').reset();
         document.getElementById('product-id').value = '';
-        const newCatGroup = document.getElementById('new-category-group');
-        if (newCatGroup) newCatGroup.style.display = 'none';
         document.getElementById('image-preview').innerHTML = '';
-        document.getElementById('modal-title').innerText = 'Add New Product';
+        document.getElementById('new-category-group').style.display = 'none';
+        this.initCategoryDropdown();
+        this.initStatusDropdown('active');
         UI.modal.open('product-modal');
     },
 
@@ -127,21 +149,26 @@ const ProductsAdminModule = {
         if (!p) return;
         document.getElementById('product-id').value = p.id;
         document.getElementById('p-name').value = p.name;
-        document.getElementById('product-category').value = p.category_id;
         document.getElementById('p-price').value = p.price;
-        document.getElementById('p-status').value = p.status;
         document.getElementById('p-description').value = p.description;
-        document.getElementById('modal-title').innerText = 'Edit Product';
+        document.getElementById('image-preview').innerHTML = ''; // Current UI doesn't support editing existing images yet
+        
+        this.initCategoryDropdown(p.category_id);
+        this.initStatusDropdown(p.status);
         UI.modal.open('product-modal');
     },
 
     closeModal() { UI.modal.close('product-modal'); },
-    openDeleteModal(id) { this.deleteId = id; UI.modal.open('delete-modal'); document.getElementById('confirm-delete-btn').onclick = () => this.confirmDelete(); },
-    closeDeleteModal() { UI.modal.close('delete-modal'); },
-    async confirmDelete() {
-        const res = await API.admin.products.delete(this.deleteId);
-        if (res.success) { this.closeDeleteModal(); this.loadProducts(); UI.notify('Product deleted successfully'); }
-        else { UI.notify(res.message, 'error'); }
+    openDeleteModal(id) {
+        this.deleteId = id;
+        UI.confirm({
+            title: 'Delete Product',
+            message: 'Are you sure you want to remove this item from the catalog?',
+            onConfirm: async () => {
+                const res = await API.admin.products.delete(this.deleteId);
+                if (res.success) { this.loadProducts(); UI.notify('Product deleted'); }
+            }
+        });
     }
 };
 
