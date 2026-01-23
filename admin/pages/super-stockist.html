@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | YUWA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-grid-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+             <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">...</a></li>
+                    <li><a href="super-stockist.html" class="active">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 11c1.49 0 2.87.54 3.94 1.5C23.01 13.57 23.5 15 23.5 16.5A3.5 3.5 0 0120 20H4a3.5 3.5 0 01-3.5-3.5C.5 15 .99 13.57 2.06 12.5S5.51 11 7 11h11M7 9a5 5 0 015-5 5 5 0 015 5v1.28C16.39 10.1 15.74 10 15 10c-2.3 0-4.32 1.05-5.69 2.69C8.36 12.04 7.69 11.55 7 11.28V9z" /></svg>
+                        <span class="nav-label">Super Stockists</span>
+                    </a></li>
+                    <!-- ... other nav items ... -->
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="navbar-left">
+                <button class="sidebar-toggle">
+                     <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+                </button>
+                <h1 class="page-title">Super Stockist Approvals</h1>
+            </div>
+             <div class="navbar-right">
+                <div class="admin-profile">
+                     <img src="https://i.pravatar.cc/150?u=admin" alt="Admin avatar">
+                     <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Deccan Beauty Inc.</td>
+                            <td>Maharashtra</td>
+                            <td>+91 9876543210</td>
+                            <td><span class="status-inactive">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-view">View</button>
+                                <button class="btn btn-sm btn-success">Approve</button>
+                                <button class="btn btn-sm btn-danger">Reject</button>
+                            </td>
+                        </tr>
+                        <!-- More applicants -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reusable Modal for Viewing Details -->
+    <div id="formModal" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modalTitle">Applicant Details</h2>
+                <button class="modal-close">&times;</button>
+            </header>
+            <main class="modal-body">
+                <p><strong>Name:</strong> Deccan Beauty Inc.</p>
+                <p><strong>State:</strong> Maharashtra</p>
+                <p><strong>Contact:</strong> +91 9876543210</p>
+                <p><strong>Email:</strong> contact@deccanbeauty.com</p>
+                <p><strong>Address:</strong> 123 Commercial St, Mumbai, Maharashtra</p>
+            </main>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary modal-cancel">Close</button>
+            </footer>
+        </div>
+    </div>
+    
+    <div id="toast-container"></div>
+    <div id="confirmDialog" class="modal-overlay"></div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

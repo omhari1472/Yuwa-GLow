@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | YUWA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-grid-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html">...</a></li>
+                    <li><a href="enquiries.html" class="active">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                        <span class="nav-label">Enquiries</span>
+                    </a></li>
+                    <!-- ... other nav items ... -->
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="navbar-left">
+                <button class="sidebar-toggle">
+                     <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+                </button>
+                <h1 class="page-title">Enquiries</h1>
+            </div>
+             <div class="navbar-right">
+                <div class="admin-profile">
+                     <img src="https://i.pravatar.cc/150?u=admin" alt="Admin avatar">
+                     <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jane Doe</td>
+                            <td>jane@example.com</td>
+                            <td>Product Inquiry</td>
+                            <td>Looking for details on the Radiant Glow Serum...</td>
+                            <td><span class="status-inactive">Unread</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-view">View</button>
+                                <button class="btn btn-sm btn-success">Mark Read</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        <!-- More enquiries -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reusable Modal for Viewing Enquiry Details -->
+    <div id="formModal" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modalTitle">Enquiry Details</h2>
+                <button class="modal-close">&times;</button>
+            </header>
+            <main class="modal-body">
+                <p><strong>From:</strong> Jane Doe</p>
+                <p><strong>Email:</strong> <a href="mailto:jane@example.com">jane@example.com</a></p>
+                <p><strong>Subject:</strong> Product Inquiry</p>
+                <p><strong>Message:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </main>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary modal-cancel">Close</button>
+            </footer>
+        </div>
+    </div>
+    
+    <div id="toast-container"></div>
+    <div id="confirmDialog" class="modal-overlay"></div>
+
+    <script src="../js/admin.js"></script>
+</body>
