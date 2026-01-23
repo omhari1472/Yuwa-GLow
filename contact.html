@@ -6,6 +6,8 @@
     <title>Contact Us - Get in Touch with YUWA GLOW</title>
     <meta name="description" content="Contact YUWA GLOW for inquiries, support, or partnership opportunities. We're here to help you on your beauty journey.">
     <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/api.js"></script>
+    <script defer src="js/forms.js"></script>
     <script defer src="js/main.js"></script>
 </head>
 <body>
@@ -54,25 +56,24 @@
                 </div>
 
                 <!-- Contact Form -->
-                <form class="contact-form fade-in" style="animation-delay: 0.2s;">
-                    <h3>Send Us a Message</h3>
+                <form id="contactForm" class="contact-form fade-in" style="animation-delay: 0.2s;">
                     <div class="form-group">
-                        <input type="text" id="name" name="name" required placeholder=" ">
                         <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" name="email" required placeholder=" ">
                         <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
                     </div>
                     <div class="form-group">
-                        <input type="text" id="subject" name="subject" required placeholder=" ">
-                        <label for="subject">Subject</label>
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000">
                     </div>
                     <div class="form-group">
-                        <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
-                        <label for="message">Your Message</label>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
                     </div>
-                    <button type="submit" class="cta-button">Send Message</button>
+                    <button type="submit" class="submit-btn">Send Message</button>
                 </form>
             </div>
         </section>
