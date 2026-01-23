@@ -5,13 +5,13 @@ const CareersAdminModule = {
     careers: [],
     async init() {
         this.checkAuth();
-        await this.loadCareers();
         this.initEventListeners();
+        await this.loadCareers();
     },
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
     async loadCareers() {
-        const res = await API.admin.careers.list(); // Need to add to api.js
-        if (res.success) { this.careers = res.data.data; this.render(); }
+        const res = await API.admin.careers.list();
+        if (res.success) { this.careers = res.data.data || []; this.render(); }
     },
     render() {
         const container = document.getElementById('careers-list');
@@ -21,8 +21,8 @@ const CareersAdminModule = {
             UI.renderEmptyState('careers-list', {
                 icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>',
                 title: 'No Job Openings',
-                message: 'Looking for new talent? Post your first job opening here.',
-                btnText: 'Add Job Opening',
+                message: 'Grow your team. Post your first job opening here.',
+                btnText: 'Add Opening',
                 btnId: 'empty-career-btn'
             });
             document.getElementById('empty-career-btn')?.addEventListener('click', () => this.openAddModal());
@@ -47,16 +47,36 @@ const CareersAdminModule = {
         `).join('');
     },
     initEventListeners() {
-        document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());
-        document.getElementById('career-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(e.target));
-            const id = document.getElementById('career-id').value;
-            let res = id ? await API.admin.careers.update(id, data) : await API.admin.careers.create(data);
-            if (res.success) { UI.modal.close('career-modal'); this.loadCareers(); }
-        };
+        const addBtn = document.getElementById('open-add-modal');
+        if (addBtn) addBtn.addEventListener('click', () => this.openAddModal());
+
+        const form = document.getElementById('career-form');
+        if (form) {
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData.entries());
+                const id = document.getElementById('career-id').value;
+                
+                let res = id ? await API.admin.careers.update(id, data) : await API.admin.careers.create(data);
+                
+                if (res.success) {
+                    UI.modal.close('career-modal');
+                    await this.loadCareers();
+                    UI.notify(`Specification ${id ? 'updated' : 'published'} successfully!`);
+                } else {
+                    UI.notify(res.message || 'Action failed', 'error');
+                }
+            };
+        }
     },
-    openAddModal() { document.getElementById('career-form').reset(); document.getElementById('career-id').value = ''; UI.modal.open('career-modal'); },
+    openAddModal() {
+        const form = document.getElementById('career-form');
+        if (form) form.reset();
+        document.getElementById('career-id').value = '';
+        document.getElementById('modal-title').innerText = 'New Job Specification';
+        UI.modal.open('career-modal');
+    },
     openEditModal(id) {
         const c = this.careers.find(x => x.id === id);
         if (!c) return;
@@ -66,6 +86,7 @@ const CareersAdminModule = {
         document.getElementById('c-loc').value = c.location;
         document.getElementById('c-desc').value = c.description;
         document.getElementById('c-status').value = c.status;
+        document.getElementById('modal-title').innerText = 'Edit Specification';
         UI.modal.open('career-modal');
     },
     closeModal() { UI.modal.close('career-modal'); },
@@ -74,8 +95,13 @@ const CareersAdminModule = {
             title: 'Delete Opening',
             message: 'Are you sure you want to remove this job specification?',
             onConfirm: async () => {
-                await API.admin.careers.delete(id);
-                this.loadCareers();
+                const res = await API.admin.careers.delete(id);
+                if (res.success) {
+                    await this.loadCareers();
+                    UI.notify('Job opening deleted successfully');
+                } else {
+                    UI.notify('Failed to delete opening', 'error');
+                }
             }
         });
     }

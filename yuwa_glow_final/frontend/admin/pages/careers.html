@@ -56,7 +56,49 @@
     </div>
 
     <!-- Career Modal -->
-    ...
+    <div class="modal-overlay" id="career-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Job Specification</h2>
+                <button class="close-modal" onclick="window.CareerAdmin.closeModal()">&times;</button>
+            </div>
+            <form id="career-form" class="admin-form">
+                <input type="hidden" name="id" id="career-id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" name="title" id="c-title" required placeholder="e.g. Senior Beauty Consultant">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" name="department" id="c-dept" required placeholder="e.g. Sales">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" id="c-loc" required placeholder="e.g. Remote">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Role Description</label>
+                        <textarea name="description" id="c-desc" rows="6" required placeholder="Outline responsibilities..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Availability</label>
+                        <select name="status" id="c-status">
+                            <option value="open">Open (Active)</option>
+                            <option value="closed">Closed (Archive)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.CareerAdmin.closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Specification</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div class="modal-overlay" id="delete-modal">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
