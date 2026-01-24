@@ -170,8 +170,7 @@ const UI = {
         } else {
             container.innerHTML = content;
         }
-    }
-};
+    },
 
     /**
      * Search/Filter Bar Initializer
