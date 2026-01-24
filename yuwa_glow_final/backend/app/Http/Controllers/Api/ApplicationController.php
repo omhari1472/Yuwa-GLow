@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreApplicationRequest;
+use App\Http\Requests\UpdateApplicationStatusRequest;
 use App\Models\Application;
 use App\Services\ApplicationService;
 use App\Traits\ApiResponse;
@@ -34,34 +36,25 @@ class ApplicationController extends Controller
         return $this->successResponse($query->orderBy('created_at', 'desc')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreApplicationRequest $request)
     {
-        $request->validate([
-            'application_type' => 'required|in:career,super_stockist,distributor',
-            'name' => 'required|string|max:150',
-            'email' => 'required|email|max:150',
-            'phone' => 'required|string|max:20',
-            'resume' => 'required_if:application_type,career|file|mimes:pdf,doc,docx|max:5120',
-        ]);
-
         try {
             $data = $request->except(['resume']);
             $resume = $request->file('resume');
-            
+
             $application = $this->applicationService->submitApplication($data, $resume);
-            
+
             return $this->successResponse($application, 'Application submitted successfully', 201);
         } catch (\Exception $e) {
+            \Log::error('Application Submit Error: ' . $e->getMessage());
             return $this->errorResponse('Submission failed: ' . $e->getMessage());
         }
     }
 
-    public function updateStatus(Request $request, Application $application)
+    public function updateStatus(UpdateApplicationStatusRequest $request, Application $application)
     {
-        $request->validate(['status' => 'required|in:pending,approved,rejected']);
-
         $updated = $this->applicationService->updateStatus($application, $request->status);
-        
+
         return $this->successResponse($updated, 'Status updated successfully');
     }
 

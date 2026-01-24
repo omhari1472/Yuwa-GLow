@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use App\Traits\ApiResponse;
@@ -33,16 +35,8 @@ class ProductController extends Controller
         return $this->successResponse($products);
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'category_id' => 'required|exists:product_categories,id',
-            'name' => 'required|string|max:150',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'status' => 'nullable|in:active,inactive',
-        ]);
-
         try {
             // Force wrap single image/variant if they come as non-arrays
             $data = $request->all();
@@ -63,10 +57,10 @@ class ProductController extends Controller
         return $this->successResponse($product->load(['category', 'variants', 'images']));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         try {
-            $data = $request->all();
+            $data = $request->validated();
             $updatedProduct = $this->productService->updateProduct($product, $data);
             return $this->successResponse($updatedProduct, 'Product updated successfully');
         } catch (\Exception $e) {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCareerRequest;
+use App\Http\Requests\UpdateCareerRequest;
 use App\Models\Career;
 use App\Services\CareerService;
 use App\Traits\ApiResponse;
@@ -45,23 +47,15 @@ class CareerController extends Controller
         return $this->successResponse($career);
     }
 
-    public function store(Request $request)
+    public function store(StoreCareerRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:150',
-            'department' => 'required|string|max:100',
-            'location' => 'required|string|max:100',
-            'description' => 'required|string',
-            'status' => 'required|in:open,closed',
-        ]);
-
-        $career = $this->careerService->createCareer($request->all());
+        $career = $this->careerService->createCareer($request->validated());
         return $this->successResponse($career, 'Career opening created', 201);
     }
 
-    public function update(Request $request, Career $career)
+    public function update(UpdateCareerRequest $request, Career $career)
     {
-        $career = $this->careerService->updateCareer($career, $request->all());
+        $career = $this->careerService->updateCareer($career, $request->validated());
         return $this->successResponse($career, 'Career opening updated');
     }
 

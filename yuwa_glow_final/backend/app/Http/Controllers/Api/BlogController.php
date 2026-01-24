@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBlogRequest;
+use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
 use App\Services\BlogService;
 use App\Traits\ApiResponse;
@@ -37,19 +39,13 @@ class BlogController extends Controller
         return $this->successResponse($blogs);
     }
 
-    public function store(Request $request)
+    public function store(StoreBlogRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:200',
-            'content' => 'required|string',
-            'status' => 'required|in:draft,published',
-            'featured_image' => 'nullable|image|max:2048',
-        ]);
-
         try {
-            $blog = $this->blogService->createBlog($request->all());
+            $blog = $this->blogService->createBlog($request->validated());
             return $this->successResponse($blog, 'Blog created successfully', 201);
         } catch (\Exception $e) {
+            \Log::error('Blog Store Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to create blog.');
         }
     }
@@ -60,18 +56,13 @@ class BlogController extends Controller
         return $this->successResponse($blog);
     }
 
-    public function update(Request $request, Blog $blog)
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        $request->validate([
-            'title' => 'required|string|max:200',
-            'content' => 'required|string',
-            'status' => 'required|in:draft,published',
-        ]);
-
         try {
-            $updated = $this->blogService->updateBlog($blog, $request->all());
+            $updated = $this->blogService->updateBlog($blog, $request->validated());
             return $this->successResponse($updated, 'Blog updated successfully');
         } catch (\Exception $e) {
+            \Log::error('Blog Update Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to update blog.');
         }
     }

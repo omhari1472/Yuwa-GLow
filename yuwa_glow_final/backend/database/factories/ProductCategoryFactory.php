@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\ProductCategory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ProductCategoryFactory extends Factory
+{
+    protected $model = ProductCategory::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => fake()->words(2, true),
+            'status' => fake()->randomElement(['active', 'inactive']),
+        ];
+    }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'active',
+        ]);
+    }
+}

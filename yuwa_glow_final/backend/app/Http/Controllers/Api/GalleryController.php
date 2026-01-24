@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGalleryRequest;
+use App\Http\Requests\UpdateGalleryRequest;
 use App\Models\Gallery;
 use App\Services\GalleryService;
 use App\Traits\ApiResponse;
@@ -34,38 +36,24 @@ class GalleryController extends Controller
         return $this->successResponse(Gallery::orderBy('created_at', 'desc')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreGalleryRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:150',
-            'type' => 'required|in:image,video',
-            'media_url' => 'required_if:type,video|nullable|url',
-            'image' => 'required_if:type,image|nullable|image|max:5120',
-            'status' => 'nullable|in:draft,published'
-        ]);
-
         try {
-            $gallery = $this->galleryService->createGallery($request->all(), $request->file('image'));
+            $gallery = $this->galleryService->createGallery($request->validated(), $request->file('image'));
             return $this->successResponse($gallery, 'Gallery item added', 201);
         } catch (\Exception $e) {
+            \Log::error('Gallery Store Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to add gallery item.');
         }
     }
 
-    public function update(Request $request, Gallery $gallery)
+    public function update(UpdateGalleryRequest $request, Gallery $gallery)
     {
-        $request->validate([
-            'title' => 'sometimes|string|max:150',
-            'type' => 'sometimes|in:image,video',
-            'media_url' => 'required_if:type,video|nullable|url',
-            'image' => 'nullable|image|max:5120',
-            'status' => 'nullable|in:draft,published'
-        ]);
-
         try {
-            $updated = $this->galleryService->updateGallery($gallery, $request->all(), $request->file('image'));
+            $updated = $this->galleryService->updateGallery($gallery, $request->validated(), $request->file('image'));
             return $this->successResponse($updated, 'Gallery item updated');
         } catch (\Exception $e) {
+            \Log::error('Gallery Update Error: ' . $e->getMessage());
             return $this->errorResponse('Failed to update gallery item.');
         }
     }

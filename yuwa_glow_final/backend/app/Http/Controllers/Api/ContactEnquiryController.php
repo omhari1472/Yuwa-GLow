@@ -3,69 +3,51 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContactEnquiryRequest;
+use App\Http\Requests\ReplyEnquiryRequest;
+use App\Http\Requests\UpdateEnquiryStatusRequest;
 use App\Models\ContactEnquiry;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
 class ContactEnquiryController extends Controller
 {
+    use ApiResponse;
+
     public function index()
     {
-        return response()->json(ContactEnquiry::orderBy('created_at', 'desc')->get());
+        return $this->successResponse(ContactEnquiry::orderBy('created_at', 'desc')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreContactEnquiryRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:150',
-            'email' => 'required|email|max:150',
-            'phone' => 'nullable|string|max:20',
-            'message' => 'required|string',
-        ]);
-
-        $enquiry = ContactEnquiry::create($validated);
-
-        return response()->json($enquiry, 201);
+        $enquiry = ContactEnquiry::create($request->validated());
+        return $this->successResponse($enquiry, 'Enquiry submitted successfully', 201);
     }
 
-    public function reply(Request $request, ContactEnquiry $contactEnquiry)
+    public function reply(ReplyEnquiryRequest $request, ContactEnquiry $contactEnquiry)
     {
-        $validated = $request->validate([
-            'reply' => 'required|string',
-        ]);
-
         $contactEnquiry->update([
-            'reply' => $validated['reply'],
+            'reply' => $request->reply,
             'status' => 'replied',
             'replied_at' => now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Reply saved successfully',
-            'data' => $contactEnquiry
-        ]);
+        return $this->successResponse($contactEnquiry, 'Reply saved successfully');
     }
 
-    public function updateStatus(Request $request, ContactEnquiry $contactEnquiry)
+    public function updateStatus(UpdateEnquiryStatusRequest $request, ContactEnquiry $contactEnquiry)
     {
-        $validated = $request->validate([
-            'status' => 'required|in:new,replied,closed',
-        ]);
-
         $contactEnquiry->update([
-            'status' => $validated['status'],
+            'status' => $request->status,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Status updated successfully',
-            'data' => $contactEnquiry
-        ]);
+        return $this->successResponse($contactEnquiry, 'Status updated successfully');
     }
 
     public function destroy(ContactEnquiry $contactEnquiry)
     {
         $contactEnquiry->delete();
-        return response()->json(['message' => 'Enquiry deleted successfully']);
+        return $this->successResponse([], 'Enquiry deleted successfully');
     }
 }
