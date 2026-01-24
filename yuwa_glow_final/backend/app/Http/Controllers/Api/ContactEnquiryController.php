@@ -27,9 +27,45 @@ class ContactEnquiryController extends Controller
         return response()->json($enquiry, 201);
     }
 
-    public function destroy(ContactEnquiry $enquiry)
+    public function reply(Request $request, ContactEnquiry $contactEnquiry)
     {
-        $enquiry->delete();
+        $validated = $request->validate([
+            'reply' => 'required|string',
+        ]);
+
+        $contactEnquiry->update([
+            'reply' => $validated['reply'],
+            'status' => 'replied',
+            'replied_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reply saved successfully',
+            'data' => $contactEnquiry
+        ]);
+    }
+
+    public function updateStatus(Request $request, ContactEnquiry $contactEnquiry)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:new,replied,closed',
+        ]);
+
+        $contactEnquiry->update([
+            'status' => $validated['status'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+            'data' => $contactEnquiry
+        ]);
+    }
+
+    public function destroy(ContactEnquiry $contactEnquiry)
+    {
+        $contactEnquiry->delete();
         return response()->json(['message' => 'Enquiry deleted successfully']);
     }
 }

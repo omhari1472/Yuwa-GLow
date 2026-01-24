@@ -37,6 +37,14 @@ class CareerController extends Controller
         return $this->successResponse($careers);
     }
 
+    /**
+     * Show a single career opening
+     */
+    public function show(Career $career)
+    {
+        return $this->successResponse($career);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

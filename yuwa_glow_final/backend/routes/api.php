@@ -15,10 +15,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Public visibility routes
 Route::get('/products/active', [ProductController::class, 'getActive']);
+Route::get('/products/{product}', [ProductController::class, 'show']);
 Route::get('/categories/active', [CategoryController::class, 'getActive']);
 Route::get('/blogs/published', [BlogController::class, 'getPublished']);
 Route::get('/blogs/{slug}', [BlogController::class, 'show']);
 Route::get('/careers/open', [CareerController::class, 'getOpen']);
+Route::get('/careers/{career}', [CareerController::class, 'show']);
 Route::get('/gallery', [GalleryController::class, 'index']);
 Route::get('/distributors', [ApplicationController::class, 'getApproved'])->defaults('type', 'distributor');
 Route::get('/stockists', [ApplicationController::class, 'getApproved'])->defaults('type', 'super_stockist');
@@ -38,9 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Product Management
     Route::apiResource('products', ProductController::class);
+    Route::delete('products/{product}/variants/{variant}', [ProductController::class, 'deleteVariant']);
+    Route::delete('products/{product}/images/{image}', [ProductController::class, 'deleteImage']);
 
     // Gallery Management
     Route::apiResource('gallery', GalleryController::class)->except(['index', 'show']);
+    Route::post('gallery/{gallery}', [GalleryController::class, 'update']); // POST for file uploads
 
     // Blog Management
     Route::apiResource('blogs', BlogController::class)->except(['show']);
@@ -54,5 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/applications/{application}', [ApplicationController::class, 'destroy']);
     
     Route::get('/enquiries', [ContactEnquiryController::class, 'index']);
+    Route::post('/enquiries/{contactEnquiry}/reply', [ContactEnquiryController::class, 'reply']);
+    Route::patch('/enquiries/{contactEnquiry}/status', [ContactEnquiryController::class, 'updateStatus']);
     Route::delete('/enquiries/{contactEnquiry}', [ContactEnquiryController::class, 'destroy']);
 });

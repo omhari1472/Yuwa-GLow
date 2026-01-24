@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogs | YUWA GLOW Admin</title>
     <link rel="stylesheet" href="../css/admin.css">
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <style>
+        .ql-container { font-size: 15px; min-height: 200px; }
+        .ql-editor { min-height: 200px; }
+        .ql-toolbar.ql-snow { border-radius: 10px 10px 0 0; border-color: var(--gray-border); }
+        .ql-container.ql-snow { border-radius: 0 0 10px 10px; border-color: var(--gray-border); }
+        #editor-container { background: white; }
+    </style>
     <script type="module">
         import BlogsAdminModule from '../js/modules/blogs-admin.js';
         import SidebarModule from '../js/modules/sidebar.js';
-        
+
         SidebarModule.render();
         BlogsAdminModule.init();
     </script>
@@ -33,6 +43,7 @@
             </header>
 
             <section class="admin-section">
+                <div class="search-filter-bar" id="blog-search"></div>
                 <div class="card table-card">
                     <div class="table-container">
                         <table>
@@ -50,6 +61,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="blog-pagination"></div>
                 </div>
             </section>
         </main>
@@ -91,7 +103,8 @@
 
                     <div class="form-group">
                         <label>Post Content</label>
-                        <textarea name="content" id="b-content" rows="12" required placeholder="Write your story here... Supports HTML."></textarea>
+                        <div id="editor-container"></div>
+                        <input type="hidden" name="content" id="b-content">
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -6,7 +6,83 @@
     <title>Business Partners - Join Our Network | YUWA GLOW</title>
     <meta name="description" content="Find YUWA GLOW Super Stockists and Distributors in your area. Learn more about partnership opportunities with our growing beauty brand.">
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <style>
+        .partner-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .partner-filters select,
+        .partner-filters input {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 200px;
+        }
+        .partner-filters select:focus,
+        .partner-filters input:focus {
+            border-color: var(--primary-gold);
+            outline: none;
+        }
+        .partner-category {
+            margin-bottom: 60px;
+        }
+        .partner-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .partner-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .partner-card h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .partner-card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .partner-card p strong {
+            color: #333;
+        }
+        .become-partner-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .loading-state, .error-state, .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+        @media (max-width: 600px) {
+            .partner-category-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -46,53 +122,34 @@
             <div class="partner-filters fade-in">
                 <select id="stateFilter" aria-label="Filter by State">
                     <option value="all">All States</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Delhi">Delhi</option>
                 </select>
                 <input type="text" id="districtFilter" placeholder="Filter by District...">
             </div>
 
             <!-- Super Stockists -->
             <div class="partner-category">
-                <h2 class="section-title fade-in">Super Stockists (State Level)</h2>
-                <div class="partner-grid">
-                    <div class="partner-card fade-in" data-state="Maharashtra" data-district="Mumbai">
-                        <h3>Deccan Beauty Inc.</h3>
-                        <p><strong>Area:</strong> Entire State</p>
-                        <p><strong>State:</strong> Maharashtra</p>
-                    </div>
-                    <div class="partner-card fade-in" data-state="Karnataka" data-district="Bangalore">
-                        <h3>Southern Glow Enterprises</h3>
-                        <p><strong>Area:</strong> Entire State</p>
-                        <p><strong>State:</strong> Karnataka</p>
-                    </div>
-                    <div class="partner-card fade-in" data-state="Delhi" data-district="New Delhi">
-                        <h3>Capital Cosmetics</h3>
-                        <p><strong>Area:</strong> Entire State</p>
-                        <p><strong>State:</strong> Delhi</p>
+                <div class="partner-category-header">
+                    <h2 class="section-title fade-in">Super Stockists (State Level)</h2>
+                    <button class="cta-button become-partner-btn become-stockist-btn">Become a Super Stockist</button>
+                </div>
+                <div class="partner-grid" id="stockistGrid">
+                    <!-- Loaded dynamically -->
+                    <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <div class="loader">Loading partners...</div>
                     </div>
                 </div>
             </div>
 
             <!-- Distributors -->
             <div class="partner-category">
-                <h2 class="section-title fade-in">Distributors (District Level)</h2>
-                <div class="partner-grid">
-                    <div class="partner-card fade-in" data-state="Maharashtra" data-district="Pune">
-                        <h3>Pune Beauty Co.</h3>
-                        <p><strong>Area:</strong> Pune District</p>
-                        <p><strong>State:</strong> Maharashtra</p>
-                    </div>
-                    <div class="partner-card fade-in" data-state="Karnataka" data-district="Mysore">
-                        <h3>Mysore Luxuries</h3>
-                        <p><strong>Area:</strong> Mysore District</p>
-                        <p><strong>State:</strong> Karnataka</p>
-                    </div>
-                    <div class="partner-card fade-in" data-state="Maharashtra" data-district="Nagpur">
-                        <h3>Nagpur Emporium</h3>
-                        <p><strong>Area:</strong> Nagpur District</p>
-                        <p><strong>State:</strong> Maharashtra</p>
+                <div class="partner-category-header">
+                    <h2 class="section-title fade-in">Distributors (District Level)</h2>
+                    <button class="cta-button become-partner-btn become-distributor-btn">Become a Distributor</button>
+                </div>
+                <div class="partner-grid" id="distributorGrid">
+                    <!-- Loaded dynamically -->
+                    <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <div class="loader">Loading partners...</div>
                     </div>
                 </div>
             </div>

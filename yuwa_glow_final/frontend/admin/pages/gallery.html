@@ -33,6 +33,7 @@
             </header>
 
             <section class="admin-section">
+                <div class="search-filter-bar" id="gallery-search"></div>
                 <div class="gallery-admin-grid" id="gallery-list">
                     <!-- Dynamic Cards -->
                 </div>
@@ -44,22 +45,23 @@
     <div class="modal-overlay" id="gallery-modal">
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2>Add Gallery Media</h2>
+                <h2 id="modal-title">Add Gallery Media</h2>
                 <button class="close-modal" onclick="window.GalleryAdmin.closeModal()">&times;</button>
             </div>
             <form id="gallery-form" class="admin-form">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Media Title</label>
-                        <input type="text" name="title" required placeholder="e.g. Summer Collection Shoot">
+                        <input type="text" name="title" id="gallery-title" required placeholder="e.g. Summer Collection Shoot">
                     </div>
                     <div class="form-group">
                         <label>Media Type</label>
                         <div id="gallery-type-dropdown" data-name="type"></div>
                     </div>
-                    
+
                     <div class="form-group" id="image-field">
                         <label>Upload High-Res Image</label>
+                        <div id="existing-gallery-image" class="image-preview-container" style="margin-bottom: 10px;"></div>
                         <div class="file-input-wrapper">
                             <div class="file-input-label">
                                 <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
@@ -77,6 +79,11 @@
                             <input type="url" name="media_url" placeholder="https://www.youtube.com/watch?v=...">
                         </div>
                         <p class="input-hint">Support for YouTube and Vimeo URLs. Paste the browser address bar link.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Visibility Status</label>
+                        <div id="gallery-status-dropdown" data-name="status"></div>
                     </div>
                 </div>
                 <div class="modal-footer">

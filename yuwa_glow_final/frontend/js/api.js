@@ -56,11 +56,15 @@ const API = {
 
     // Public Data
     getProducts: () => apiFetch('/products/active'),
+    getProduct: (id) => apiFetch(`/products/${id}`),
     getCategories: () => apiFetch('/categories/active'),
     getBlogs: () => apiFetch('/blogs/published'),
     getBlog: (slug) => apiFetch(`/blogs/${slug}`),
     getCareers: () => apiFetch('/careers/open'),
+    getCareer: (id) => apiFetch(`/careers/${id}`),
     getGallery: () => apiFetch('/gallery'),
+    getDistributors: () => apiFetch('/distributors'),
+    getStockists: () => apiFetch('/stockists'),
     getDashboardStats: () => apiFetch('/dashboard/stats'),
 
     // Forms
@@ -76,9 +80,12 @@ const API = {
         },
         products: {
             list: () => apiFetch('/products'),
+            get: (id) => apiFetch(`/products/${id}`),
             create: (formData) => apiFetch('/products', { method: 'POST', body: formData }),
             update: (id, formData) => apiFetch(`/products/${id}`, { method: 'POST', body: formData }), // Post with _method spoofing for files
             delete: (id) => apiFetch(`/products/${id}`, { method: 'DELETE' }),
+            deleteVariant: (productId, variantId) => apiFetch(`/products/${productId}/variants/${variantId}`, { method: 'DELETE' }),
+            deleteImage: (productId, imageId) => apiFetch(`/products/${productId}/images/${imageId}`, { method: 'DELETE' }),
         },
         applications: {
             list: () => apiFetch('/applications'),
@@ -90,6 +97,8 @@ const API = {
         },
         enquiries: {
             list: () => apiFetch('/enquiries'),
+            reply: (id, reply) => apiFetch(`/enquiries/${id}/reply`, { method: 'POST', body: JSON.stringify({ reply }) }),
+            updateStatus: (id, status) => apiFetch(`/enquiries/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
             delete: (id) => apiFetch(`/enquiries/${id}`, { method: 'DELETE' }),
         },
         blogs: {
@@ -101,6 +110,7 @@ const API = {
         gallery: {
             list: () => apiFetch('/gallery'),
             create: (formData) => apiFetch('/gallery', { method: 'POST', body: formData }),
+            update: (id, formData) => apiFetch(`/gallery/${id}`, { method: 'POST', body: formData }),
             delete: (id) => apiFetch(`/gallery/${id}`, { method: 'DELETE' }),
         },
         careers: {

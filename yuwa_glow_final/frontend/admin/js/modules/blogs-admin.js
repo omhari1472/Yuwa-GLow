@@ -4,16 +4,73 @@ import UI from '../utils.js';
 
 const BlogsAdminModule = {
     blogs: [],
+    filteredBlogs: [],
+    quillEditor: null,
+    currentPage: 1,
+    perPage: 10,
+
     async init() {
         this.checkAuth();
+        this.initQuillEditor();
         this.initEventListeners();
         await this.loadBlogs();
         this.initStatusDropdown();
+        this.initSearchFilter();
     },
+
+    initSearchFilter() {
+        UI.initSearchFilter('blog-search', {
+            placeholder: 'Search blogs by title...',
+            filters: [
+                {
+                    key: 'status',
+                    label: 'All Status',
+                    options: [
+                        { value: 'draft', text: 'Draft' },
+                        { value: 'published', text: 'Published' }
+                    ]
+                }
+            ],
+            onSearch: (term, filters) => {
+                this.filteredBlogs = UI.filterItems(this.blogs, term, filters, ['title', 'content']);
+                this.currentPage = 1;
+                this.render();
+                UI.updateSearchCount('blog-search', this.filteredBlogs.length, this.blogs.length);
+            }
+        });
+        UI.updateSearchCount('blog-search', this.blogs.length, this.blogs.length);
+    },
+
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
+
+    initQuillEditor() {
+        // Initialize Quill rich text editor
+        this.quillEditor = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Write your story here...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+    },
+
     async loadBlogs() {
+        UI.loading.table('blogs-list', 5, 5);
         const res = await API.admin.blogs.list();
-        if (res.success) { this.blogs = res.data.data || []; this.render(); }
+        if (res.success) {
+            this.blogs = res.data.data || [];
+            this.filteredBlogs = [...this.blogs];
+            this.render();
+        }
     },
 
     initStatusDropdown(selectedValue = 'draft') {
@@ -26,18 +83,26 @@ const BlogsAdminModule = {
     render() {
         const container = document.getElementById('blogs-list');
         if (!container) return;
-        if (this.blogs.length === 0) {
+
+        if (this.filteredBlogs.length === 0) {
             UI.renderEmptyState('blogs-list', {
                 icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M4,5v14h16V5H4M4,3h16c1.1,0 2,0.9 2,2v14c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2V5C2,3.9 2.9,3 4,3z M9,7h6v2H9V7z M9,11h6v2H9V11z M7,15h10v2H7V15z" /></svg>',
-                title: 'No Blog Posts',
-                message: 'Share beauty tips and stories.',
-                btnText: 'Write New Post',
+                title: this.blogs.length === 0 ? 'No Blog Posts' : 'No Matching Posts',
+                message: this.blogs.length === 0 ? 'Share beauty tips and stories.' : 'Try adjusting your search or filters.',
+                btnText: this.blogs.length === 0 ? 'Write New Post' : null,
                 btnId: 'empty-blog-btn'
             });
-            document.getElementById('empty-blog-btn')?.addEventListener('click', () => this.openAddModal());
+            if (this.blogs.length === 0) {
+                document.getElementById('empty-blog-btn')?.addEventListener('click', () => this.openAddModal());
+            }
+            const paginationEl = document.getElementById('blog-pagination');
+            if (paginationEl) paginationEl.innerHTML = '';
             return;
         }
-        container.innerHTML = this.blogs.map(blog => `
+
+        const { data: items, meta } = UI.pagination.paginate(this.filteredBlogs, this.currentPage, this.perPage);
+
+        container.innerHTML = items.map(blog => `
             <tr>
                 <td><img src="${blog.featured_image ? CONFIG.STORAGE_URL + blog.featured_image : '../../assets/images/placeholder.png'}" class="table-thumb"></td>
                 <td><strong>${blog.title}</strong></td>
@@ -49,9 +114,16 @@ const BlogsAdminModule = {
                 </td>
             </tr>
         `).join('');
+
+        UI.pagination.render('blog-pagination', meta, (page) => {
+            this.currentPage = page;
+            this.render();
+        });
     },
+
     initEventListeners() {
         document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());
+
         const imageInput = document.getElementById('blog-image-upload');
         if (imageInput) {
             imageInput.onchange = () => {
@@ -69,32 +141,70 @@ const BlogsAdminModule = {
                 }
             };
         }
+
         document.getElementById('blog-form').onsubmit = async (e) => {
             e.preventDefault();
+
+            // Get content from Quill editor
+            const content = this.quillEditor.root.innerHTML;
+            if (!content || content === '<p><br></p>') {
+                UI.notify('Please add some content to your post', 'error');
+                return;
+            }
+
+            // Set content to hidden input
+            document.getElementById('b-content').value = content;
+
             const formData = new FormData(e.target);
             const id = document.getElementById('blog-id').value;
             if (id) formData.append('_method', 'PATCH');
+
             let res = id ? await API.admin.blogs.update(id, formData) : await API.admin.blogs.create(formData);
-            if (res.success) { UI.modal.close('blog-modal'); this.loadBlogs(); UI.notify('Saved!'); }
-            else { UI.notify(res.message, 'error'); }
+            if (res.success) {
+                UI.modal.close('blog-modal');
+                this.loadBlogs();
+                UI.notify('Saved!');
+            } else {
+                UI.notify(res.message, 'error');
+            }
         };
     },
-    openAddModal() { 
-        document.getElementById('blog-form').reset(); 
-        document.getElementById('blog-id').value = ''; 
-        document.getElementById('blog-image-preview').innerHTML = ''; 
+
+    openAddModal() {
+        document.getElementById('blog-form').reset();
+        document.getElementById('blog-id').value = '';
+        document.getElementById('blog-image-preview').innerHTML = '';
+        document.getElementById('modal-title').textContent = 'Create Editorial';
+        this.quillEditor.setContents([]);
         this.initStatusDropdown('draft');
-        UI.modal.open('blog-modal'); 
+        UI.modal.open('blog-modal');
     },
+
     openEditModal(id) {
         const b = this.blogs.find(x => x.id === id);
         if (!b) return;
         document.getElementById('blog-id').value = b.id;
         document.getElementById('b-title').value = b.title;
-        document.getElementById('b-content').value = b.content;
+        document.getElementById('modal-title').textContent = 'Edit Editorial';
+
+        // Set content in Quill editor
+        this.quillEditor.root.innerHTML = b.content || '';
+
+        // Show existing image if present
+        const preview = document.getElementById('blog-image-preview');
+        if (b.featured_image) {
+            preview.innerHTML = `
+                <p class="text-muted" style="font-size: 11px; margin-bottom: 5px;">Current image:</p>
+                <img src="${CONFIG.STORAGE_URL}${b.featured_image}" class="preview-item" style="max-width: 150px;">
+            `;
+        } else {
+            preview.innerHTML = '';
+        }
+
         this.initStatusDropdown(b.status);
         UI.modal.open('blog-modal');
     },
+
     async delete(id) {
         UI.confirm({
             title: 'Delete post',
@@ -105,7 +215,9 @@ const BlogsAdminModule = {
             }
         });
     },
+
     closeModal() { UI.modal.close('blog-modal'); }
 };
+
 window.BlogAdmin = BlogsAdminModule;
 export default BlogsAdminModule;

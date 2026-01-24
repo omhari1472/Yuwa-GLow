@@ -4,10 +4,47 @@ import UI from '../utils.js';
 
 const ApplicationsAdminModule = {
     apps: [],
+    filteredApps: [],
+    currentPage: 1,
+    perPage: 10,
 
     async init() {
         this.checkAuth();
         await this.loadApplications();
+        this.initSearchFilter();
+    },
+
+    initSearchFilter() {
+        UI.initSearchFilter('application-search', {
+            placeholder: 'Search by name, email, location...',
+            filters: [
+                {
+                    key: 'application_type',
+                    label: 'All Types',
+                    options: [
+                        { value: 'career', text: 'Career' },
+                        { value: 'distributor', text: 'Distributor' },
+                        { value: 'super_stockist', text: 'Super Stockist' }
+                    ]
+                },
+                {
+                    key: 'status',
+                    label: 'All Status',
+                    options: [
+                        { value: 'pending', text: 'Pending' },
+                        { value: 'approved', text: 'Approved' },
+                        { value: 'rejected', text: 'Rejected' }
+                    ]
+                }
+            ],
+            onSearch: (term, filters) => {
+                this.filteredApps = UI.filterItems(this.apps, term, filters, ['name', 'email', 'phone', 'state', 'district']);
+                this.currentPage = 1;
+                this.renderApplications();
+                UI.updateSearchCount('application-search', this.filteredApps.length, this.apps.length);
+            }
+        });
+        UI.updateSearchCount('application-search', this.apps.length, this.apps.length);
     },
 
     checkAuth() {
@@ -17,9 +54,11 @@ const ApplicationsAdminModule = {
     },
 
     async loadApplications() {
+        UI.loading.table('applications-list', 5, 6);
         const res = await API.admin.applications.list();
         if (res.success) {
-            this.apps = res.data.data;
+            this.apps = res.data.data || [];
+            this.filteredApps = [...this.apps];
             this.renderApplications();
         }
     },
@@ -28,16 +67,20 @@ const ApplicationsAdminModule = {
         const container = document.getElementById('applications-list');
         if (!container) return;
 
-        if (this.apps.length === 0) {
+        if (this.filteredApps.length === 0) {
             UI.renderEmptyState('applications-list', {
                 icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12,3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>',
-                title: 'No Pending Applications',
-                message: 'All quiet on the partner front. When new candidates or business partners apply, they will appear here for review.'
+                title: this.apps.length === 0 ? 'No Pending Applications' : 'No Matching Applications',
+                message: this.apps.length === 0 ? 'All quiet on the partner front. When new candidates or business partners apply, they will appear here for review.' : 'Try adjusting your search or filters.'
             });
+            const paginationEl = document.getElementById('application-pagination');
+            if (paginationEl) paginationEl.innerHTML = '';
             return;
         }
 
-        container.innerHTML = this.apps.map(app => `
+        const { data: items, meta } = UI.pagination.paginate(this.filteredApps, this.currentPage, this.perPage);
+
+        container.innerHTML = items.map(app => `
             <tr>
                 <td><span class="badge badge-${app.application_type}">${app.application_type.replace('_', ' ').toUpperCase()}</span></td>
                 <td>
@@ -56,6 +99,11 @@ const ApplicationsAdminModule = {
                 </td>
             </tr>
         `).join('');
+
+        UI.pagination.render('application-pagination', meta, (page) => {
+            this.currentPage = page;
+            this.renderApplications();
+        });
     },
 
     viewDetails(id) {

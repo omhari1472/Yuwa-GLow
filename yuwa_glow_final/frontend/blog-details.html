@@ -3,10 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 5-Step Guide to a Luminous Morning Glow | YUWA GLOW Blog</title>
-    <meta name="description" content="Discover the essential 5 steps to incorporate into your morning skincare routine for skin that looks and feels radiant all day long.">
+    <title>Blog Post | YUWA GLOW</title>
+    <meta name="description" content="Read the latest insights from the YUWA GLOW journal.">
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <style>
+        .blog-category {
+            color: var(--primary-gold);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .loading-state, .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,35 +56,9 @@
     <main class="section-padding">
         <div class="scroll-indicator"></div>
         <article class="blog-post-container fade-in">
-            <header class="post-header">
-                <p class="blog-category">Skincare</p>
-                <h1 class="post-title">The 5-Step Guide to a Luminous Morning Glow</h1>
-                <p class="post-meta">Published on <time datetime="2026-01-22">January 22, 2026</time></p>
-            </header>
-            
-            <div class="featured-image">
-                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2687&auto=format&fit=crop" alt="A woman applying skincare product">
-            </div>
-
-            <div class="post-content">
-                <p>The secret to a lasting, all-day glow isn't just about the makeup you apply; it begins with a foundational morning skincare routine. By dedicating a few minutes each morning, you prepare a perfect canvas for the day ahead. Here is our essential 5-step guide to achieving that coveted luminous look.</p>
-                
-                <h2>Step 1: Gentle Cleansing</h2>
-                <p>Start your day by washing away the oils and impurities that have built up overnight. Opt for a gentle, hydrating cleanser that doesn't strip your skin of its natural moisture. A clean base is crucial for the effective absorption of subsequent products.</p>
-                
-                <h2>Step 2: Tone and Prep</h2>
-                <p>A good toner helps to balance your skin's pH levels and remove any last traces of impurities. Look for alcohol-free formulas with soothing ingredients like rosewater or chamomile. This step preps your skin to drink up the goodness of your serum.</p>
-
-                <h2>Step 3: The Power of a Serum</h2>
-                <p>This is where the magic happens. A targeted serum can address specific skin concerns. For a luminous glow, nothing beats a high-quality Vitamin C serum, like our <strong>Radiant Glow Serum</strong>. It not only brightens the skin but also provides antioxidant protection against environmental stressors.</p>
-
-                <h2>Step 4: Moisturize for Hydration</h2>
-                <p>Lock in the hydration with a suitable moisturizer. Even if you have oily skin, a lightweight, non-comedogenic moisturizer is essential to keep your skin barrier healthy. Hydrated skin is plump, happy skin.</p>
-
-                <h2>Step 5: Sunscreen is Non-Negotiable</h2>
-                <p>The final and most critical step. Sunscreen protects your skin from harmful UV rays, preventing premature aging and sun damage. Choose a broad-spectrum SPF of 30 or higher and make it a daily habit, no matter the weather.</p>
-
-                <p>By consistently following these five steps, you're not just applying products; you're indulging in a ritual that nurtures your skin, leading to a truly authentic and lasting glow.</p>
+            <!-- Content loaded dynamically -->
+            <div class="loading-state" style="text-align: center; padding: 100px 0;">
+                <div class="loader">Loading article...</div>
             </div>
         </article>
     </main>

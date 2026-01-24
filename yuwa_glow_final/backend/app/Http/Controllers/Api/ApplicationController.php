@@ -73,7 +73,8 @@ class ApplicationController extends Controller
 
     public function getApproved(Request $request)
     {
-        $type = $request->query('type');
+        // Type can come from route defaults or query string
+        $type = $request->route('type') ?? $request->query('type');
         if (!in_array($type, ['super_stockist', 'distributor'])) {
             return $this->errorResponse('Invalid application type requested.');
         }
@@ -81,7 +82,7 @@ class ApplicationController extends Controller
         $approved = Application::where('application_type', $type)
             ->where('status', 'approved')
             ->get();
-            
+
         return $this->successResponse($approved);
     }
 }

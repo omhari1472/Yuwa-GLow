@@ -6,10 +6,61 @@
     <title>Careers - Join the YUWA GLOW Team</title>
     <meta name="description" content="Explore exciting career opportunities at YUWA GLOW. We are looking for passionate individuals to join our mission of redefining luxury beauty.">
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/api.js"></script>
-    <script defer src="js/forms.js"></script>
-    <script defer src="js/careers-list.js"></script>
-    <script defer src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <style>
+        .job-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+        .job-info {
+            flex: 1;
+        }
+        .job-title {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .job-location {
+            color: var(--primary-gold);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .job-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .loading-state, .error-state, .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+        @media (max-width: 768px) {
+            .job-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .job-apply {
+                width: 100%;
+            }
+            .job-apply .cta-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -47,40 +98,9 @@
 
         <section class="container section-padding">
             <div class="career-listings">
-                <!-- Job Card 1 -->
-                <div class="job-card fade-in">
-                    <div class="job-info">
-                        <h3 class="job-title">Digital Marketing Manager</h3>
-                        <p class="job-location">Mumbai, India | Full-time</p>
-                        <p class="job-description">We are looking for an experienced digital marketer to lead our online presence, manage campaigns, and drive brand growth across all digital channels.</p>
-                    </div>
-                    <div class="job-apply">
-                        <a href="contact.html?subject=Application%3A%20Digital%20Marketing%20Manager" class="cta-button">Apply Now</a>
-                    </div>
-                </div>
-
-                <!-- Job Card 2 -->
-                <div class="job-card fade-in">
-                    <div class="job-info">
-                        <h3 class="job-title">Lead Product Formulator</h3>
-                        <p class="job-location">Bangalore, India | Full-time</p>
-                        <p class="job-description">A creative and scientific mind to lead our R&D team in developing innovative, high-performance beauty products from natural ingredients.</p>
-                    </div>
-                    <div class="job-apply">
-                        <a href="contact.html?subject=Application%3A%20Lead%20Product%20Formulator" class="cta-button">Apply Now</a>
-                    </div>
-                </div>
-
-                <!-- Job Card 3 -->
-                <div class="job-card fade-in">
-                    <div class="job-info">
-                        <h3 class="job-title">Graphic Designer</h3>
-                        <p class="job-location">Remote | Contract</p>
-                        <p class="job-description">A talented designer with a passion for luxury aesthetics to create stunning visuals for our brand, from packaging to social media content.</p>
-                    </div>
-                    <div class="job-apply">
-                        <a href="contact.html?subject=Application%3A%20Graphic%20Designer" class="cta-button">Apply Now</a>
-                    </div>
+                <!-- Job listings loaded dynamically -->
+                <div class="loading-state" style="text-align: center; padding: 80px 20px;">
+                    <div class="loader">Loading opportunities...</div>
                 </div>
             </div>
         </section>

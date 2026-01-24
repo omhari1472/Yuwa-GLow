@@ -25,11 +25,19 @@ class ProductService
                 'status' => $data['status'] ?? 'active',
             ]);
 
-            // Handle Variants safely
-            if (isset($data['variants']) && is_array($data['variants'])) {
-                foreach ($data['variants'] as $variant) {
+            // Handle Variants - parse JSON if string
+            $variants = $data['variants'] ?? [];
+            if (is_string($variants)) {
+                $variants = json_decode($variants, true) ?? [];
+            }
+            if (is_array($variants)) {
+                foreach ($variants as $variant) {
                     if (!empty($variant['variant_name'])) {
-                        $product->variants()->create($variant);
+                        $product->variants()->create([
+                            'variant_name' => $variant['variant_name'],
+                            'variant_value' => $variant['variant_value'] ?? null,
+                            'price' => $variant['price'] ?? $data['price'],
+                        ]);
                     }
                 }
             }
@@ -69,8 +77,65 @@ class ProductService
                 }
             }
 
+            // Handle variant updates if provided - parse JSON if string
+            $variants = $data['variants'] ?? null;
+            if (is_string($variants)) {
+                $variants = json_decode($variants, true);
+            }
+            if (is_array($variants)) {
+                $this->syncVariants($product, $variants);
+            }
+
             return $product->load(['variants', 'images']);
         });
+    }
+
+    public function syncVariants(Product $product, array $variants)
+    {
+        $existingIds = [];
+
+        foreach ($variants as $variantData) {
+            if (empty($variantData['variant_name'])) continue;
+
+            if (!empty($variantData['id'])) {
+                // Update existing variant
+                $variant = $product->variants()->find($variantData['id']);
+                if ($variant) {
+                    $variant->update([
+                        'variant_name' => $variantData['variant_name'],
+                        'variant_value' => $variantData['variant_value'] ?? null,
+                        'price' => $variantData['price'] ?? $product->price,
+                    ]);
+                    $existingIds[] = $variant->id;
+                }
+            } else {
+                // Create new variant
+                $newVariant = $product->variants()->create([
+                    'variant_name' => $variantData['variant_name'],
+                    'variant_value' => $variantData['variant_value'] ?? null,
+                    'price' => $variantData['price'] ?? $product->price,
+                ]);
+                $existingIds[] = $newVariant->id;
+            }
+        }
+
+        // Delete variants that were removed
+        $product->variants()->whereNotIn('id', $existingIds)->delete();
+    }
+
+    public function deleteVariant(Product $product, int $variantId)
+    {
+        return $product->variants()->where('id', $variantId)->delete();
+    }
+
+    public function deleteImage(Product $product, int $imageId)
+    {
+        $image = $product->images()->find($imageId);
+        if ($image) {
+            $this->fileUpload->delete($image->image_url);
+            return $image->delete();
+        }
+        return false;
     }
 
     public function deleteProduct(Product $product)

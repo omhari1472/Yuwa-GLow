@@ -11,5 +11,12 @@ class ContactEnquiry extends Model
         'email',
         'phone',
         'message',
+        'status',
+        'reply',
+        'replied_at',
+    ];
+
+    protected $casts = [
+        'replied_at' => 'datetime',
     ];
 }

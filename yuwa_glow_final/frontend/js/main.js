@@ -1,23 +1,35 @@
 import ProductsModule from './modules/products.js';
+import ProductDetailsModule from './modules/product-details.js';
 import BlogsModule from './modules/blogs.js';
+import BlogDetailsModule from './modules/blog-details.js';
 import GalleryModule from './modules/gallery.js';
+import CareersModule from './modules/careers.js';
+import PartnersModule from './modules/partners.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('YUWA GLOW Engine Active');
-    
+
     initCommonUI();
-    
+
     const path = window.location.pathname;
-    
+
     // Module Routing
     const initModules = async () => {
         try {
-            if (path.includes('products')) {
+            if (path.includes('product-details')) {
+                await ProductDetailsModule.init();
+            } else if (path.includes('products')) {
                 await ProductsModule.init();
+            } else if (path.includes('blog-details')) {
+                await BlogDetailsModule.init();
             } else if (path.includes('blog')) {
                 await BlogsModule.init();
             } else if (path.includes('gallery')) {
                 await GalleryModule.init();
+            } else if (path.includes('career')) {
+                await CareersModule.init();
+            } else if (path.includes('partners')) {
+                await PartnersModule.init();
             }
         } finally {
             // ALWAYS trigger reveal after modules are done or if they fail

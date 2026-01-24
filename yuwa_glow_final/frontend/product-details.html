@@ -3,10 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radiant Glow Serum - Product Details | YUWA GLOW</title>
-    <meta name="description" content="Detailed information about the YUWA GLOW Radiant Glow Serum, including benefits, ingredients, and how to use.">
+    <title>Product Details | YUWA GLOW</title>
+    <meta name="description" content="View detailed product information from YUWA GLOW's premium skincare collection.">
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <style>
+        .product-category {
+            color: var(--primary-gold);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .product-variants {
+            margin: 25px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+        }
+        .product-variants h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .variant-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .variant-btn {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .variant-btn:hover {
+            border-color: var(--primary-gold);
+        }
+        .variant-btn.active {
+            border-color: var(--primary-gold);
+            background: var(--primary-gold);
+            color: white;
+        }
+        .loading-state, .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,43 +88,9 @@
         <div class="scroll-indicator"></div>
         <div class="container">
             <div class="product-detail-layout">
-                <!-- Product Gallery -->
-                <div class="product-gallery fade-in">
-                    <div class="main-product-image">
-                        <img src="https://images.unsplash.com/photo-1600804810037-083b862b9f8b?q=80&w=2574&auto=format&fit=crop" alt="Radiant Glow Serum Bottle" id="mainImage">
-                    </div>
-                    <div class="thumbnail-images">
-                        <img src="https://images.unsplash.com/photo-1600804810037-083b862b9f8b?q=80&w=2574&auto=format&fit=crop" alt="Serum Thumbnail 1" class="thumbnail active">
-                        <img src="https://images.unsplash.com/photo-1617823992218-5f3ff934950c?q=80&w=2574&auto=format&fit=crop" alt="Serum Thumbnail 2" class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=2592&auto=format&fit=crop" alt="Serum Thumbnail 3" class="thumbnail">
-                    </div>
-                </div>
-
-                <!-- Product Info -->
-                <div class="product-detail-info fade-in" style="animation-delay: 0.2s;">
-                    <h1 class="product-detail-title">Radiant Glow Serum</h1>
-                    <p class="product-detail-price">$45.00</p>
-                    <p class="product-detail-description">Our signature Radiant Glow Serum is a powerhouse of antioxidants and hydration. Formulated with a stable form of Vitamin C and Hyaluronic Acid, it works to brighten your complexion, reduce the appearance of dark spots, and leave your skin feeling plump and luminous.</p>
-                    
-                    <div class="product-benefits">
-                        <h3>Key Benefits</h3>
-                        <ul>
-                            <li>Brightens and evens skin tone</li>
-                            <li>Provides intense hydration</li>
-                            <li>Reduces signs of aging</li>
-                            <li>Boosts skin's natural radiance</li>
-                        </ul>
-                    </div>
-
-                    <div class="product-usage">
-                        <h3>How to Use</h3>
-                        <p>Apply 2-3 drops to clean, dry skin every morning. Gently massage into face and neck. Follow with moisturizer and sunscreen.</p>
-                    </div>
-
-                    <div class="product-cta">
-                        <a href="https://wa.me/1234567890" target="_blank" class="cta-button whatsapp-btn">WhatsApp</a>
-                        <a href="contact.html?product=Radiant%20Glow%20Serum" class="cta-button enquiry-btn">Send Enquiry</a>
-                    </div>
+                <!-- Content loaded dynamically -->
+                <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 100px 0;">
+                    <div class="loader">Loading product details...</div>
                 </div>
             </div>
         </div>

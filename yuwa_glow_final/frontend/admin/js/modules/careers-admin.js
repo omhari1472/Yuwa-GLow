@@ -3,16 +3,48 @@ import UI from '../utils.js';
 
 const CareersAdminModule = {
     careers: [],
+    filteredCareers: [],
+    currentPage: 1,
+    perPage: 10,
     async init() {
         this.checkAuth();
         this.initEventListeners();
         await this.loadCareers();
         this.initStatusDropdown();
+        this.initSearchFilter();
+    },
+
+    initSearchFilter() {
+        UI.initSearchFilter('career-search', {
+            placeholder: 'Search by title, department, location...',
+            filters: [
+                {
+                    key: 'status',
+                    label: 'All Status',
+                    options: [
+                        { value: 'open', text: 'Open' },
+                        { value: 'closed', text: 'Closed' }
+                    ]
+                }
+            ],
+            onSearch: (term, filters) => {
+                this.filteredCareers = UI.filterItems(this.careers, term, filters, ['title', 'department', 'location']);
+                this.currentPage = 1;
+                this.render();
+                UI.updateSearchCount('career-search', this.filteredCareers.length, this.careers.length);
+            }
+        });
+        UI.updateSearchCount('career-search', this.careers.length, this.careers.length);
     },
     checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
     async loadCareers() {
+        UI.loading.table('careers-list', 5, 5);
         const res = await API.admin.careers.list();
-        if (res.success) { this.careers = res.data.data || []; this.render(); }
+        if (res.success) {
+            this.careers = res.data.data || [];
+            this.filteredCareers = [...this.careers];
+            this.render();
+        }
     },
 
     initStatusDropdown(selectedValue = 'open') {
@@ -25,18 +57,26 @@ const CareersAdminModule = {
     render() {
         const container = document.getElementById('careers-list');
         if (!container) return;
-        if (this.careers.length === 0) {
+
+        if (this.filteredCareers.length === 0) {
             UI.renderEmptyState('careers-list', {
                 icon: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>',
-                title: 'No Job Openings',
-                message: 'Grow your team. Post your first opening.',
-                btnText: 'Add Opening',
+                title: this.careers.length === 0 ? 'No Job Openings' : 'No Matching Openings',
+                message: this.careers.length === 0 ? 'Grow your team. Post your first opening.' : 'Try adjusting your search or filters.',
+                btnText: this.careers.length === 0 ? 'Add Opening' : null,
                 btnId: 'empty-career-btn'
             });
-            document.getElementById('empty-career-btn')?.addEventListener('click', () => this.openAddModal());
+            if (this.careers.length === 0) {
+                document.getElementById('empty-career-btn')?.addEventListener('click', () => this.openAddModal());
+            }
+            const paginationEl = document.getElementById('career-pagination');
+            if (paginationEl) paginationEl.innerHTML = '';
             return;
         }
-        container.innerHTML = this.careers.map(c => `
+
+        const { data: items, meta } = UI.pagination.paginate(this.filteredCareers, this.currentPage, this.perPage);
+
+        container.innerHTML = items.map(c => `
             <tr>
                 <td><strong>${c.title}</strong></td>
                 <td>${c.department}</td>
@@ -48,6 +88,11 @@ const CareersAdminModule = {
                 </td>
             </tr>
         `).join('');
+
+        UI.pagination.render('career-pagination', meta, (page) => {
+            this.currentPage = page;
+            this.render();
+        });
     },
     initEventListeners() {
         document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());

@@ -84,4 +84,24 @@ class ProductController extends Controller
             return $this->errorResponse('Failed to delete product.');
         }
     }
+
+    public function deleteVariant(Product $product, $variantId)
+    {
+        try {
+            $this->productService->deleteVariant($product, $variantId);
+            return $this->successResponse([], 'Variant deleted successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse('Failed to delete variant.');
+        }
+    }
+
+    public function deleteImage(Product $product, $imageId)
+    {
+        try {
+            $this->productService->deleteImage($product, $imageId);
+            return $this->successResponse([], 'Image deleted successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse('Failed to delete image.');
+        }
+    }
 }

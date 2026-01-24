@@ -35,6 +35,7 @@
             </header>
 
             <section class="admin-section">
+                <div class="search-filter-bar" id="product-search"></div>
                 <div class="card table-card">
                     <div class="table-container">
                         <table>
@@ -53,6 +54,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="product-pagination"></div>
                 </div>
             </section>
         </main>
@@ -107,7 +109,19 @@
                             </div>
                             <input type="file" name="images[]" multiple accept="image/*" id="image-upload">
                         </div>
+                        <div id="existing-images" class="image-preview-container"></div>
                         <div id="image-preview" class="image-preview-container"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Variants <span class="text-muted">(Optional - for different sizes/options)</span></label>
+                        <div id="variants-container">
+                            <!-- Variant rows will be added here -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="add-variant-btn" style="margin-top: 10px;">
+                            <svg style="width:16px; height:16px; margin-right:5px; vertical-align:middle" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                            Add Variant
+                        </button>
                     </div>
                 </div>
                 <div class="modal-footer">
