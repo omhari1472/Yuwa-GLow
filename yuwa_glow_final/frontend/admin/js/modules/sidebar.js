@@ -70,7 +70,7 @@ const SidebarModule = {
             logoutBtn.onclick = () => {
                 localStorage.removeItem('admin_token');
                 localStorage.removeItem('admin_user');
-                window.location.href = '../login.html';
+                window.location.href = '../index.html';
             };
         }
     }

@@ -59,7 +59,7 @@ const ApplicationsAdminModule = {
 
     checkAuth() {
         if (!localStorage.getItem('admin_token')) {
-            window.location.href = '../login.html';
+            window.location.href = '../index.html';
         }
     },
 

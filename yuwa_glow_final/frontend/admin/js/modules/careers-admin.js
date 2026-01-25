@@ -53,7 +53,7 @@ const CareersAdminModule = {
         });
         UI.updateSearchCount('career-search', this.careers.length, this.careers.length);
     },
-    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
+    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../index.html'; },
     async loadCareers() {
         UI.loading.table('careers-list', 5, 5);
         const res = await API.admin.careers.list();

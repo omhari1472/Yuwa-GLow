@@ -63,7 +63,7 @@ const ProductsAdminModule = {
         UI.updateSearchCount('product-search', this.products.length, this.products.length);
     },
 
-    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
+    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../index.html'; },
 
     async loadProducts() {
         UI.loading.table('product-list', 5, 6);

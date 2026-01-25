@@ -41,7 +41,7 @@ const BlogsAdminModule = {
         UI.updateSearchCount('blog-search', this.blogs.length, this.blogs.length);
     },
 
-    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
+    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../index.html'; },
 
     initQuillEditor() {
         // Initialize Quill rich text editor

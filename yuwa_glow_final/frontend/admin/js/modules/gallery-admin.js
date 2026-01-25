@@ -46,7 +46,7 @@ const GalleryAdminModule = {
         UI.updateSearchCount('gallery-search', this.items.length, this.items.length);
     },
 
-    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../login.html'; },
+    checkAuth() { if (!localStorage.getItem('admin_token')) window.location.href = '../index.html'; },
 
     async loadItems() {
         UI.loading.grid('gallery-list', 6);
