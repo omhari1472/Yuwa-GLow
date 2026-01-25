@@ -20,7 +20,7 @@ class UpdateProductRequest extends FormRequest
             'price' => 'sometimes|numeric|min:0',
             'status' => 'nullable|in:active,inactive',
             'images' => 'nullable|array',
-            'images.*' => 'image|max:5120',
+            'images.*' => 'image|max:20480',
             'variants' => 'nullable',
         ];
     }
@@ -33,7 +33,7 @@ class UpdateProductRequest extends FormRequest
             'price.numeric' => 'Price must be a valid number.',
             'price.min' => 'Price cannot be negative.',
             'images.*.image' => 'Each file must be a valid image.',
-            'images.*.max' => 'Each image cannot exceed 5MB.',
+            'images.*.max' => 'Each image cannot exceed 20MB.',
         ];
     }
 }

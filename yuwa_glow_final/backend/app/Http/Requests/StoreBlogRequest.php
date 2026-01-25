@@ -17,7 +17,7 @@ class StoreBlogRequest extends FormRequest
             'title' => 'required|string|max:200',
             'content' => 'required|string',
             'status' => 'required|in:draft,published',
-            'featured_image' => 'nullable|image|max:2048',
+            'featured_image' => 'nullable|image|max:20480',
         ];
     }
 
@@ -30,7 +30,7 @@ class StoreBlogRequest extends FormRequest
             'status.required' => 'Please select a publishing status.',
             'status.in' => 'Status must be either draft or published.',
             'featured_image.image' => 'Featured image must be a valid image file.',
-            'featured_image.max' => 'Featured image cannot exceed 2MB.',
+            'featured_image.max' => 'Featured image cannot exceed 20MB.',
         ];
     }
 }

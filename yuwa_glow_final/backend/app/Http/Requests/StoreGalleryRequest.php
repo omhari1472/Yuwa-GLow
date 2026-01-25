@@ -17,7 +17,7 @@ class StoreGalleryRequest extends FormRequest
             'title' => 'required|string|max:150',
             'type' => 'required|in:image,video',
             'media_url' => 'required_if:type,video|nullable|url',
-            'image' => 'required_if:type,image|nullable|image|max:5120',
+            'image' => 'required_if:type,image|nullable|image|max:20480',
             'status' => 'nullable|in:draft,published',
         ];
     }
@@ -33,7 +33,7 @@ class StoreGalleryRequest extends FormRequest
             'media_url.url' => 'Please provide a valid video URL.',
             'image.required_if' => 'Image is required for image type.',
             'image.image' => 'File must be a valid image.',
-            'image.max' => 'Image cannot exceed 5MB.',
+            'image.max' => 'Image cannot exceed 20MB.',
             'status.in' => 'Status must be either draft or published.',
         ];
     }
