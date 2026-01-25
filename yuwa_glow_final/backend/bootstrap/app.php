@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
-            'api/*',
+            '*',
         ]);
         
         // Ensure CORS is active
@@ -36,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Render API exceptions as JSON
         $exceptions->render(function (Throwable $e, $request) {
-            if ($request->expectsJson() || $request->is('api/*')) {
+            if ($request->expectsJson()) {
                 $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
 
                 if ($e instanceof \Illuminate\Validation\ValidationException) {
