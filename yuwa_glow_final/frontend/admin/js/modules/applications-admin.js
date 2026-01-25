@@ -7,36 +7,46 @@ const ApplicationsAdminModule = {
     filteredApps: [],
     currentPage: 1,
     perPage: 10,
+    currentType: null,
 
-    async init() {
+    async init(initialType = null) {
+        this.currentType = initialType;
         this.checkAuth();
         await this.loadApplications();
         this.initSearchFilter();
     },
 
     initSearchFilter() {
+        const typeFilter = {
+            key: 'application_type',
+            label: 'All Types',
+            options: [
+                { value: 'career', text: 'Career' },
+                { value: 'distributor', text: 'Distributor' },
+                { value: 'super_stockist', text: 'Super Stockist' }
+            ]
+        };
+
+        const filters = [
+            {
+                key: 'status',
+                label: 'All Status',
+                options: [
+                    { value: 'pending', text: 'Pending' },
+                    { value: 'approved', text: 'Approved' },
+                    { value: 'rejected', text: 'Rejected' }
+                ]
+            }
+        ];
+
+        // Only add type filter if we are on the main 'All Applications' view
+        if (!this.currentType) {
+            filters.unshift(typeFilter);
+        }
+
         UI.initSearchFilter('application-search', {
             placeholder: 'Search by name, email, location...',
-            filters: [
-                {
-                    key: 'application_type',
-                    label: 'All Types',
-                    options: [
-                        { value: 'career', text: 'Career' },
-                        { value: 'distributor', text: 'Distributor' },
-                        { value: 'super_stockist', text: 'Super Stockist' }
-                    ]
-                },
-                {
-                    key: 'status',
-                    label: 'All Status',
-                    options: [
-                        { value: 'pending', text: 'Pending' },
-                        { value: 'approved', text: 'Approved' },
-                        { value: 'rejected', text: 'Rejected' }
-                    ]
-                }
-            ],
+            filters: filters,
             onSearch: (term, filters) => {
                 this.filteredApps = UI.filterItems(this.apps, term, filters, ['name', 'email', 'phone', 'state', 'district']);
                 this.currentPage = 1;
@@ -57,7 +67,16 @@ const ApplicationsAdminModule = {
         UI.loading.table('applications-list', 5, 6);
         const res = await API.admin.applications.list();
         if (res.success) {
-            this.apps = res.data.data || [];
+            let allApps = res.data.data || [];
+            
+            // Filter based on page context
+            if (this.currentType === 'career') {
+                allApps = allApps.filter(a => a.application_type === 'career');
+            } else if (this.currentType === 'partner') {
+                allApps = allApps.filter(a => ['distributor', 'super_stockist'].includes(a.application_type));
+            }
+
+            this.apps = allApps;
             this.filteredApps = [...this.apps];
             this.renderApplications();
         }

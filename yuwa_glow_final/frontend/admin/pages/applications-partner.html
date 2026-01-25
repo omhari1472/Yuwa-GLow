@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Applications | YUVA GLOW Admin</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module">
+        import ApplicationsAdminModule from '../js/modules/applications-admin.js';
+        import SidebarModule from '../js/modules/sidebar.js';
+        
+        SidebarModule.render();
+        // Pass 'partner' type to init to filter
+        ApplicationsAdminModule.init('partner');
+    </script>
+</head>
+<body>
+
+    <div class="admin-grid-container">
+        <!-- Sidebar placeholder -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Partner Applications</h1>
+                    <p class="text-muted">Distributors & Super Stockists</p>
+                </div>
+            </header>
+
+            <section class="admin-section">
+                <div class="search-filter-bar" id="application-search"></div>
+                <div class="card table-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Business Name</th>
+                                    <th>Contact</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-list">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="application-pagination"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div class="modal-overlay" id="app-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="app-modal-title">Application Details</h2>
+                <button class="close-modal" onclick="window.AppsAdmin.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="app-modal-content">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="modal-footer" id="app-modal-footer">
+                <button class="btn btn-secondary" onclick="window.AppsAdmin.closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
