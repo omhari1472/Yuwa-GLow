@@ -34,9 +34,13 @@ const SidebarModule = {
                              <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>
                             <span class="nav-label">Careers</span>
                         </a></li>
-                        <li><a href="applications.html" class="${currentFileName === 'applications.html' ? 'active' : ''}">
+                        <li><a href="applications-career.html" class="${currentFileName === 'applications-career.html' ? 'active' : ''}">
+                             <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L1 9l11 6 9-4.5V12h-2V10l-7 3.5-9-4.5 9-5 9 4.5V9H23V9l-11-6z"/></svg>
+                            <span class="nav-label">Career Apps</span>
+                        </a></li>
+                        <li><a href="applications-partner.html" class="${currentFileName === 'applications-partner.html' ? 'active' : ''}">
                             <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 11c1.49 0 2.87.54 3.94 1.5C23.01 13.57 23.5 15 23.5 16.5A3.5 3.5 0 0120 20H4a3.5 3.5 0 01-3.5-3.5C.5 15 .99 13.57 2.06 12.5S5.51 11 7 11h11M7 9a5 5 0 015-5 5 5 0 015 5v1.28C16.39 10.1 15.74 10 15 10c-2.3 0-4.32 1.05-5.69 2.69C8.36 12.04 7.69 11.55 7 11.28V9z" /></svg>
-                            <span class="nav-label">Applications</span>
+                            <span class="nav-label">Partner Apps</span>
                         </a></li>
                         <li><a href="enquiries.html" class="${currentFileName === 'enquiries.html' ? 'active' : ''}">
                             <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
