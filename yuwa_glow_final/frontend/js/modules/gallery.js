@@ -28,8 +28,8 @@ const GalleryModule = {
         container.innerHTML = items.map(item => `
             <div class="gallery-item fade-in">
                 ${item.type === 'image' 
-                    ? `<img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}" style="width: 100%; height: 300px; object-fit: cover;">`
-                    : `<iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen style="width: 100%; height: 300px;"></iframe>`
+                    ? `<img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}">`
+                    : `<iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen></iframe>`
                 }
                 <div class="gallery-overlay">
                     <p>${item.title}</p>
