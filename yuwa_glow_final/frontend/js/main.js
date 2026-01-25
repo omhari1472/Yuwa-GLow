@@ -7,7 +7,7 @@ import CareersModule from './modules/careers.js';
 import PartnersModule from './modules/partners.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('YUWA GLOW Engine Active');
+    console.log('YUVA GLOW Engine Active');
 
     initCommonUI();
 

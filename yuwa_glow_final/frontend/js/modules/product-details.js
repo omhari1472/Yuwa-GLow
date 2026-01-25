@@ -109,7 +109,7 @@ const ProductDetailsModule = {
 
             <!-- Product Info -->
             <div class="product-detail-info fade-in" style="animation-delay: 0.2s;">
-                <p class="product-category">${product.category?.name || 'YUWA GLOW'}</p>
+                <p class="product-category">${product.category?.name || 'YUVA GLOW'}</p>
                 <h1 class="product-detail-title">${product.name}</h1>
                 <p class="product-detail-price" id="productPrice">$${parseFloat(displayPrice).toFixed(2)}</p>
                 <p class="product-detail-description">${product.description}</p>
@@ -164,7 +164,7 @@ const ProductDetailsModule = {
 
     updatePageMeta() {
         if (this.product) {
-            document.title = `${this.product.name} | YUWA GLOW`;
+            document.title = `${this.product.name} | YUVA GLOW`;
             const metaDesc = document.querySelector('meta[name="description"]');
             if (metaDesc) {
                 metaDesc.content = this.product.description.substring(0, 160);

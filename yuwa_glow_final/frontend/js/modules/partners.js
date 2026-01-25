@@ -182,7 +182,7 @@ const PartnersModule = {
                         </div>
 
                         <div class="form-group">
-                            <label for="partnerMessage">Why do you want to partner with YUWA GLOW?</label>
+                            <label for="partnerMessage">Why do you want to partner with YUVA GLOW?</label>
                             <textarea id="partnerMessage" name="message" rows="3"></textarea>
                         </div>
 

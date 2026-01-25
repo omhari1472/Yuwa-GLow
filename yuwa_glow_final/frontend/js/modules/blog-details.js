@@ -50,7 +50,7 @@ const BlogDetailsModule = {
 
         container.innerHTML = `
             <header class="post-header">
-                <p class="blog-category">${blog.category || 'YUWA GLOW'}</p>
+                <p class="blog-category">${blog.category || 'YUVA GLOW'}</p>
                 <h1 class="post-title">${blog.title}</h1>
                 <p class="post-meta">Published on <time datetime="${isoDate}">${publishedDate}</time></p>
             </header>
@@ -87,7 +87,7 @@ const BlogDetailsModule = {
 
     updatePageMeta() {
         if (this.blog) {
-            document.title = `${this.blog.title} | YUWA GLOW Blog`;
+            document.title = `${this.blog.title} | YUVA GLOW Blog`;
             const metaDesc = document.querySelector('meta[name="description"]');
             if (metaDesc) {
                 // Strip HTML and limit to 160 characters

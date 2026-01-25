@@ -278,7 +278,7 @@ const CareersModule = {
             <div class="empty-state" style="text-align: center; padding: 80px 20px;">
                 <h3>No Open Positions</h3>
                 <p style="color: #666; margin-top: 10px;">We don't have any open positions right now, but check back soon!</p>
-                <p style="margin-top: 20px;">You can also send us your resume at <a href="mailto:careers@yuwaglow.com" style="color: var(--primary-gold);">careers@yuwaglow.com</a></p>
+                <p style="margin-top: 20px;">You can also send us your resume at <a href="mailto:careers@YUVAglow.com" style="color: var(--primary-gold);">careers@YUVAglow.com</a></p>
             </div>
         `;
     },

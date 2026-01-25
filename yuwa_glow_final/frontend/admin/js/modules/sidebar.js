@@ -9,7 +9,7 @@ const SidebarModule = {
             <aside class="sidebar">
                 <header class="sidebar-header">
                     <a href="dashboard.html" class="sidebar-logo">
-                        <img src="../../assets/icons/logo.svg" alt="YUWA GLOW Logo">
+                        <img src="../../assets/icons/logo.svg" alt="YUVA GLOW Logo">
                     </a>
                 </header>
                 <nav class="sidebar-nav">
