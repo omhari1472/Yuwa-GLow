@@ -24,6 +24,6 @@ class AdminUser extends Authenticatable
     ];
 
     protected $casts = [
-        'password' => 'hashed',
+        // 'password' => 'hashed',
     ];
 }

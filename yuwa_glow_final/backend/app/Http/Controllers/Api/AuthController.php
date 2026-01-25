@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         $user = AdminUser::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || $request->password !== $user->password) {
             return $this->errorResponse('The provided credentials are incorrect.', 401);
         }
 
