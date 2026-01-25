@@ -111,7 +111,7 @@ const ProductDetailsModule = {
             <div class="product-detail-info fade-in" style="animation-delay: 0.2s;">
                 <p class="product-category">${product.category?.name || 'YUVA GLOW'}</p>
                 <h1 class="product-detail-title">${product.name}</h1>
-                <p class="product-detail-price" id="productPrice">$${parseFloat(displayPrice).toFixed(2)}</p>
+                <p class="product-detail-price" id="productPrice">₹${parseFloat(displayPrice).toFixed(2)}</p>
                 <p class="product-detail-description">${product.description}</p>
 
                 ${variantsHtml}
@@ -154,7 +154,7 @@ const ProductDetailsModule = {
 
                 const price = btn.dataset.price;
                 if (priceElement && price) {
-                    priceElement.textContent = `$${parseFloat(price).toFixed(2)}`;
+                    priceElement.textContent = `₹${parseFloat(price).toFixed(2)}`;
                 }
 
                 this.selectedVariant = btn.dataset.variantId;

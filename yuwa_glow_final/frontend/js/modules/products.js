@@ -78,15 +78,22 @@ const ProductsModule = {
             ? `${CONFIG.STORAGE_URL}${product.images[0].image_url}` 
             : placeholder;
 
+        const productId = product.id;
+        
+        if (!productId) {
+            console.warn('Product missing ID:', product);
+            return ''; // Skip rendering invalid products
+        }
+
         return `
             <div class="product-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <a href="product-details.html?id=${product.id}" class="product-image-link" style="display: block; height: 350px;">
+                <a href="product-details?id=${productId}" class="product-image-link" style="display: block; height: 350px;">
                     <img src="${imgUrl}" alt="${product.name}" onerror="this.src='${placeholder}'" style="width: 100%; height: 100%; object-fit: cover;">
                 </a>
                 <div class="product-info" style="padding: 20px; text-align: center;">
-                    <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="product-details.html?id=${product.id}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
+                    <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="product-details?id=${productId}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
                     <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">${product.description.substring(0, 80)}...</p>
-                    <p style="color: var(--primary-gold); font-weight: 700; font-size: 20px;">$${product.price}</p>
+                    <p style="color: var(--primary-gold); font-weight: 700; font-size: 20px;">₹${product.price}</p>
                 </div>
             </div>
         `;

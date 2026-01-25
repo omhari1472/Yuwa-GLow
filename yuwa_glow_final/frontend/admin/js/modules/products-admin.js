@@ -7,16 +7,32 @@ const ProductsAdminModule = {
     filteredProducts: [],
     categories: [],
     currentProductId: null,
+    quillEditor: null,
     variantCounter: 0,
     currentPage: 1,
     perPage: 10,
 
     async init() {
         this.checkAuth();
+        this.initQuillEditor();
         this.initEventListeners();
         await Promise.all([this.loadProducts(), this.loadCategories()]);
         this.initStatusDropdown();
         this.initSearchFilter();
+    },
+
+    initQuillEditor() {
+        this.quillEditor = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Describe the product benefits...',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
     },
 
     initSearchFilter() {
@@ -171,6 +187,10 @@ const ProductsAdminModule = {
     },
 
     async handleSubmit(form) {
+        // Sync Quill content to hidden textarea
+        const content = this.quillEditor.root.innerHTML;
+        document.getElementById('p-description').value = (content === '<p><br></p>') ? '' : content;
+
         const submitBtn = form.querySelector('button[type="submit"]');
         UI.loading.button(submitBtn, true);
         const formData = new FormData(form);
@@ -305,6 +325,8 @@ const ProductsAdminModule = {
     openAddModal() {
         document.getElementById('product-form').reset();
         document.getElementById('product-id').value = '';
+        document.getElementById('p-description').value = '';
+        if (this.quillEditor) this.quillEditor.setContents([]);
         document.getElementById('image-preview').innerHTML = '';
         document.getElementById('existing-images').innerHTML = '';
         document.getElementById('variants-container').innerHTML = '';
@@ -326,6 +348,7 @@ const ProductsAdminModule = {
         document.getElementById('p-name').value = p.name;
         document.getElementById('p-price').value = p.price;
         document.getElementById('p-description').value = p.description;
+        if (this.quillEditor) this.quillEditor.root.innerHTML = p.description || '';
         document.getElementById('image-preview').innerHTML = '';
 
         // Show existing images with delete buttons

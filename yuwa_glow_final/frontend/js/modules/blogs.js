@@ -32,9 +32,9 @@ const BlogsModule = {
                 </div>
                 <div class="blog-content" style="padding: 25px;">
                     <p class="blog-date" style="color: var(--primary-gold); font-size: 13px; font-weight: 600;">${new Date(blog.created_at).toLocaleDateString()}</p>
-                    <h2 class="blog-title" style="margin: 10px 0;"><a href="blog-details.html?slug=${blog.slug}" style="color: #3a3a3a; text-decoration: none;">${blog.title}</a></h2>
+                    <h2 class="blog-title" style="margin: 10px 0;"><a href="blog-details?slug=${blog.slug}" style="color: #3a3a3a; text-decoration: none;">${blog.title}</a></h2>
                     <p class="blog-excerpt" style="color: #6b7280; font-size: 14px;">${blog.content.substring(0, 120).replace(/<[^>]*>?/gm, '')}...</p>
-                    <a href="blog-details.html?slug=${blog.slug}" class="read-more" style="display: inline-block; margin-top: 15px; color: var(--primary-gold); font-weight: 600;">Read Full Story</a>
+                    <a href="blog-details?slug=${blog.slug}" class="read-more" style="display: inline-block; margin-top: 15px; color: var(--primary-gold); font-weight: 600;">Read Full Story</a>
                 </div>
             </article>
         `).join('');
