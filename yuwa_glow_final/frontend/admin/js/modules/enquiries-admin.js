@@ -138,11 +138,6 @@ const EnquiriesAdminModule = {
                 </div>
             ` : ''}
 
-            <div class="detail-item" style="margin-top:25px;">
-                <strong>${enq.reply ? 'Update Reply' : 'Write a Reply'}</strong>
-                <textarea id="reply-text" rows="4" placeholder="Type your response to the customer..." style="width: 100%; margin-top: 10px; padding: 12px; border: 1px solid var(--gray-border); border-radius: 8px; font-size: 14px; resize: vertical;">${enq.reply || ''}</textarea>
-            </div>
-
             <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
                 <label style="font-size: 13px; font-weight: 600;">Status:</label>
                 <select id="enq-status" style="padding: 8px 12px; border: 1px solid var(--gray-border); border-radius: 6px;">
@@ -157,7 +152,7 @@ const EnquiriesAdminModule = {
         const footer = document.querySelector('#enq-modal .modal-footer');
         footer.innerHTML = `
             <button class="btn btn-secondary" onclick="window.EnqAdmin.closeModal()">Close</button>
-            <button class="btn btn-primary" onclick="window.EnqAdmin.saveReply()">Save Reply</button>
+            <button class="btn btn-primary" onclick="window.EnqAdmin.saveReply()">Update</button>
         `;
 
         UI.modal.open('enq-modal');

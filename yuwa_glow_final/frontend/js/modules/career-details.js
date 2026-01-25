@@ -237,11 +237,7 @@ const CareerDetailsModule = {
             if (res.success) {
                 this.hideApplicationModal();
                 if (window.notify) {
-                    window.notify('Application submitted successfully!');
-                } else if (window.showModal) {
-                    window.showModal('Application Sent!', 'Your application has been submitted successfully! We will review it and get back to you soon.');
-                } else {
-                    alert('Application submitted successfully!');
+                    window.notify('Application submitted successfully! We will review it and get back to you soon.');
                 }
             } else {
                 throw new Error(res.message || 'Submission failed');
@@ -249,11 +245,7 @@ const CareerDetailsModule = {
         } catch (error) {
             console.error('Application submission error:', error);
             if (window.notify) {
-                window.notify(error.message || 'Failed to submit application.', 'error');
-            } else if (window.showModal) {
-                window.showModal('Submission Failed', error.message || 'Failed to submit application. Please try again.', false);
-            } else {
-                alert('Error: ' + (error.message || 'Failed to submit application.'));
+                window.notify(error.message || 'Failed to submit application. Please try again.', 'error');
             }
         } finally {
             submitBtn.textContent = originalText;

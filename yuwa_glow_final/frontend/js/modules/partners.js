@@ -444,22 +444,14 @@ const PartnersModule = {
             const res = await API.submitApplication(formData);
 
             if (res.success) {
-                if (window.notify) {
-                    window.notify('Application submitted successfully! We will contact you soon.');
-                } else {
-                    alert('Your application has been submitted successfully!');
-                }
+                if (window.notify) window.notify('Application submitted successfully! We will contact you soon.');
                 this.hidePartnerApplicationModal();
             } else {
                 throw new Error(res.message || 'Submission failed');
             }
         } catch (error) {
             console.error('Partner application error:', error);
-            if (window.notify) {
-                window.notify(error.message || 'Failed to submit application.', 'error');
-            } else {
-                alert('Error: ' + (error.message || 'Failed to submit application.'));
-            }
+            if (window.notify) window.notify(error.message || 'Failed to submit application.', 'error');
         } finally {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;

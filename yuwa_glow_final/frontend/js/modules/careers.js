@@ -191,20 +191,16 @@ const CareersModule = {
 
             if (res.success) {
                 this.hideApplicationModal();
-                if (window.showModal) {
-                    window.showModal('Application Sent!', 'Your application has been submitted successfully! We will review it and get back to you soon.');
-                } else {
-                    alert('Application submitted successfully!');
+                if (window.notify) {
+                    window.notify('Application submitted successfully! We will review it and get back to you soon.');
                 }
             } else {
                 throw new Error(res.message || 'Submission failed');
             }
         } catch (error) {
             console.error('Application submission error:', error);
-            if (window.showModal) {
-                window.showModal('Submission Failed', error.message || 'Failed to submit application. Please try again.', false);
-            } else {
-                alert('Error: ' + (error.message || 'Failed to submit application.'));
+            if (window.notify) {
+                window.notify(error.message || 'Failed to submit application. Please try again.', 'error');
             }
         } finally {
             submitBtn.textContent = originalText;
