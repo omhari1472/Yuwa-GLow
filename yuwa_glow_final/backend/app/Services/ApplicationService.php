@@ -20,6 +20,11 @@ class ApplicationService
     public function submitApplication(array $data, $resumeFile = null)
     {
         return DB::transaction(function () use ($data, $resumeFile) {
+            // Check availability for partners
+            if (in_array($data['application_type'], ['super_stockist', 'distributor'])) {
+                $this->checkSlotAvailability($data['application_type'], $data['state'], $data['district'] ?? null);
+            }
+
             if ($resumeFile) {
                 $data['resume_url'] = $this->fileUpload->upload($resumeFile, 'resumes');
             }
@@ -33,9 +38,37 @@ class ApplicationService
      */
     public function updateStatus(Application $application, string $status)
     {
-        // Add any business rules for status changes here
+        if ($status === 'approved' && in_array($application->application_type, ['super_stockist', 'distributor'])) {
+            $this->checkSlotAvailability(
+                $application->application_type,
+                $application->state,
+                $application->district
+            );
+        }
+
         $application->update(['status' => $status]);
         return $application;
+    }
+
+    /**
+     * Check if a partner slot is already occupied by an approved application.
+     */
+    protected function checkSlotAvailability($type, $state, $district = null)
+    {
+        $query = Application::where('status', 'approved')
+            ->where('application_type', $type)
+            ->where('state', $state);
+
+        if ($type === 'distributor') {
+            $query->where('district', $district);
+        }
+
+        if ($query->exists()) {
+            $msg = $type === 'super_stockist' 
+                ? "The Super Stockist slot for {$state} is already taken."
+                : "The Distributor slot for {$district}, {$state} is already taken.";
+            throw new \Exception($msg);
+        }
     }
 
     /**

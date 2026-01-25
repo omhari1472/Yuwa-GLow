@@ -53,9 +53,12 @@ class ApplicationController extends Controller
 
     public function updateStatus(UpdateApplicationStatusRequest $request, Application $application)
     {
-        $updated = $this->applicationService->updateStatus($application, $request->status);
-
-        return $this->successResponse($updated, 'Status updated successfully');
+        try {
+            $updated = $this->applicationService->updateStatus($application, $request->status);
+            return $this->successResponse($updated, 'Status updated successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     public function destroy(Application $application)
@@ -77,5 +80,15 @@ class ApplicationController extends Controller
             ->get();
 
         return $this->successResponse($approved);
+    }
+
+    public function checkAvailability()
+    {
+        $occupied = Application::where('status', 'approved')
+            ->whereIn('application_type', ['super_stockist', 'distributor'])
+            ->select('application_type', 'state', 'district')
+            ->get();
+
+        return $this->successResponse($occupied);
     }
 }

@@ -22,6 +22,7 @@ Route::get('/blogs/{slug}', [BlogController::class, 'show']);
 Route::get('/careers/open', [CareerController::class, 'getOpen']);
 Route::get('/careers/{career}', [CareerController::class, 'show']);
 Route::get('/gallery', [GalleryController::class, 'index']);
+Route::get('/partners/availability', [ApplicationController::class, 'checkAvailability']);
 Route::get('/distributors', [ApplicationController::class, 'getApproved'])->defaults('type', 'distributor');
 Route::get('/stockists', [ApplicationController::class, 'getApproved'])->defaults('type', 'super_stockist');
 

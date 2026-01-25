@@ -65,6 +65,7 @@ const API = {
     getGallery: () => apiFetch('/gallery'),
     getDistributors: () => apiFetch('/distributors'),
     getStockists: () => apiFetch('/stockists'),
+    getPartnerAvailability: () => apiFetch('/partners/availability'),
     getDashboardStats: () => apiFetch('/dashboard/stats'),
 
     // Forms

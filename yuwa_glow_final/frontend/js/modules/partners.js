@@ -1,9 +1,11 @@
 import API from '../api.js';
+import LOCATIONS from '../data/locations.js';
 
 const PartnersModule = {
     stockists: [],
     distributors: [],
     allStates: [],
+    occupiedSlots: { super_stockists: [], distributors: [] },
 
     async init() {
         const stockistGrid = document.querySelector('#stockistGrid');
@@ -15,13 +17,24 @@ const PartnersModule = {
         this.renderLoading(distributorGrid);
 
         try {
-            const [stockistsRes, distributorsRes] = await Promise.all([
+            const [stockistsRes, distributorsRes, availabilityRes] = await Promise.all([
                 API.getStockists(),
-                API.getDistributors()
+                API.getDistributors(),
+                API.getPartnerAvailability()
             ]);
 
             this.stockists = stockistsRes.data?.data || stockistsRes.data || [];
             this.distributors = distributorsRes.data?.data || distributorsRes.data || [];
+            
+            // Process availability data
+            const availabilityData = availabilityRes.data?.data || availabilityRes.data || [];
+            this.occupiedSlots.super_stockists = availabilityData
+                .filter(a => a.application_type === 'super_stockist')
+                .map(a => a.state);
+            
+            this.occupiedSlots.distributors = availabilityData
+                .filter(a => a.application_type === 'distributor')
+                .map(a => `${a.state}|${a.district}`);
 
             // Collect all unique states
             this.allStates = [...new Set([
@@ -140,53 +153,54 @@ const PartnersModule = {
             <div id="partnerApplicationModal" class="modal" style="display: none;">
                 <div class="modal-overlay"></div>
                 <div class="modal-content">
-                    <button class="modal-close">&times;</button>
-                    <h2 id="partnerModalTitle">Become a Partner</h2>
+                    <div class="modal-header">
+                        <h2 id="partnerModalTitle">Become a Partner</h2>
+                        <button class="modal-close">&times;</button>
+                    </div>
                     <form id="partnerApplicationForm">
                         <input type="hidden" name="application_type" id="partnerTypeInput">
 
-                        <div class="form-group">
-                            <label for="partnerName">Full Name *</label>
-                            <input type="text" id="partnerName" name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="partnerCompany">Company/Business Name</label>
-                            <input type="text" id="partnerCompany" name="company_name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="partnerEmail">Email Address *</label>
-                            <input type="email" id="partnerEmail" name="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="partnerPhone">Phone Number *</label>
-                            <input type="tel" id="partnerPhone" name="phone" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="partnerState">State *</label>
-                                <input type="text" id="partnerState" name="state" required>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="partnerName" name="name" required placeholder=" ">
+                                    <label for="partnerName">Full Name *</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="partnerCompany" name="company_name" placeholder=" ">
+                                    <label for="partnerCompany">Firm Name</label>
+                                </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="email" id="partnerEmail" name="email" required placeholder=" ">
+                                    <label for="partnerEmail">Email Address *</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="tel" id="partnerPhone" name="phone" required placeholder=" ">
+                                    <label for="partnerPhone">Phone Number *</label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div id="partnerState" data-name="state"></div>
+                                    <label for="partnerState" style="position:static; pointer-events:auto; margin-bottom:8px">State *</label>
+                                </div>
+                                <div class="form-group">
+                                    <div id="partnerDistrict" data-name="district"></div>
+                                    <label for="partnerDistrict" style="position:static; pointer-events:auto; margin-bottom:8px">District *</label>
+                                </div>
+                            </div>
+
                             <div class="form-group">
-                                <label for="partnerDistrict">District *</label>
-                                <input type="text" id="partnerDistrict" name="district" required>
+                                <textarea id="partnerAddress" name="address" rows="3" placeholder=" "></textarea>
+                                <label for="partnerAddress">Business Address</label>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="partnerAddress">Business Address</label>
-                            <textarea id="partnerAddress" name="address" rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="partnerMessage">Why do you want to partner with YUVA GLOW?</label>
-                            <textarea id="partnerMessage" name="message" rows="3"></textarea>
-                        </div>
-
-                        <div class="form-actions">
+                        <div class="modal-footer">
                             <button type="button" class="btn-secondary" id="cancelPartnerApplication">Cancel</button>
                             <button type="submit" class="cta-button" id="submitPartnerApplication">Submit Application</button>
                         </div>
@@ -197,105 +211,63 @@ const PartnersModule = {
 
         document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-        // Add modal styles if not already present
         if (!document.querySelector('#partnerModalStyles')) {
             const styleEl = document.createElement('style');
             styleEl.id = 'partnerModalStyles';
             styleEl.textContent = `
-                .modal {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+                .modal.active { opacity: 1; visibility: visible; }
+                .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); }
+                .modal-content { position: relative; background: white; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(20px); transition: 0.3s; overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
+                .modal.active .modal-content { transform: translateY(0); }
+                
+                .modal-header { padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fff; flex-shrink: 0; }
+                .modal-header h2 { font-size: 1.5rem; margin: 0; color: #333; font-family: var(--font-primary); }
+                .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; transition: 0.2s; line-height: 1; }
+                .modal-close:hover { color: #333; }
+
+                .modal-body { padding: 30px; overflow-y: auto; flex: 1; }
+                .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+                .form-group { margin-bottom: 25px; position: relative; }
+                .form-group label { position: absolute; top: 14px; left: 16px; font-size: 0.95rem; color: #999; pointer-events: none; transition: all 0.3s; background: white; padding: 0 5px; }
+                .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: 0.2s; outline: none; background: white; }
+                
+                .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary-gold); }
+                .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
+                .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label {
+                    top: -10px; left: 12px; font-size: 0.8rem; color: var(--primary-gold); font-weight: 700;
                 }
-                .modal-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.6);
+
+                /* Premium Dropdown Styles */
+                .premium-dropdown { position: relative; width: 100%; cursor: pointer; user-select: none; }
+                .dropdown-selected {
+                    width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+                    background: white; display: flex; justify-content: space-between; align-items: center;
+                    font-size: 1rem; color: #333; transition: 0.2s; min-height: 48px;
                 }
-                .modal-content {
-                    position: relative;
-                    background: white;
-                    padding: 40px;
-                    border-radius: 15px;
-                    max-width: 550px;
-                    width: 90%;
-                    max-height: 90vh;
-                    overflow-y: auto;
-                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                .premium-dropdown:hover .dropdown-selected { border-color: var(--primary-gold); }
+                .premium-dropdown.active .dropdown-selected { border-color: var(--primary-gold); box-shadow: 0 0 0 4px var(--warm-cream); }
+                .dropdown-selected::after { content: ''; width: 8px; height: 8px; border-right: 2px solid var(--primary-gold); border-bottom: 2px solid var(--primary-gold); transform: rotate(45deg); transition: 0.3s; margin-bottom: 4px; }
+                .premium-dropdown.active .dropdown-selected::after { transform: rotate(-135deg); margin-bottom: -4px; }
+                .dropdown-options {
+                    position: absolute; top: calc(100% + 8px); left: 0; width: 100%; background: white; border-radius: 12px;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; z-index: 1100;
+                    max-height: 250px; overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.2s; list-style: none; padding: 0;
                 }
-                .modal-close {
-                    position: absolute;
-                    top: 15px;
-                    right: 20px;
-                    background: none;
-                    border: none;
-                    font-size: 28px;
-                    cursor: pointer;
-                    color: #666;
-                }
-                .modal h2 {
-                    margin-bottom: 25px;
-                    color: #333;
-                }
-                .form-group {
-                    margin-bottom: 20px;
-                }
-                .form-group label {
-                    display: block;
-                    margin-bottom: 8px;
-                    font-weight: 600;
-                    color: #333;
-                }
-                .form-group input,
-                .form-group textarea,
-                .form-group select {
-                    width: 100%;
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    font-size: 14px;
-                }
-                .form-group input:focus,
-                .form-group textarea:focus {
-                    border-color: var(--primary-gold);
-                    outline: none;
-                }
-                .form-row {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 15px;
-                }
-                .form-actions {
-                    display: flex;
-                    gap: 15px;
-                    margin-top: 25px;
-                }
-                .btn-secondary {
-                    padding: 12px 25px;
-                    background: #f5f5f5;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                }
-                @media (max-width: 480px) {
-                    .form-row {
-                        grid-template-columns: 1fr;
-                    }
-                }
+                .premium-dropdown.active .dropdown-options { opacity: 1; visibility: visible; transform: translateY(0); }
+                .dropdown-option { padding: 12px 16px; font-size: 14px; transition: 0.2s; cursor: pointer; color: #333; }
+                .dropdown-option:hover { background: var(--warm-cream); color: var(--primary-gold); }
+                .dropdown-option.selected { background: #f9fafb; font-weight: 600; color: var(--primary-gold); }
+
+                .modal-footer { padding: 20px 30px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 15px; background: #f9fafb; flex-shrink: 0; }
+                .btn-secondary { padding: 12px 24px; background: white; border: 1.5px solid #e5e7eb; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+                .btn-secondary:hover { border-color: #999; }
+                
+                @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .modal-content { width: 95%; } }
             `;
             document.head.appendChild(styleEl);
         }
 
-        // Bind modal events
         const modal = document.getElementById('partnerApplicationModal');
         const overlay = modal.querySelector('.modal-overlay');
         const closeBtn = modal.querySelector('.modal-close');
@@ -312,23 +284,151 @@ const PartnersModule = {
         });
     },
 
+    initDropdown(containerId, options, onSelect) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        // If container already has structure, just update options
+        if (!container.querySelector('.dropdown-selected')) {
+            container.classList.add('premium-dropdown');
+            container.innerHTML = `
+                <div class="dropdown-selected">Select Option</div>
+                <ul class="dropdown-options"></ul>
+                <input type="hidden" name="${container.dataset.name || ''}" id="${containerId}-input">
+            `;
+
+            const selectedBox = container.querySelector('.dropdown-selected');
+            
+            // Toggle Open
+            selectedBox.onclick = (e) => {
+                e.stopPropagation();
+                const isActive = container.classList.contains('active');
+                document.querySelectorAll('.premium-dropdown').forEach(d => d.classList.remove('active'));
+                if (!isActive) container.classList.add('active');
+            };
+
+            // Close on outside click
+            window.addEventListener('click', () => container.classList.remove('active'));
+        }
+
+        const optionsList = container.querySelector('.dropdown-options');
+        const hiddenInput = container.querySelector('input');
+        const selectedBox = container.querySelector('.dropdown-selected');
+
+        // Update options
+        optionsList.innerHTML = options.map(opt => `
+            <li class="dropdown-option ${opt.selected ? 'selected' : ''}" data-value="${opt.value}">
+                ${opt.text}
+            </li>
+        `).join('');
+
+        // Set initial selected value
+        const initialSelected = options.find(opt => opt.selected);
+        if (initialSelected) {
+            selectedBox.innerText = initialSelected.text;
+            hiddenInput.value = initialSelected.value;
+        } else {
+            selectedBox.innerText = 'Select Option';
+            hiddenInput.value = '';
+        }
+
+        // Bind click events for new options
+        optionsList.querySelectorAll('.dropdown-option').forEach(option => {
+            option.onclick = (e) => {
+                e.stopPropagation();
+                const value = option.dataset.value;
+                const text = option.innerText;
+
+                selectedBox.innerText = text;
+                hiddenInput.value = value;
+                
+                optionsList.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                container.classList.remove('active');
+                
+                if (onSelect) onSelect(value, text);
+            };
+        });
+    },
+
+    updateLocationDropdowns(type) {
+        const allStates = Object.keys(LOCATIONS).sort();
+        const stateOptions = allStates
+            .filter(state => !(type === 'super_stockist' && this.occupiedSlots.super_stockists.includes(state)))
+            .map(state => ({ value: state, text: state }));
+
+        // Initialize State Dropdown
+        this.initDropdown('partnerState', stateOptions, (selectedState) => {
+            this.updateDistrictDropdown(selectedState);
+        });
+
+        // Reset District Dropdown
+        this.initDropdown('partnerDistrict', [{ value: '', text: 'Select State First', selected: true }]);
+    },
+
+    updateDistrictDropdown(selectedState) {
+        const typeInput = document.getElementById('partnerTypeInput');
+        const type = typeInput.value;
+
+        if (!selectedState || !LOCATIONS[selectedState]) {
+            this.initDropdown('partnerDistrict', [{ value: '', text: 'Select State First', selected: true }]);
+            return;
+        }
+
+        const districts = LOCATIONS[selectedState].sort();
+        const districtOptions = districts
+            .filter(district => {
+                if (type === 'distributor') {
+                    const key = `${selectedState}|${district}`;
+                    return !this.occupiedSlots.distributors.includes(key);
+                }
+                return true;
+            })
+            .map(d => ({ value: d, text: d }));
+
+        if (districtOptions.length === 0) {
+             this.initDropdown('partnerDistrict', [{ value: '', text: 'No Available Districts', selected: true }]);
+        } else {
+             this.initDropdown('partnerDistrict', districtOptions);
+        }
+    },
+
     showPartnerApplicationModal(type) {
         const modal = document.getElementById('partnerApplicationModal');
         const title = document.getElementById('partnerModalTitle');
         const typeInput = document.getElementById('partnerTypeInput');
+        const districtGroup = document.getElementById('partnerDistrict').closest('.form-group');
 
         typeInput.value = type;
         title.textContent = type === 'super_stockist'
             ? 'Become a Super Stockist'
             : 'Become a Distributor';
 
+        // Toggle district field visibility
+        if (type === 'super_stockist') {
+            districtGroup.style.display = 'none';
+            document.getElementById('partnerDistrict').disabled = true;
+            document.getElementById('partnerDistrict').required = false;
+        } else {
+            districtGroup.style.display = 'block';
+            document.getElementById('partnerDistrict').required = true;
+        }
+
+        // Update dropdowns based on type and availability
+        this.updateLocationDropdowns(type);
+
         modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('active'), 10);
         document.body.style.overflow = 'hidden';
     },
 
     hidePartnerApplicationModal() {
         const modal = document.getElementById('partnerApplicationModal');
-        modal.style.display = 'none';
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
         document.body.style.overflow = '';
         document.getElementById('partnerApplicationForm').reset();
     },
@@ -344,14 +444,22 @@ const PartnersModule = {
             const res = await API.submitApplication(formData);
 
             if (res.success) {
-                alert('Your application has been submitted successfully! Our team will review it and contact you soon.');
+                if (window.notify) {
+                    window.notify('Application submitted successfully! We will contact you soon.');
+                } else {
+                    alert('Your application has been submitted successfully!');
+                }
                 this.hidePartnerApplicationModal();
             } else {
                 throw new Error(res.message || 'Submission failed');
             }
         } catch (error) {
             console.error('Partner application error:', error);
-            alert('Error: ' + (error.message || 'Failed to submit application. Please try again.'));
+            if (window.notify) {
+                window.notify(error.message || 'Failed to submit application.', 'error');
+            } else {
+                alert('Error: ' + (error.message || 'Failed to submit application.'));
+            }
         } finally {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;

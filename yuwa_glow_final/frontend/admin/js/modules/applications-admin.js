@@ -161,10 +161,17 @@ const ApplicationsAdminModule = {
     },
 
     async updateStatus(id, status) {
-        const res = await API.admin.applications.updateStatus(id, status);
-        if (res.success) {
-            this.closeModal();
-            this.loadApplications();
+        try {
+            const res = await API.admin.applications.updateStatus(id, status);
+            if (res.success) {
+                this.closeModal();
+                this.loadApplications();
+                UI.notify('Status updated successfully');
+            } else {
+                UI.notify(res.message || 'Failed to update status', 'error');
+            }
+        } catch (error) {
+            UI.notify(error.message || 'A system error occurred', 'error');
         }
     },
 
