@@ -4,14 +4,31 @@ import UI from '../utils.js';
 const CareersAdminModule = {
     careers: [],
     filteredCareers: [],
+    quillEditor: null,
     currentPage: 1,
     perPage: 10,
     async init() {
         this.checkAuth();
+        this.initQuillEditor();
         this.initEventListeners();
         await this.loadCareers();
         this.initStatusDropdown();
         this.initSearchFilter();
+    },
+
+    initQuillEditor() {
+        this.quillEditor = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Outline responsibilities...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
     },
 
     initSearchFilter() {
@@ -98,6 +115,15 @@ const CareersAdminModule = {
         document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());
         document.getElementById('career-form').onsubmit = async (e) => {
             e.preventDefault();
+            
+            // Get content from Quill editor
+            const content = this.quillEditor.root.innerHTML;
+            if (!content || content === '<p><br></p>') {
+                UI.notify('Please add a description', 'error');
+                return;
+            }
+            document.getElementById('c-desc').value = content;
+
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             const id = document.getElementById('career-id').value;
@@ -109,6 +135,7 @@ const CareersAdminModule = {
     openAddModal() {
         document.getElementById('career-form').reset();
         document.getElementById('career-id').value = '';
+        this.quillEditor.setContents([]);
         this.initStatusDropdown('open');
         UI.modal.open('career-modal');
     },
@@ -120,6 +147,7 @@ const CareersAdminModule = {
         document.getElementById('c-dept').value = c.department;
         document.getElementById('c-loc').value = c.location;
         document.getElementById('c-desc').value = c.description;
+        this.quillEditor.root.innerHTML = c.description || '';
         this.initStatusDropdown(c.status);
         UI.modal.open('career-modal');
     },

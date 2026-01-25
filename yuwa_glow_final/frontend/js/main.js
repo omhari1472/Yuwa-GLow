@@ -4,6 +4,7 @@ import BlogsModule from './modules/blogs.js';
 import BlogDetailsModule from './modules/blog-details.js';
 import GalleryModule from './modules/gallery.js';
 import CareersModule from './modules/careers.js';
+import CareerDetailsModule from './modules/career-details.js';
 import PartnersModule from './modules/partners.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 await BlogsModule.init();
             } else if (path.includes('gallery')) {
                 await GalleryModule.init();
+            } else if (path.includes('career-details')) {
+                await CareerDetailsModule.init();
             } else if (path.includes('career')) {
                 await CareersModule.init();
             } else if (path.includes('partners')) {

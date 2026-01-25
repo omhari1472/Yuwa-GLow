@@ -153,7 +153,7 @@ const ApplicationsAdminModule = {
             <button class="btn btn-secondary" onclick="window.AppsAdmin.closeModal()">Close</button>
             ${app.status === 'pending' ? `
                 <button class="btn btn-primary" style="background:#ef4444" onclick="window.AppsAdmin.updateStatus(${app.id}, 'rejected')">Reject</button>
-                <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">Approve Partner</button>
+                <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">${app.application_type === 'career' ? 'Approve Candidate' : 'Approve Partner'}</button>
             ` : ''}
         `;
 

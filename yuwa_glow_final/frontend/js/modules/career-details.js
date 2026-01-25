@@ -1,48 +1,94 @@
 import API from '../api.js';
 
-const CareersModule = {
-    careers: [],
-    selectedCareer: null,
+const CareerDetailsModule = {
+    career: null,
 
     async init() {
-        const container = document.querySelector('.career-listings');
+        const container = document.querySelector('.career-post-container');
         if (!container) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const careerId = urlParams.get('id');
+
+        if (!careerId) {
+            this.renderError(container, 'No job specified');
+            return;
+        }
 
         this.renderLoading(container);
 
         try {
-            const res = await API.getCareers();
-            if (res.success) {
-                this.careers = res.data?.data || res.data || [];
-
-                if (this.careers.length === 0) {
-                    this.renderEmpty(container);
-                } else {
-                    this.render(container);
-                }
+            const res = await API.getCareer(careerId);
+            if (res.success && res.data?.data) {
+                this.career = res.data.data;
+                this.render(container);
+                this.updatePageMeta();
+                this.addApplicationModal();
+                this.initApplicationModal();
+            } else {
+                this.renderError(container, 'Job posting not found');
             }
         } catch (error) {
-            console.error('Careers Module Error:', error);
-            this.renderError(container, 'Failed to load job listings');
+            console.error('Career Details Error:', error);
+            this.renderError(container, 'Failed to load job details');
         }
     },
 
     render(container) {
-        container.innerHTML = this.careers.map(career => `
-            <div class="job-card fade-in" data-career-id="${career.id}">
-                <div class="job-info">
-                    <h3 class="job-title">${career.title}</h3>
-                    <p class="job-location">${career.location} | ${career.department}</p>
-                    <p class="job-description">${career.description.substring(0, 200)}${career.description.length > 200 ? '...' : ''}</p>
-                </div>
-                <div class="job-apply">
-                    <a href="career-details?id=${career.id}" class="cta-button view-details-btn">
-                        View Details
-                    </a>
-                </div>
+        const career = this.career;
+        const postedDate = new Date(career.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Convert newlines to paragraphs if description is plain text
+        const formattedDescription = career.description
+            .split('\n\n')
+            .map(p => `<p>${p.trim()}</p>`)
+            .join('');
+
+        container.innerHTML = `
+            <header class="post-header" style="text-align: left; border-bottom: 1px solid #eee; padding-bottom: 30px; margin-bottom: 30px;">
+                <p class="career-meta">${career.department} &bull; ${career.location}</p>
+                <h1 class="post-title" style="margin: 10px 0;">${career.title}</h1>
+                <p class="post-meta" style="color: #666;">Posted on ${postedDate} &bull; ${career.type || 'Full Time'}</p>
+            </header>
+
+            <div class="post-content">
+                <h3 style="margin-top: 0;">Job Description</h3>
+                ${formattedDescription}
+                
+                ${career.requirements ? `
+                    <h3>Requirements</h3>
+                    <p>${career.requirements.replace(/\n/g, '<br>')}</p>
+                ` : ''}
             </div>
-        `).join('');
+
+            <div class="post-footer" style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <a href="career.html" class="back-link" style="color: var(--primary-gold); font-weight: 600; text-decoration: none;">
+                    &larr; Back to Careers
+                </a>
+                <button class="cta-button apply-btn" id="applyButton">Apply for this Position</button>
+            </div>
+        `;
+
+        document.getElementById('applyButton').addEventListener('click', () => {
+            this.showApplicationModal();
+        });
     },
+
+    updatePageMeta() {
+        if (this.career) {
+            document.title = `${this.career.title} at YUVA GLOW`;
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.content = `Apply for the ${this.career.title} position at YUVA GLOW in ${this.career.location}.`;
+            }
+        }
+    },
+
+    // --- Modal Logic (Reused from careers.js) ---
 
     addApplicationModal() {
         if (document.getElementById('applicationModal')) return;
@@ -137,13 +183,13 @@ const CareersModule = {
         const titleSpan = document.getElementById('modalJobTitle');
         const careerIdInput = document.getElementById('careerIdInput');
 
-        if (this.selectedCareer) {
-            titleSpan.textContent = this.selectedCareer.title;
-            careerIdInput.value = this.selectedCareer.id;
+        if (this.career) {
+            titleSpan.textContent = this.career.title;
+            careerIdInput.value = this.career.id;
         }
 
         modal.classList.add('active');
-        modal.style.display = 'flex'; // Ensure flex is set for layout
+        modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     },
 
@@ -151,14 +197,13 @@ const CareersModule = {
         const modal = document.getElementById('applicationModal');
         modal.classList.remove('active');
         setTimeout(() => {
-            modal.style.display = 'none'; // Hide after transition
+            modal.style.display = 'none';
         }, 300);
         document.body.style.overflow = '';
         document.getElementById('careerApplicationForm').reset();
     },
 
     initApplicationModal() {
-        // Wait for modal to be added
         setTimeout(() => {
             const modal = document.getElementById('applicationModal');
             if (!modal) return;
@@ -191,7 +236,9 @@ const CareersModule = {
 
             if (res.success) {
                 this.hideApplicationModal();
-                if (window.showModal) {
+                if (window.notify) {
+                    window.notify('Application submitted successfully!');
+                } else if (window.showModal) {
                     window.showModal('Application Sent!', 'Your application has been submitted successfully! We will review it and get back to you soon.');
                 } else {
                     alert('Application submitted successfully!');
@@ -201,7 +248,9 @@ const CareersModule = {
             }
         } catch (error) {
             console.error('Application submission error:', error);
-            if (window.showModal) {
+            if (window.notify) {
+                window.notify(error.message || 'Failed to submit application.', 'error');
+            } else if (window.showModal) {
                 window.showModal('Submission Failed', error.message || 'Failed to submit application. Please try again.', false);
             } else {
                 alert('Error: ' + (error.message || 'Failed to submit application.'));
@@ -212,32 +261,23 @@ const CareersModule = {
         }
     },
 
-    renderEmpty(container) {
-        container.innerHTML = `
-            <div class="empty-state" style="text-align: center; padding: 80px 20px;">
-                <h3>No Open Positions</h3>
-                <p style="color: #666; margin-top: 10px;">We don't have any open positions right now, but check back soon!</p>
-                <p style="margin-top: 20px;">You can also send us your resume at <a href="mailto:careers@YUVAglow.com" style="color: var(--primary-gold);">careers@YUVAglow.com</a></p>
-            </div>
-        `;
-    },
-
     renderLoading(container) {
         container.innerHTML = `
-            <div class="loading-state" style="text-align: center; padding: 80px 20px;">
-                <div class="loader">Loading opportunities...</div>
+            <div class="loading-state" style="text-align: center; padding: 100px 0;">
+                <div class="loader">Loading job details...</div>
             </div>
         `;
     },
 
     renderError(container, message) {
         container.innerHTML = `
-            <div class="error-state" style="text-align: center; padding: 80px 20px;">
-                <h3>Oops!</h3>
+            <div class="error-state" style="text-align: center; padding: 100px 0;">
+                <h2>Oops!</h2>
                 <p>${message}</p>
+                <a href="career.html" class="cta-button" style="margin-top: 20px;">Browse Careers</a>
             </div>
         `;
     }
 };
 
-export default CareersModule;
+export default CareerDetailsModule;
