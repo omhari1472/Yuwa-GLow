@@ -77,28 +77,181 @@
 
         <div class="scroll-indicator"></div>
 
-        <!-- Added stagger-wrapper to the section -->
-        <section class="featured-categories container section-padding stagger-wrapper">
-            <!-- Title is the first item to appear -->
-            <h2 class="section-title stagger-item">Our Products</h2>
-            
-            <!-- The grid itself doesn't animate, but its children (the cards) do -->
+        <!-- Desktop Categories -->
+        <section class="featured-categories container section-padding fade-in desktop-only">
+            <h2 class="section-title">Our Collections</h2>
             <div class="category-grid">
-                <!-- Hair Card -->
-                <a href="products.html#hair" class="category-card stagger-item">
+                <a href="products.html#hair" class="category-card">
                     <img src="assets/images/hair-feature-product.jpg" alt="Hair care products">
-                    <div class="category-title"><h3>Hair Products</h3></div>
+                    <div class="category-title"><h3>Hair</h3></div>
                 </a>
-                <!-- Skin Card -->
-                <a href="products.html#skin" class="category-card stagger-item">
+                <a href="products.html#skin" class="category-card">
                     <img src="assets/images/body-feature-product.jpg" alt="Skin care products">
-                    <div class="category-title"><h3>Skin Products</h3></div>
+                    <div class="category-title"><h3>Skin</h3></div>
                 </a>
-                <!-- Makeup Card -->
-                <a href="products.html#makeup" class="category-card stagger-item">
+                <a href="products.html#makeup" class="category-card">
                     <img src="assets/images/makeup-feature-product.jpg" alt="Makeup products">
-                    <div class="category-title"><h3>Makeup Products</h3></div>
+                    <div class="category-title"><h3>Makeup</h3></div>
                 </a>
+            </div>
+        </section>
+
+        <!-- Mobile Product Carousel -->
+        <section class="section-padding mobile-only fade-in">
+            <div class="container">
+                <h2 class="section-title">Our Products</h2>
+                <div class="mobile-product-carousel">
+                    <a href="products.html#hair" class="mobile-product-card">
+                        <img src="assets/images/hair-feature-product.jpg" alt="Hair Care">
+                        <div class="mobile-product-overlay">
+                            <h3>Hair Collection</h3>
+                            <p>Revitalize your roots</p>
+                        </div>
+                    </a>
+                    <a href="products.html#skin" class="mobile-product-card">
+                        <img src="assets/images/body-feature-product.jpg" alt="Skin Care">
+                        <div class="mobile-product-overlay">
+                            <h3>Skin Collection</h3>
+                            <p>Glow naturally</p>
+                        </div>
+                    </a>
+                    <a href="products.html#makeup" class="mobile-product-card">
+                        <img src="assets/images/makeup-feature-product.jpg" alt="Makeup">
+                        <div class="mobile-product-overlay">
+                            <h3>Makeup Collection</h3>
+                            <p>Enhance your beauty</p>
+                        </div>
+                    </a>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="products.html" class="cta-button">View All Products</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Gallery -->
+        <section class="section-padding mobile-only fade-in" style="background-color: var(--off-white);">
+            <div class="container">
+                <h2 class="section-title">Gallery</h2>
+                <div class="mobile-gallery-grid">
+                    <div class="mobile-gallery-item"><img src="assets/images/hair-feature-product.jpg" alt="Gallery 1"></div>
+                    <div class="mobile-gallery-item"><img src="assets/images/body-feature-product.jpg" alt="Gallery 2"></div>
+                    <div class="mobile-gallery-item"><img src="assets/images/makeup-feature-product.jpg" alt="Gallery 3"></div>
+                    <div class="mobile-gallery-item"><img src="assets/images/hair-background.png" alt="Gallery 4"></div>
+                </div>
+                <div style="text-align: center;">
+                    <a href="gallery.html" class="read-more-link">View Full Gallery &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Visionary Leadership -->
+        <section class="section-padding mobile-only fade-in">
+            <div class="container">
+                <h2 class="section-title">Visionary Leadership</h2>
+                <div class="leadership-grid">
+                    <!-- Manish Rathod Card -->
+                    <div class="leader-card">
+                        <div class="leader-image">
+                            <img src="assets/images/manish-rathod.png" alt="Manish Rathod">
+                        </div>
+                        <div class="leader-content">
+                            <h3>Manish Rathod</h3>
+                            <span class="leader-role">Managing Director (MD)</span>
+                            <p class="leader-bio">
+                                A journey of resilience and determination. Starting as a delivery boy, Manish grew through the ranks over 20 years in the cosmetics industry.
+                            </p>
+                        </div>
+                    </div>
+        
+                    <!-- Sandeep Singh Card -->
+                    <div class="leader-card">
+                        <div class="leader-image">
+                            <img src="assets/images/sandeep-singh.png" alt="Sandeep Singh">
+                        </div>
+                        <div class="leader-content">
+                            <h3>Sandeep Singh</h3>
+                            <span class="leader-role">MD & Lead Director</span>
+                            <p class="leader-bio">
+                                A versatile leader with 15 years of expertise in Hair Care Products and business consultancy.
+                            </p>
+                        </div>
+                    </div>
+        
+                    <!-- Jayprakash Rathod Card -->
+                    <div class="leader-card">
+                        <div class="leader-image">
+                            <img src="assets/images/jaiprakash-rathod.png" alt="Jaiprakash Rathod">
+                        </div>
+                        <div class="leader-content">
+                            <h3>Jaiprakash Rathod</h3>
+                            <span class="leader-role">Director</span>
+                            <p class="leader-bio">
+                                A strategic visionary committed to scaling the reach of Yuva Glow and ensuring quality standards.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Contact Info -->
+        <section class="section-padding mobile-only fade-in" style="background-color: var(--warm-cream);">
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+                
+                <div class="mobile-contact-grid">
+                    <!-- Address Card -->
+                    <div class="mobile-contact-card">
+                        <div class="mobile-contact-icon">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="mobile-contact-label">Visit Us</h3>
+                        <p class="mobile-contact-value">Chaudhari plaza near hotel dhruv<br>Tonk road sanganer jaipur<br>Pin - 302029</p>
+                    </div>
+
+                    <!-- Email Card -->
+                    <div class="mobile-contact-card">
+                        <div class="mobile-contact-icon">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="mobile-contact-label">Email Us</h3>
+                        <p class="mobile-contact-value">
+                            <a href="mailto:seasilkprofessional@gmail.com">seasilkprofessional@gmail.com</a>
+                        </p>
+                    </div>
+
+                    <!-- Phone Card -->
+                    <div class="mobile-contact-card">
+                        <div class="mobile-contact-icon">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mobile-contact-label">Call Us</h3>
+                        <p class="mobile-contact-value">
+                            <a href="tel:+917300045513">+91 73000 45513</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <a href="contact.html" class="cta-button">Send a Message</a>
+                </div>
+                
+                <!-- Map -->
+                <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); line-height: 0;">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3138.8637265354746!2d75.80021780000001!3d26.8151666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dcbc8f6aca843%3A0x6d68b3c713a4b249!2sChoudhary%20Plaza!5e1!3m2!1sen!2sin!4v1769322000110!5m2!1sen!2sin"
+                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
         </section>
 
