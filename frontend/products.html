@@ -36,10 +36,10 @@
         </div>
     </header>
 
-    <main class="product-grid-container">
+    <main id="main-product-section" class="product-grid-container">
         <!-- Categories Landing View -->
-        <div id="categories-view" class="container section-padding">
-            <h2 class="section-title fade-in">Our Collections</h2>
+        <div id="categories-view" class="container section-padding stagger-wrapper">
+            <h2 class="section-title stagger-item">Our Products</h2>
             <div class="category-grid">
                 <!-- Hair Card -->
                 <a href="#hair" class="category-card stagger-item">
@@ -67,12 +67,16 @@
 
         <!-- Individual Category Products View (Hidden by default) -->
         <div id="products-view" class="container section-padding" style="display: none;">
-            <div class="back-nav" style="margin-bottom: 30px;">
-                <a href="products.html" class="cta-button" style="padding: 10px 20px; font-size: 14px; background: var(--dark-text);">&larr; Back to Categories</a>
-            </div>
             <h2 id="current-category-title" class="section-title fade-in" style="text-align: left; margin-bottom: 40px;">Products</h2>
             <div id="category-products-grid" class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
                 <!-- Products will be injected here -->
+            </div>
+        </div>
+
+        <!-- Single Product Detail View (Hidden by default) -->
+        <div id="product-detail-view" class="container section-padding" style="display: none;">
+            <div id="product-detail-content" class="product-detail-layout fade-in">
+                <!-- Product Details Injected Here -->
             </div>
         </div>
     </main>

@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@yuvaglow.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('password'),
+                'password' => 'admin@123',
             ]
         );
     }

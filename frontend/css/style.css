@@ -101,6 +101,11 @@ body {
     cursor: pointer;
 }
 
+.hair-products-bg {
+    background-image: url('../assets/images/hair-background.png'); /* Corrected filename and path */
+    background-size: cover;
+    background-position: center;
+}
 /* Hero Carousel */
 .hero-carousel {
     position: relative;
