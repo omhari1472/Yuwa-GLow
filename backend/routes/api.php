@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', CategoryController::class);
 
     // Product Management
-    Route::apiResource('products', ProductController::class);
+    Route::apiResource('products', ProductController::class)->except(['show']);
     Route::delete('products/{product}/variants/{variant}', [ProductController::class, 'deleteVariant']);
     Route::delete('products/{product}/images/{image}', [ProductController::class, 'deleteImage']);
 
@@ -52,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('blogs', BlogController::class)->except(['show']);
 
     // Career Management
-    Route::apiResource('careers', CareerController::class);
+    Route::apiResource('careers', CareerController::class)->except(['show']);
 
     // Applications & Enquiries
     Route::get('/applications', [ApplicationController::class, 'index']);
