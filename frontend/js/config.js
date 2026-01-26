@@ -1,5 +1,6 @@
 // Production URLs - change these to your domain
-const IS_PRODUCTION = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+// const IS_PRODUCTION = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const IS_PRODUCTION= false;
 
 const CONFIG = {
     API_BASE_URL: IS_PRODUCTION ? 'https://yuvaglow.com/api' : 'http://127.0.0.1:8000/api',

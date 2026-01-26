@@ -6,7 +6,7 @@
     <title>YUVA GLOW - Premium Beauty & Personal Care</title>
     <meta name="description" content="Discover luxurious hair, skin, and makeup products from YUVA GLOW. Experience the elegance of silk waves and gold accents in our premium beauty collection.">
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </head>
 <body>
 
@@ -35,31 +35,69 @@
 
     <main>
         <!-- Page content will go here -->
-        <section class="hero">
-             <div class="wave-container"></div>
-             <div class="container hero-content">
-                <h1 class="reveal-text">Elegance in Every Drop</h1>
-                <p class="reveal-text" style="animation-delay: 0.5s;">Discover the secret to radiant beauty.</p>
-                <a href="products.html" class="cta-button reveal-text" style="animation-delay: 1s;">Explore Products</a>
+        <section class="hero-carousel">
+             <div class="carousel-slides">
+                <!-- Slide 1 -->
+                <div class="hero-slide active" style="background-image: linear-gradient(rgba(243, 229, 198, 0.4), rgba(255, 255, 255, 0.2)), url('assets/images/hair-feature-product.jpg');">
+                     <!-- <div class="container hero-content">
+                        <h1 class="reveal-text">Elegance in Every Drop</h1>
+                        <p class="reveal-text" style="animation-delay: 0.5s;">Discover the secret to radiant beauty.</p>
+                        <a href="products.html" class="cta-button reveal-text" style="animation-delay: 1s;">Explore Products</a>
+                    </div> -->
+                </div>
+                <!-- Slide 2 -->
+                <div class="hero-slide" style="background-image: linear-gradient(rgba(243, 229, 198, 0.4), rgba(255, 255, 255, 0.2)), url('assets/images/body-feature-product.jpg');">
+                     <!-- <div class="container hero-content">
+                        <h1 class="reveal-text">Nature's Purest Touch</h1>
+                        <p class="reveal-text" style="animation-delay: 0.5s;">Organic ingredients for your skin.</p>
+                        <a href="about.html" class="cta-button reveal-text" style="animation-delay: 1s;">Our Story</a>
+                    </div> -->
+                </div>
+                <!-- Slide 3 -->
+                <div class="hero-slide" style="background-image: linear-gradient(rgba(243, 229, 198, 0.4), rgba(255, 255, 255, 0.2)), url('assets/images/makeup-feature-product.jpg');">
+                     <!-- <div class="container hero-content">
+                        <h1 class="reveal-text">Radiate Confidence</h1>
+                        <p class="reveal-text" style="animation-delay: 0.5s;">Beauty that empowers you.</p>
+                        <a href="gallery.html" class="cta-button reveal-text" style="animation-delay: 1s;">View Gallery</a>
+                    </div> -->
+                </div>
             </div>
+
+            <button class="carousel-prev" aria-label="Previous Slide">&#10094;</button>
+            <button class="carousel-next" aria-label="Next Slide">&#10095;</button>
+
+            <div class="carousel-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+            </div>
+
+            <div class="wave-container"></div>
         </section>
 
         <div class="scroll-indicator"></div>
 
-        <section class="featured-categories container section-padding fade-in">
-            <h2 class="section-title">Our Products</h2>
+        <!-- Added stagger-wrapper to the section -->
+        <section class="featured-categories container section-padding stagger-wrapper">
+            <!-- Title is the first item to appear -->
+            <h2 class="section-title stagger-item">Our Products</h2>
+            
+            <!-- The grid itself doesn't animate, but its children (the cards) do -->
             <div class="category-grid">
-                <a href="products.html#hair" class="category-card">
+                <!-- Hair Card -->
+                <a href="products.html#hair" class="category-card stagger-item">
                     <img src="assets/images/hair-feature-product.jpg" alt="Hair care products">
-                    <div class="category-title"><h3>Hair</h3></div>
+                    <div class="category-title"><h3>Hair Products</h3></div>
                 </a>
-                <a href="products.html#skin" class="category-card">
+                <!-- Skin Card -->
+                <a href="products.html#skin" class="category-card stagger-item">
                     <img src="assets/images/body-feature-product.jpg" alt="Skin care products">
-                    <div class="category-title"><h3>Skin</h3></div>
+                    <div class="category-title"><h3>Skin Products</h3></div>
                 </a>
-                <a href="products.html#makeup" class="category-card">
+                <!-- Makeup Card -->
+                <a href="products.html#makeup" class="category-card stagger-item">
                     <img src="assets/images/makeup-feature-product.jpg" alt="Makeup products">
-                    <div class="category-title"><h3>Makeup</h3></div>
+                    <div class="category-title"><h3>Makeup Products</h3></div>
                 </a>
             </div>
         </section>
