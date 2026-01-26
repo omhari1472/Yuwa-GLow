@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Products - Hair, Skin & Makeup | YUVA GLOW</title>
-    <meta name="description" content="Explore the full range of YUVA GLOW products. From luxurious hair care and rejuvenating skin treatments to elegant makeup essentials.">
+    <meta name="description"
+        content="Explore the full range of YUVA GLOW products. From luxurious hair care and rejuvenating skin treatments to elegant makeup essentials.">
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/main.js"></script>
 </head>
+
 <body>
 
     <header class="main-header">
@@ -34,10 +37,43 @@
     </header>
 
     <main class="product-grid-container">
-        <!-- Content injected by products.js module -->
-        <div class="scroll-indicator"></div>
-        <div class="loader-container container section-padding">
-            <p>Loading the YUVA Glow experience...</p>
+        <!-- Categories Landing View -->
+        <div id="categories-view" class="container section-padding">
+            <h2 class="section-title fade-in">Our Collections</h2>
+            <div class="category-grid">
+                <!-- Hair Card -->
+                <a href="#hair" class="category-card stagger-item">
+                    <img src="assets/images/hair-feature-product.jpg" alt="Hair care products">
+                    <div class="category-title">
+                        <h3>Hair Products</h3>
+                    </div>
+                </a>
+                <!-- Skin Card -->
+                <a href="#skin" class="category-card stagger-item">
+                    <img src="assets/images/body-feature-product.jpg" alt="Skin care products">
+                    <div class="category-title">
+                        <h3>Skin Products</h3>
+                    </div>
+                </a>
+                <!-- Makeup Card -->
+                <a href="#makeup" class="category-card stagger-item">
+                    <img src="assets/images/makeup-feature-product.jpg" alt="Makeup products">
+                    <div class="category-title">
+                        <h3>Makeup Products</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Individual Category Products View (Hidden by default) -->
+        <div id="products-view" class="container section-padding" style="display: none;">
+            <div class="back-nav" style="margin-bottom: 30px;">
+                <a href="products.html" class="cta-button" style="padding: 10px 20px; font-size: 14px; background: var(--dark-text);">&larr; Back to Categories</a>
+            </div>
+            <h2 id="current-category-title" class="section-title fade-in" style="text-align: left; margin-bottom: 40px;">Products</h2>
+            <div id="category-products-grid" class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+                <!-- Products will be injected here -->
+            </div>
         </div>
     </main>
 
@@ -54,4 +90,5 @@
     </footer>
 
 </body>
+
 </html>

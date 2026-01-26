@@ -49,36 +49,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } finally {
             // ALWAYS trigger reveal after modules are done or if they fail
-            startScrollObserver();
+            window.startScrollObserver();
         }
     };
 
     initModules();
 });
 
-function startScrollObserver() {
+window.startScrollObserver = function() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
             }
         });
-    }, { threshold: 0.45 }); // Increased threshold slightly so it triggers when more of the item is in view
+    }, { threshold: 0.15 });
 
     const targets = document.querySelectorAll('.fade-in, .stagger-wrapper');
     targets.forEach(el => observer.observe(el));
 
-    // FORCE REVEAL for elements at the very top (header, hero)
-    // This ensures the user doesn't see a blank screen on load
+    // Force reveal for elements already in viewport
     setTimeout(() => {
         targets.forEach(el => {
             const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
                 el.classList.add('visible');
             }
         });
-    }, 300);
-}
+    }, 100);
+};
 
 function initCommonUI() {
     // Mobile Nav
