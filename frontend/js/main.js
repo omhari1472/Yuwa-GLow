@@ -77,6 +77,7 @@ function initCommonUI() {
             e.stopPropagation();
             navLinks.classList.toggle('open');
             navToggle.classList.toggle('nav-open');
+        };
 
         // Close menu when clicking a link
         navLinks.querySelectorAll('a').forEach(link => {
