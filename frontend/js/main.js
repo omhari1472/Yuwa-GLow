@@ -9,13 +9,9 @@ import PartnersModule from './modules/partners.js';
 import HomeModule from './modules/home.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('YUVA GLOW Engine Active');
-
     initCommonUI();
 
     const path = window.location.pathname;
-
-    console.log('Current path:', path);
 
     // Module Routing
     const initModules = async () => {
@@ -27,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                              path.endsWith('/') ||
                              path.includes('/yuwa_glow_final/'); // Catch-all for dev environment root
 
-            if (isHomePage && !path.includes('admin')) { // Exclude admin if it exists
-                console.log('Detected Home Page');
+            if (isHomePage && !path.includes('admin')) {
                 await HomeModule.init();
             } else if (path.includes('product-details')) {
                 await ProductDetailsModule.init();
@@ -96,37 +91,51 @@ function initCommonUI() {
     // Mobile Nav
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (navToggle && navLinks) {
-        // Remove any existing listeners (not strictly possible without reference, but good practice in frameworks)
-        // Here we just ensure we add it once or replace the logic.
-        
-        navToggle.onclick = (e) => {
-            e.preventDefault(); // Prevent default button behavior
-            e.stopPropagation(); // Stop bubbling
-            console.log('Hamburger clicked'); // Debugging
-            
+        // Toggle menu function
+        const toggleMenu = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             navLinks.classList.toggle('open');
             navToggle.classList.toggle('nav-open');
         };
 
+        // Close menu function
+        const closeMenu = () => {
+            navLinks.classList.remove('open');
+            navToggle.classList.remove('nav-open');
+        };
+
+        // Use addEventListener for better reliability
+        navToggle.addEventListener('click', toggleMenu);
+
+        // Also add touchend for mobile devices that might have issues with click
+        navToggle.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            toggleMenu();
+        }, { passive: false });
+
         // Close menu when clicking a link
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-                navToggle.classList.remove('nav-open');
-            });
+            link.addEventListener('click', closeMenu);
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            // Check if menu is open
             if (navLinks.classList.contains('open')) {
-                // If click is outside navLinks and not on the toggle button
                 if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-                    navLinks.classList.remove('open');
-                    navToggle.classList.remove('nav-open');
+                    closeMenu();
                 }
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                closeMenu();
             }
         });
     }

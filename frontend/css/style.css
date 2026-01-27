@@ -355,18 +355,32 @@ body {
     }
 
     .nav-toggle {
-        display: block;
-        z-index: 1200; /* Must be higher than nav-links to remain clickable */
-        position: relative; /* Ensure z-index applies */
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        z-index: 1200;
+        position: relative;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        padding: 0;
+        margin: 0;
     }
 
     .hamburger {
         display: block;
-        width: 25px;
+        width: 24px;
         height: 2px;
         background: var(--dark-text);
         position: relative;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, background 0.3s ease;
+        pointer-events: none;
     }
 
     .hamburger::before,
@@ -377,25 +391,36 @@ body {
         height: 2px;
         background: var(--dark-text);
         left: 0;
-        transition: transform 0.3s ease, top 0.3s ease, bottom 0.3s ease;
+        transition: transform 0.3s ease, top 0.3s ease, bottom 0.3s ease, background 0.3s ease;
     }
 
     .hamburger::before {
-        top: -8px;
+        top: -7px;
     }
 
     .hamburger::after {
-        bottom: -8px;
+        bottom: -7px;
+    }
+
+    .nav-toggle:active {
+        opacity: 0.7;
+    }
+
+    .nav-toggle:focus {
+        outline: none;
     }
 
     .nav-open .hamburger {
+        background: var(--primary-gold);
         transform: rotate(45deg);
     }
     .nav-open .hamburger::before {
+        background: var(--primary-gold);
         top: 0;
         transform: rotate(90deg);
     }
     .nav-open .hamburger::after {
+        background: var(--primary-gold);
         bottom: 0;
         transform: rotate(90deg);
     }

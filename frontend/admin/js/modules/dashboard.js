@@ -23,14 +23,9 @@ const DashboardModule = {
 
     async loadStats() {
         const res = await API.getDashboardStats();
-        console.log('Raw Dashboard Stats:', res);
 
         if (res.success) {
-            // Laravel wrapper is { success: true, data: { total_products: 1, ... } }
-            // Or it could be double nested if my previous wrapper change affected it
             const stats = res.data.data || res.data || {};
-            console.log('Processed Stats:', stats);
-            
             this.renderStats(stats);
             this.renderRecentEnquiries(stats.recent_enquiries || []);
         } else {

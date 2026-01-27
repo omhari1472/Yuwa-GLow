@@ -1,6 +1,5 @@
 const HomeModule = {
     init: async () => {
-        console.log('Home Module Initialized');
         initHeroCarousel();
     }
 };
