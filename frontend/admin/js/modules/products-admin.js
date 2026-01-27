@@ -268,18 +268,22 @@ const ProductsAdminModule = {
 
         // If this is an existing variant (has ID), delete from server
         if (variantId && this.currentProductId) {
-            const confirmed = confirm('Delete this variant? This cannot be undone.');
-            if (!confirmed) return;
-
-            const res = await API.admin.products.deleteVariant(this.currentProductId, variantId);
-            if (!res.success) {
-                UI.notify('Failed to delete variant', 'error');
-                return;
-            }
-            UI.notify('Variant deleted');
+            UI.confirm({
+                title: 'Delete Variant',
+                message: 'Delete this variant? This cannot be undone.',
+                onConfirm: async () => {
+                    const res = await API.admin.products.deleteVariant(this.currentProductId, variantId);
+                    if (!res.success) {
+                        UI.notify('Failed to delete variant', 'error');
+                        return;
+                    }
+                    UI.notify('Variant deleted');
+                    row.remove();
+                }
+            });
+        } else {
+            row.remove();
         }
-
-        row.remove();
     },
 
     renderExistingImages(images) {
@@ -302,24 +306,27 @@ const ProductsAdminModule = {
     async deleteImage(imageId) {
         if (!this.currentProductId) return;
 
-        const confirmed = confirm('Delete this image? This cannot be undone.');
-        if (!confirmed) return;
-
-        const res = await API.admin.products.deleteImage(this.currentProductId, imageId);
-        if (res.success) {
-            // Reload the product data and re-render existing images
-            const productRes = await API.admin.products.get(this.currentProductId);
-            if (productRes.success) {
-                const product = productRes.data.data;
-                this.renderExistingImages(product.images);
-                // Update local products array
-                const idx = this.products.findIndex(p => p.id === this.currentProductId);
-                if (idx !== -1) this.products[idx] = product;
+        UI.confirm({
+            title: 'Delete Image',
+            message: 'Delete this image? This cannot be undone.',
+            onConfirm: async () => {
+                const res = await API.admin.products.deleteImage(this.currentProductId, imageId);
+                if (res.success) {
+                    // Reload the product data and re-render existing images
+                    const productRes = await API.admin.products.get(this.currentProductId);
+                    if (productRes.success) {
+                        const product = productRes.data.data;
+                        this.renderExistingImages(product.images);
+                        // Update local products array
+                        const idx = this.products.findIndex(p => p.id === this.currentProductId);
+                        if (idx !== -1) this.products[idx] = product;
+                    }
+                    UI.notify('Image deleted');
+                } else {
+                    UI.notify('Failed to delete image', 'error');
+                }
             }
-            UI.notify('Image deleted');
-        } else {
-            UI.notify('Failed to delete image', 'error');
-        }
+        });
     },
 
     openAddModal() {

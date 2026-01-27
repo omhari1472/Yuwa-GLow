@@ -195,22 +195,24 @@ const ApplicationsAdminModule = {
     },
 
     async revokePartner(id) {
-        if (!confirm('Are you sure you want to revoke this partnership? The slot will become available for new applications.')) {
-            return;
-        }
-
-        try {
-            const res = await API.admin.applications.updateStatus(id, 'rejected');
-            if (res.success) {
-                this.closeModal();
-                this.loadApplications();
-                UI.notify('Partnership revoked successfully');
-            } else {
-                UI.notify(res.message || 'Failed to revoke partnership', 'error');
+        UI.confirm({
+            title: 'Revoke Partnership',
+            message: 'Are you sure you want to revoke this partnership? The slot will become available for new applications.',
+            onConfirm: async () => {
+                try {
+                    const res = await API.admin.applications.updateStatus(id, 'rejected');
+                    if (res.success) {
+                        this.closeModal();
+                        this.loadApplications();
+                        UI.notify('Partnership revoked successfully');
+                    } else {
+                        UI.notify(res.message || 'Failed to revoke partnership', 'error');
+                    }
+                } catch (error) {
+                    UI.notify(error.message || 'A system error occurred', 'error');
+                }
             }
-        } catch (error) {
-            UI.notify(error.message || 'A system error occurred', 'error');
-        }
+        });
     },
 
     async updateStatus(id, status) {

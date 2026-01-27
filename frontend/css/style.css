@@ -905,10 +905,15 @@ body {
     align-items: flex-start;
 }
 
+.product-gallery {
+    position: sticky;
+    top: 100px;
+}
+
 .main-product-image img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     border: 1px solid #eee;
     transition: opacity 0.3s ease-in-out;
@@ -924,7 +929,7 @@ body {
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
     transition: border-color 0.3s ease, transform 0.3s ease;
@@ -938,65 +943,209 @@ body {
     border-color: var(--primary-gold);
 }
 
+/* Product Category Badge */
+.product-category {
+    color: var(--primary-gold);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: inline-block;
+    background: rgba(195, 134, 54, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* Glossy Card for Product Info */
+.product-detail-info {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
 .product-detail-title {
     font-family: var(--font-primary);
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 400;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    color: var(--dark-text);
 }
 
 .product-detail-price {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: var(--primary-gold);
     margin-bottom: 20px;
 }
 
 .product-detail-description {
-    line-height: 1.7;
-    margin-bottom: 30px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    color: #555;
+    background: rgba(243, 229, 198, 0.8);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-gold);
 }
 
+/* Product Variants - Below Image */
+.product-variants {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 1px solid rgba(195, 134, 54, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.product-variants h3 {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-text);
+}
+
+.variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.variant-btn {
+    padding: 12px 24px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.variant-btn:hover {
+    border-color: var(--primary-gold);
+    background: rgba(195, 134, 54, 0.05);
+}
+
+.variant-btn.active {
+    border-color: var(--primary-gold);
+    background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
+    color: white;
+    box-shadow: 0 4px 15px rgba(195, 134, 54, 0.3);
+}
+
+/* Benefits & Usage Sections */
 .product-benefits, .product-usage {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 12px;
 }
 
 .product-benefits h3, .product-usage h3 {
     font-family: var(--font-primary);
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--warm-cream);
-    padding-bottom: 5px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-benefits h3::before {
+    content: '✨';
+}
+
+.product-usage h3::before {
+    content: '📋';
 }
 
 .product-benefits ul {
-    list-style-position: inside;
-    padding-left: 5px;
+    list-style: none;
+    padding-left: 0;
 }
 
 .product-benefits li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.product-benefits li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-gold);
+    font-weight: bold;
+}
+
+.product-usage p {
+    line-height: 1.8;
+    color: #555;
 }
 
 .product-cta {
     display: flex;
     gap: 15px;
     margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.product-cta .cta-button {
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+}
+
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+}
+
+.whatsapp-btn:hover {
+    background: linear-gradient(135deg, #20bd5a, #0e7a6d);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
 }
 
 .enquiry-btn {
-    background-color: var(--dark-text);
+    background: linear-gradient(135deg, var(--dark-text), #1a1a1a);
 }
 
 .enquiry-btn:hover {
-    background-color: #000;
+    background: linear-gradient(135deg, #1a1a1a, #000);
 }
 
 /* --- Responsive for Product Details --- */
 @media (max-width: 992px) {
     .product-detail-layout {
         grid-template-columns: 1fr;
+    }
+
+    .product-gallery {
+        position: static;
+    }
+
+    .product-detail-info {
+        padding: 25px;
+    }
+
+    .product-detail-title {
+        font-size: 2rem;
+    }
+
+    .product-detail-price {
+        font-size: 1.6rem;
+    }
+
+    .product-cta .cta-button {
+        flex: 1 1 100%;
     }
 }
 
