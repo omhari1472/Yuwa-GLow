@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.success) {
                     localStorage.setItem('admin_token', result.data.access_token);
                     localStorage.setItem('admin_user', JSON.stringify(result.data.user));
-                    window.location.href = 'pages/dashboard.html';
+                    window.location.href = '/admin/pages/dashboard.html';
                 } else {
                     showToast(result.message || 'Login failed', 'error');
                 }
