@@ -33,6 +33,7 @@ Route::post('/apply', [ApplicationController::class, 'store']);
 // Protected Admin Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 

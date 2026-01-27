@@ -45,4 +45,25 @@ class AuthController extends Controller
     {
         return $this->successResponse($request->user());
     }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        // Plain text comparison as per user request
+        if ($request->current_password !== $user->password) {
+            return $this->errorResponse('Current password does not match', 400);
+        }
+
+        // Store plain text as per user request
+        $user->password = $request->new_password;
+        $user->save();
+
+        return $this->successResponse([], 'Password updated successfully');
+    }
 }

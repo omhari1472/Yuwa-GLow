@@ -53,6 +53,7 @@ const API = {
     login: (credentials) => apiFetch('/login', { method: 'POST', body: JSON.stringify(credentials) }),
     logout: () => apiFetch('/logout', { method: 'POST' }),
     getMe: () => apiFetch('/me'),
+    changePassword: (data) => apiFetch('/change-password', { method: 'POST', body: JSON.stringify(data) }),
 
     // Public Data
     getProducts: () => apiFetch('/products/active'),
