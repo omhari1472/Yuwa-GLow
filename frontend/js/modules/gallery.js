@@ -3,20 +3,51 @@ import CONFIG from '../config.js';
 
 const GalleryModule = {
     async init() {
-        const galleryGrid = document.querySelector('.gallery-grid');
-        if (!galleryGrid) return;
+        const imagesGrid = document.getElementById('gallery-images');
+        const videosGrid = document.getElementById('gallery-videos');
+        const imagesSection = document.getElementById('gallery-images-section');
+        const videosSection = document.getElementById('gallery-videos-section');
 
-        this.renderLoading(galleryGrid);
+        if (!imagesGrid && !videosGrid) return;
+
+        // Show loading state
+        if (imagesGrid) this.renderLoading(imagesGrid);
+        if (videosGrid) this.renderLoading(videosGrid);
 
         try {
             const res = await API.getGallery();
             if (res.success) {
                 const items = res.data?.data || res.data || [];
-                
-                if (items.length === 0) {
-                    this.renderEmpty(galleryGrid);
-                } else {
-                    this.render(galleryGrid, items);
+
+                // Separate images and videos
+                const images = items.filter(item => item.type === 'image');
+                const videos = items.filter(item => item.type === 'video');
+
+                // Render images
+                if (imagesGrid) {
+                    if (images.length > 0) {
+                        this.renderImages(imagesGrid, images);
+                    } else {
+                        this.renderEmpty(imagesGrid, 'No images yet');
+                        if (imagesSection) imagesSection.style.display = 'none';
+                    }
+                }
+
+                // Render videos
+                if (videosGrid) {
+                    if (videos.length > 0) {
+                        this.renderVideos(videosGrid, videos);
+                    } else {
+                        this.renderEmpty(videosGrid, 'No videos yet');
+                        if (videosSection) videosSection.style.display = 'none';
+                    }
+                }
+
+                // Hide both sections if no content
+                if (images.length === 0 && videos.length === 0) {
+                    if (imagesSection) imagesSection.style.display = 'block';
+                    if (imagesGrid) this.renderEmpty(imagesGrid, 'Our gallery is being updated. Check back soon!');
+                    if (videosSection) videosSection.style.display = 'none';
                 }
             }
         } catch (error) {
@@ -24,13 +55,21 @@ const GalleryModule = {
         }
     },
 
-    render(container, items) {
-        container.innerHTML = items.map(item => `
+    renderImages(container, images) {
+        container.innerHTML = images.map(item => `
             <div class="gallery-item fade-in">
-                ${item.type === 'image'
-                    ? `<img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}" loading="lazy">`
-                    : `<iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen loading="lazy"></iframe>`
-                }
+                <img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}" loading="lazy">
+                <div class="gallery-overlay">
+                    <p>${item.title}</p>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    renderVideos(container, videos) {
+        container.innerHTML = videos.map(item => `
+            <div class="gallery-item gallery-video-item fade-in">
+                <iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen loading="lazy"></iframe>
                 <div class="gallery-overlay">
                     <p>${item.title}</p>
                 </div>
@@ -40,15 +79,22 @@ const GalleryModule = {
 
     formatEmbedUrl(url) {
         if (url.includes('youtube.com/watch?v=')) return url.replace('watch?v=', 'embed/');
+        if (url.includes('youtu.be/')) {
+            const videoId = url.split('youtu.be/')[1].split('?')[0];
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
         return url;
     },
 
-    renderEmpty(container) {
-        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 100px 0;"><h3>Our Gallery is being updated</h3></div>`;
+    renderEmpty(container, message) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <p style="color: #666; font-size: 16px;">${message}</p>
+            </div>
+        `;
     },
 
     renderLoading(container) {
-        // Show skeleton loaders
         const skeletons = Array(6).fill(`
             <div class="gallery-item skeleton" style="padding-bottom: 100%; position: relative; border-radius: 12px;"></div>
         `).join('');

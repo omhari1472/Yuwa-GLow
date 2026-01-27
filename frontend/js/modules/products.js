@@ -268,10 +268,12 @@ const ProductsModule = {
         `;
 
         // Ensure Layout is correct
+        const isMobile = window.innerWidth <= 768;
         container.style.display = 'grid';
-        container.style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : '1fr 1fr';
-        container.style.gap = '50px';
+        container.style.gridTemplateColumns = isMobile ? '1fr' : '1fr 1fr';
+        container.style.gap = isMobile ? '25px' : '50px';
         container.style.alignItems = 'start';
+        container.style.padding = isMobile ? '0 15px' : '0';
 
         // Initialize thumbnail clicks
         this.initThumbnailClicks();

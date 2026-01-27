@@ -435,11 +435,13 @@ body {
 
     .category-grid {
         grid-template-columns: 1fr;
+        padding: 0 15px;
     }
 
     .highlights-grid {
         grid-template-columns: 1fr;
         gap: 40px;
+        padding: 0 15px;
     }
 }
 
@@ -652,14 +654,16 @@ body {
     .section-title {
         font-size: 2rem;
     }
-    
+
     .category-grid {
         grid-template-columns: 1fr;
+        padding: 0 15px;
     }
 
     .highlights-grid {
         grid-template-columns: 1fr;
         gap: 40px;
+        padding: 0 15px;
     }
 }
 
@@ -1149,6 +1153,35 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    .product-detail-layout {
+        padding: 0 15px;
+        gap: 30px;
+    }
+
+    .product-detail-info {
+        padding: 20px;
+    }
+
+    .product-detail-title {
+        font-size: 1.6rem;
+    }
+
+    .product-detail-description {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .product-variants {
+        padding: 15px;
+    }
+
+    .variant-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+}
+
 /* --- ========================= --- */
 /* --- PARTNERS PAGE STYLES --- */
 /* --- ========================= --- */
@@ -1340,6 +1373,36 @@ body {
 
 .gallery-item:hover .gallery-overlay {
     opacity: 1;
+}
+
+/* Videos Grid - 16:9 aspect ratio */
+.gallery-videos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.gallery-video-item {
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-video-item iframe {
+    border-radius: 15px;
+}
+
+#gallery-videos-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 60px 0;
+    margin-top: 0;
+}
+
+#gallery-videos-section .section-title {
+    color: #fff;
+}
+
+#gallery-videos-section .gallery-grid {
+    padding: 20px;
 }
 
 .gallery-overlay p {
