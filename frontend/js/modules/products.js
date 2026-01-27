@@ -45,12 +45,15 @@ const ProductsModule = {
         productsView.style.display = 'none';
         detailView.style.display = 'none';
 
+        // Reset background classes
+        mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg');
+
         if (hash === 'hair') {
-            // Apply hair products background
             mainElement.classList.add('hair-products-bg');
-        } else {
-            // Remove background for other views
-            mainElement.classList.remove('hair-products-bg');
+        } else if (hash === 'skin') {
+            mainElement.classList.add('skin-products-bg');
+        } else if (hash === 'makeup') {
+            mainElement.classList.add('makeup-products-bg');
         }
 
         if (hash === 'hair') {
@@ -60,12 +63,12 @@ const ProductsModule = {
             this.renderCategoryProducts(this.currentCategory);
             window.scrollTo(0, 0);
         } else if (hash.startsWith('product/')) {
-            // Product Detail: #product/slug
-            const slug = hash.split('/')[1];
+            // Product Detail: #product/ID
+            const productId = hash.split('/')[1];
             detailView.style.display = 'block';
-            this.renderProductDetail(slug);
+            this.renderProductDetail(productId);
             window.scrollTo(0, 0);
-        } else if (['skin', 'makeup'].includes(hash.toLowerCase())) {
+        } else if (['hair', 'skin', 'makeup'].includes(hash.toLowerCase())) {
             // Category List: #skin, #makeup
             this.currentCategory = hash.toLowerCase();
             productsView.style.display = 'block';
@@ -95,7 +98,7 @@ const ProductsModule = {
         
         if (!titleEl || !gridEl) return;
 
-        if (categoryName === 'hair') {
+        if (['hair', 'skin', 'makeup'].includes(categoryName)) {
             titleEl.style.display = 'none';
         } else {
             titleEl.style.display = 'block';
@@ -131,16 +134,15 @@ const ProductsModule = {
             ? `${CONFIG.STORAGE_URL}${product.images[0].image_url}` 
             : placeholder;
 
-        // Create slug from name
-        const slug = this.toSlug(product.name);
+        const productId = product.id;
 
         return `
             <div class="product-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <a href="#product/${slug}" class="product-image-link" style="display: block; height: 350px;">
+                <a href="#product/${productId}" class="product-image-link" style="display: block; height: 350px;">
                     <img src="${imgUrl}" alt="${product.name}" onerror="this.src='${placeholder}'" style="width: 100%; height: 100%; object-fit: cover;">
                 </a>
                 <div class="product-info" style="padding: 20px; text-align: center;">
-                    <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="#product/${slug}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
+                    <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="#product/${productId}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
                     <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">${product.description ? (product.description.replace(/<[^>]*>/g, '').substring(0, 80)) : ''}...</p>
                     <p style="color: var(--primary-gold); font-weight: 700; font-size: 20px;">₹${product.price}</p>
                 </div>
@@ -148,16 +150,32 @@ const ProductsModule = {
         `;
     },
 
-    renderProductDetail(slug) {
+    renderProductDetail(id) {
         const container = document.getElementById('product-detail-content');
+        const mainElement = document.getElementById('main-product-section');
         if (!container) return;
 
-        // Find product by slug (approximate by name)
-        const product = this.products.find(p => this.toSlug(p.name) === slug);
+        // Find product by ID
+        const product = this.products.find(p => String(p.id) === String(id));
 
         if (!product) {
             container.innerHTML = `<div class="text-center"><h2>Product Not Found</h2><p>The product you are looking for does not exist.</p></div>`;
             return;
+        }
+
+        // Apply background based on category
+        if (mainElement) {
+            mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg');
+            // Assuming category_id maps to 1:Hair, 2:Skin, 3:Makeup or checking category object if populated
+            // Since we don't have direct mapping logic visible, we try to match category name or ID
+            // Best effort: Check if product.category exists or filter categories list
+            const category = this.categories.find(c => c.id == product.category_id);
+            if (category) {
+                const catName = category.name.toLowerCase();
+                if (catName.includes('hair')) mainElement.classList.add('hair-products-bg');
+                else if (catName.includes('skin')) mainElement.classList.add('skin-products-bg');
+                else if (catName.includes('makeup')) mainElement.classList.add('makeup-products-bg');
+            }
         }
 
         const placeholder = 'assets/images/placeholder.png';
