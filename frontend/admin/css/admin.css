@@ -122,6 +122,28 @@ tr:hover { background-color: #fcfcfc; }
 .modal-overlay.active .modal-content { transform: translateY(0); }
 .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--gray-border); display: flex; justify-content: space-between; align-items: center; background: white; }
 .modal-header h2 { font-size: 20px; font-weight: 700; color: var(--dark-text); letter-spacing: -0.5px; }
+
+/* Close Button */
+.close-modal {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+.close-modal:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    transform: rotate(90deg);
+}
 .modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
 .modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-border); display: flex; justify-content: flex-end; gap: 12px; background: #f9fafb; }
 

@@ -27,9 +27,9 @@ const GalleryModule = {
     render(container, items) {
         container.innerHTML = items.map(item => `
             <div class="gallery-item fade-in">
-                ${item.type === 'image' 
-                    ? `<img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}">`
-                    : `<iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen></iframe>`
+                ${item.type === 'image'
+                    ? `<img src="${CONFIG.STORAGE_URL}${item.media_url}" alt="${item.title}" loading="lazy">`
+                    : `<iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen loading="lazy"></iframe>`
                 }
                 <div class="gallery-overlay">
                     <p>${item.title}</p>
@@ -48,7 +48,11 @@ const GalleryModule = {
     },
 
     renderLoading(container) {
-        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 100px 0;"><div class="loader">Loading Gallery...</div></div>`;
+        // Show skeleton loaders
+        const skeletons = Array(6).fill(`
+            <div class="gallery-item skeleton" style="padding-bottom: 100%; position: relative; border-radius: 12px;"></div>
+        `).join('');
+        container.innerHTML = skeletons;
     }
 };
 

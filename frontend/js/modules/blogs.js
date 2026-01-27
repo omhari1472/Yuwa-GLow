@@ -27,8 +27,8 @@ const BlogsModule = {
     renderList(container, blogs) {
         container.innerHTML = blogs.map(blog => `
             <article class="blog-card fade-in">
-                <div class="blog-image" style="height: 250px; overflow: hidden;">
-                    <img src="${blog.featured_image ? CONFIG.STORAGE_URL + blog.featured_image : 'assets/images/placeholder.png'}" alt="${blog.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="blog-image" style="height: 250px; overflow: hidden; background: #f5f5f5;">
+                    <img src="${blog.featured_image ? CONFIG.STORAGE_URL + blog.featured_image : 'assets/images/placeholder.png'}" alt="${blog.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div class="blog-content" style="padding: 25px;">
                     <p class="blog-date" style="color: var(--primary-gold); font-size: 13px; font-weight: 600;">${new Date(blog.created_at).toLocaleDateString()}</p>
@@ -45,7 +45,19 @@ const BlogsModule = {
     },
 
     renderLoading(container) {
-        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 100px 0;"><div class="loader">Loading Journal...</div></div>`;
+        // Show skeleton loaders
+        const skeletons = Array(3).fill(`
+            <article class="blog-card skeleton-card" style="background: white; border-radius: 16px; overflow: hidden;">
+                <div class="skeleton" style="height: 250px; border-radius: 0;"></div>
+                <div style="padding: 25px;">
+                    <div class="skeleton skeleton-text short" style="margin-bottom: 15px;"></div>
+                    <div class="skeleton skeleton-text long" style="margin-bottom: 10px;"></div>
+                    <div class="skeleton skeleton-text medium" style="margin-bottom: 15px;"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+            </article>
+        `).join('');
+        container.innerHTML = skeletons;
     }
 };
 

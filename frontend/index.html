@@ -5,10 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUVA GLOW - Premium Beauty & Personal Care</title>
     <meta name="description" content="Discover luxurious hair, skin, and makeup products from YUVA GLOW. Experience the elegance of silk waves and gold accents in our premium beauty collection.">
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="assets/icons/logo.svg" as="image">
+    <link rel="preload" href="assets/images/hair-feature-product.jpg" as="image">
+    <link rel="preload" href="css/style.css" as="style">
+
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/main.js"></script>
 </head>
 <body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="page-loader-content">
+            <img src="assets/icons/logo.svg" alt="Loading..." class="page-loader-logo">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
 
     <header class="main-header">
         <div class="container">

@@ -286,7 +286,7 @@ const PartnersModule = {
                 .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; transition: 0.2s; line-height: 1; }
                 .modal-close:hover { color: #333; }
 
-                .modal-body { padding: 20px 25px; overflow-y: auto; flex: 1; min-height: 0; }
+                .modal-body { padding: 20px 25px; overflow-y: auto; flex: 1; min-height: 0; overscroll-behavior: contain; }
                 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
                 .form-group { margin-bottom: 18px; position: relative; }
                 .form-group label { position: absolute; top: 12px; left: 14px; font-size: 0.9rem; color: #999; pointer-events: none; transition: all 0.3s; background: white; padding: 0 5px; }
@@ -335,14 +335,36 @@ const PartnersModule = {
                 .btn-upload:hover { background: var(--primary-gold); color: white; }
                 .photo-hint { font-size: 11px; color: #9ca3af; }
 
-                @media (max-width: 600px) {
-                    .form-row { grid-template-columns: 1fr; }
-                    .modal-content { width: 95%; max-height: calc(100vh - 20px); }
-                    .modal { padding: 10px; }
-                    .modal-body { padding: 15px; }
-                    .form-group { margin-bottom: 15px; }
-                    .photo-upload-wrapper { flex-direction: column; text-align: center; }
-                    .photo-preview { margin: 0 auto; }
+                @media (max-width: 768px) {
+                    .modal { padding: 0 10px; align-items: flex-end; }
+                    .modal-content {
+                        width: calc(100% - 20px);
+                        max-width: calc(100% - 20px);
+                        max-height: 85vh;
+                        border-radius: 20px 20px 0 0;
+                        margin: 0 auto 0 auto;
+                    }
+                    .modal-header { padding: 16px 20px; }
+                    .modal-header h2 { font-size: 1.1rem; }
+                    .modal-body {
+                        padding: 16px 20px;
+                        max-height: calc(90vh - 130px);
+                        overflow-y: auto;
+                        -webkit-overflow-scrolling: touch;
+                    }
+                    .modal-footer {
+                        padding: 12px 20px;
+                        position: sticky;
+                        bottom: 0;
+                        background: #f9fafb;
+                    }
+                    .form-row { grid-template-columns: 1fr; gap: 0; }
+                    .form-group { margin-bottom: 14px; }
+                    .form-group input, .form-group textarea { padding: 12px 14px; font-size: 16px; }
+                    .photo-upload-wrapper { flex-direction: row; padding: 10px; }
+                    .photo-preview { width: 50px; height: 50px; }
+                    .btn-secondary, .modal-footer .cta-button { padding: 12px 16px; font-size: 14px; flex: 1; text-align: center; }
+                    .dropdown-selected { min-height: 44px; padding: 10px 14px; }
                 }
             `;
             document.head.appendChild(styleEl);
@@ -570,11 +592,21 @@ const PartnersModule = {
 
     renderLoading(container) {
         if (!container) return;
-        container.innerHTML = `
-            <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <div class="loader">Loading partners...</div>
+        // Show skeleton loaders
+        const skeletons = Array(3).fill(`
+            <div class="partner-card skeleton-card" style="background: white; border-radius: 20px; overflow: hidden;">
+                <div style="padding: 25px 25px 15px; display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="skeleton" style="width: 70px; height: 70px; border-radius: 50%;"></div>
+                    <div class="skeleton" style="width: 100px; height: 28px; border-radius: 20px;"></div>
+                </div>
+                <div style="padding: 20px 25px 25px;">
+                    <div class="skeleton skeleton-text medium" style="margin-bottom: 15px;"></div>
+                    <div class="skeleton skeleton-text long" style="margin-bottom: 10px;"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
             </div>
-        `;
+        `).join('');
+        container.innerHTML = skeletons;
     },
 
     renderError(container, message) {

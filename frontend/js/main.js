@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Home Page Detection
             // Matches: "/", "/index.html", "/frontend/", "/frontend/index.html"
-            const isHomePage = path === '/' || 
-                             path.endsWith('index.html') || 
+            const isHomePage = path === '/' ||
+                             path.endsWith('index.html') ||
                              path.endsWith('/') ||
                              path.includes('/yuwa_glow_final/'); // Catch-all for dev environment root
 
@@ -50,11 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             // ALWAYS trigger reveal after modules are done or if they fail
             window.startScrollObserver();
+            // Hide page loader after content is ready (only on home page)
+            hidePageLoader();
         }
     };
 
     initModules();
 });
+
+// Hide page loader (only exists on home page)
+function hidePageLoader() {
+    const loader = document.getElementById('pageLoader');
+    if (loader) {
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            setTimeout(() => loader.remove(), 400);
+        }, 500);
+    }
+}
 
 window.startScrollObserver = function() {
     const observer = new IntersectionObserver((entries) => {

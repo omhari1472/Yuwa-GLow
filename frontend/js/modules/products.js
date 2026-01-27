@@ -130,16 +130,16 @@ const ProductsModule = {
 
     productCardTemplate(product) {
         const placeholder = 'assets/images/placeholder.png';
-        const imgUrl = (product.images && product.images[0]) 
-            ? `${CONFIG.STORAGE_URL}${product.images[0].image_url}` 
+        const imgUrl = (product.images && product.images[0])
+            ? `${CONFIG.STORAGE_URL}${product.images[0].image_url}`
             : placeholder;
 
         const productId = product.id;
 
         return `
             <div class="product-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <a href="#product/${productId}" class="product-image-link" style="display: block; height: 350px;">
-                    <img src="${imgUrl}" alt="${product.name}" onerror="this.src='${placeholder}'" style="width: 100%; height: 100%; object-fit: cover;">
+                <a href="#product/${productId}" class="product-image-link" style="display: block; height: 350px; background: #f5f5f5;">
+                    <img src="${imgUrl}" alt="${product.name}" loading="lazy" onerror="this.src='${placeholder}'" style="width: 100%; height: 100%; object-fit: cover;">
                 </a>
                 <div class="product-info" style="padding: 20px; text-align: center;">
                     <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="#product/${productId}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
@@ -148,6 +148,26 @@ const ProductsModule = {
                 </div>
             </div>
         `;
+    },
+
+    // Skeleton loader template for products
+    skeletonCardTemplate() {
+        return `
+            <div class="skeleton-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <div class="skeleton" style="height: 350px; border-radius: 0;"></div>
+                <div style="padding: 20px; text-align: center;">
+                    <div class="skeleton skeleton-text medium" style="margin: 0 auto 10px;"></div>
+                    <div class="skeleton skeleton-text long" style="margin-bottom: 8px;"></div>
+                    <div class="skeleton skeleton-text short" style="margin: 0 auto;"></div>
+                </div>
+            </div>
+        `;
+    },
+
+    // Show skeleton loaders while loading
+    showSkeletonLoaders(gridEl, count = 6) {
+        if (!gridEl) return;
+        gridEl.innerHTML = Array(count).fill(this.skeletonCardTemplate()).join('');
     },
 
     renderProductDetail(id) {
