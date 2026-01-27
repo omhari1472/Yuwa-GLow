@@ -39,10 +39,11 @@ class ApplicationController extends Controller
     public function store(StoreApplicationRequest $request)
     {
         try {
-            $data = $request->except(['resume']);
+            $data = $request->except(['resume', 'photo']);
             $resume = $request->file('resume');
+            $photo = $request->file('photo');
 
-            $application = $this->applicationService->submitApplication($data, $resume);
+            $application = $this->applicationService->submitApplication($data, $resume, $photo);
 
             return $this->successResponse($application, 'Application submitted successfully', 201);
         } catch (\Exception $e) {

@@ -18,10 +18,12 @@ class StoreApplicationRequest extends FormRequest
             'name' => 'required|string|max:150',
             'email' => 'required|email|max:150',
             'phone' => 'required|string|max:20',
+            'company_name' => 'nullable|string|max:200',
             'career_id' => 'required_if:application_type,career|nullable|exists:careers,id',
             'state' => 'required_if:application_type,super_stockist,distributor|nullable|string|max:100',
             'district' => 'nullable|string|max:100',
             'address' => 'nullable|string|max:500',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'resume' => 'required_if:application_type,career|nullable|file|mimes:pdf,doc,docx|max:5120',
         ];
     }

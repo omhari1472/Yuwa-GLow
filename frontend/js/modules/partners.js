@@ -1,4 +1,5 @@
 import API from '../api.js';
+import CONFIG from '../config.js';
 import LOCATIONS from '../data/locations.js';
 
 const PartnersModule = {
@@ -65,14 +66,56 @@ const PartnersModule = {
             return;
         }
 
-        container.innerHTML = this.stockists.map(partner => `
+        container.innerHTML = this.stockists.map(partner => this.renderPartnerCard(partner, 'stockist')).join('');
+    },
+
+    renderPartnerCard(partner, type) {
+        const photoUrl = partner.photo_url
+            ? `${CONFIG.STORAGE_URL}${partner.photo_url}`
+            : null;
+
+        const initials = partner.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+        return `
             <div class="partner-card fade-in" data-state="${partner.state || ''}" data-district="${partner.district || ''}">
-                <h3>${partner.company_name || partner.name}</h3>
-                <p><strong>Contact:</strong> ${partner.name}</p>
-                <p><strong>Area:</strong> ${partner.state || 'State Level'}</p>
-                ${partner.phone ? `<p><strong>Phone:</strong> ${partner.phone}</p>` : ''}
+                <div class="partner-card-header">
+                    <div class="partner-avatar ${photoUrl ? 'has-photo' : ''}">
+                        ${photoUrl
+                            ? `<img src="${photoUrl}" alt="${partner.name}" loading="lazy">`
+                            : `<span class="avatar-initials">${initials}</span>`
+                        }
+                    </div>
+                    <div class="partner-badge ${type}">${type === 'stockist' ? 'Super Stockist' : 'Distributor'}</div>
+                </div>
+                <div class="partner-card-body">
+                    <h3>${partner.company_name || partner.name}</h3>
+                    <div class="partner-info">
+                        <div class="partner-info-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <span>${partner.name}</span>
+                        </div>
+                        <div class="partner-info-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>${type === 'stockist' ? partner.state : `${partner.district}, ${partner.state}`}</span>
+                        </div>
+                        ${partner.phone ? `
+                        <div class="partner-info-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <span>${partner.phone}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
             </div>
-        `).join('');
+        `;
     },
 
     renderDistributors(container) {
@@ -87,14 +130,7 @@ const PartnersModule = {
             return;
         }
 
-        container.innerHTML = this.distributors.map(partner => `
-            <div class="partner-card fade-in" data-state="${partner.state || ''}" data-district="${partner.district || ''}">
-                <h3>${partner.company_name || partner.name}</h3>
-                <p><strong>Contact:</strong> ${partner.name}</p>
-                <p><strong>Area:</strong> ${partner.district || 'District Level'}, ${partner.state || ''}</p>
-                ${partner.phone ? `<p><strong>Phone:</strong> ${partner.phone}</p>` : ''}
-            </div>
-        `).join('');
+        container.innerHTML = this.distributors.map(partner => this.renderPartnerCard(partner, 'distributor')).join('');
     },
 
     initFilters() {
@@ -195,8 +231,32 @@ const PartnersModule = {
                             </div>
 
                             <div class="form-group">
-                                <textarea id="partnerAddress" name="address" rows="3" placeholder=" "></textarea>
+                                <textarea id="partnerAddress" name="address" rows="2" placeholder=" "></textarea>
                                 <label for="partnerAddress">Business Address</label>
+                            </div>
+
+                            <div class="form-group photo-upload-group">
+                                <label style="position:static; pointer-events:auto; margin-bottom:6px; font-size:0.9rem">Your Photo (Optional)</label>
+                                <div class="photo-upload-wrapper">
+                                    <div class="photo-preview" id="partnerPhotoPreview">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                    </div>
+                                    <div class="photo-upload-content">
+                                        <input type="file" id="partnerPhoto" name="photo" accept="image/jpeg,image/png,image/webp" style="display:none">
+                                        <button type="button" class="btn-upload" onclick="document.getElementById('partnerPhoto').click()">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                                <polyline points="17 8 12 3 7 8"/>
+                                                <line x1="12" y1="3" x2="12" y2="15"/>
+                                            </svg>
+                                            Upload Photo
+                                        </button>
+                                        <span class="photo-hint">JPG, PNG or WebP. Max 2MB.</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -215,22 +275,22 @@ const PartnersModule = {
             const styleEl = document.createElement('style');
             styleEl.id = 'partnerModalStyles';
             styleEl.textContent = `
-                .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+                .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; padding: 20px; box-sizing: border-box; }
                 .modal.active { opacity: 1; visibility: visible; }
                 .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); }
-                .modal-content { position: relative; background: white; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(20px); transition: 0.3s; overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
+                .modal-content { position: relative; background: white; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(20px); transition: 0.3s; overflow: hidden; display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
                 .modal.active .modal-content { transform: translateY(0); }
-                
-                .modal-header { padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fff; flex-shrink: 0; }
-                .modal-header h2 { font-size: 1.5rem; margin: 0; color: #333; font-family: var(--font-primary); }
+
+                .modal-header { padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fff; flex-shrink: 0; }
+                .modal-header h2 { font-size: 1.3rem; margin: 0; color: #333; font-family: var(--font-primary); }
                 .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; transition: 0.2s; line-height: 1; }
                 .modal-close:hover { color: #333; }
 
-                .modal-body { padding: 30px; overflow-y: auto; flex: 1; }
-                .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-                .form-group { margin-bottom: 25px; position: relative; }
-                .form-group label { position: absolute; top: 14px; left: 16px; font-size: 0.95rem; color: #999; pointer-events: none; transition: all 0.3s; background: white; padding: 0 5px; }
-                .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: 0.2s; outline: none; background: white; }
+                .modal-body { padding: 20px 25px; overflow-y: auto; flex: 1; min-height: 0; }
+                .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+                .form-group { margin-bottom: 18px; position: relative; }
+                .form-group label { position: absolute; top: 12px; left: 14px; font-size: 0.9rem; color: #999; pointer-events: none; transition: all 0.3s; background: white; padding: 0 5px; }
+                .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: 0.2s; outline: none; background: white; }
                 
                 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary-gold); }
                 .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
@@ -259,11 +319,31 @@ const PartnersModule = {
                 .dropdown-option:hover { background: var(--warm-cream); color: var(--primary-gold); }
                 .dropdown-option.selected { background: #f9fafb; font-weight: 600; color: var(--primary-gold); }
 
-                .modal-footer { padding: 20px 30px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 15px; background: #f9fafb; flex-shrink: 0; }
-                .btn-secondary { padding: 12px 24px; background: white; border: 1.5px solid #e5e7eb; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+                .modal-footer { padding: 15px 25px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; background: #f9fafb; flex-shrink: 0; }
+                .btn-secondary { padding: 10px 20px; background: white; border: 1.5px solid #e5e7eb; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 0.9rem; }
                 .btn-secondary:hover { border-color: #999; }
+                .modal-footer .cta-button { padding: 10px 20px; font-size: 0.9rem; }
                 
-                @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .modal-content { width: 95%; } }
+                /* Photo Upload */
+                .photo-upload-group { margin-top: 5px; margin-bottom: 0 !important; }
+                .photo-upload-wrapper { display: flex; align-items: center; gap: 15px; padding: 12px; background: #f9fafb; border-radius: 10px; border: 1.5px dashed #e5e7eb; }
+                .photo-preview { width: 60px; height: 60px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+                .photo-preview svg { color: #9ca3af; width: 28px; height: 28px; }
+                .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+                .photo-upload-content { display: flex; flex-direction: column; gap: 6px; }
+                .btn-upload { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: white; border: 1.5px solid var(--primary-gold); color: var(--primary-gold); border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+                .btn-upload:hover { background: var(--primary-gold); color: white; }
+                .photo-hint { font-size: 11px; color: #9ca3af; }
+
+                @media (max-width: 600px) {
+                    .form-row { grid-template-columns: 1fr; }
+                    .modal-content { width: 95%; max-height: calc(100vh - 20px); }
+                    .modal { padding: 10px; }
+                    .modal-body { padding: 15px; }
+                    .form-group { margin-bottom: 15px; }
+                    .photo-upload-wrapper { flex-direction: column; text-align: center; }
+                    .photo-preview { margin: 0 auto; }
+                }
             `;
             document.head.appendChild(styleEl);
         }
@@ -281,6 +361,25 @@ const PartnersModule = {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             await this.submitPartnerApplication(form);
+        });
+
+        // Photo preview handler
+        const photoInput = document.getElementById('partnerPhoto');
+        const photoPreview = document.getElementById('partnerPhotoPreview');
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    if (window.notify) window.notify('Photo must be less than 2MB', 'error');
+                    e.target.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    photoPreview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
         });
     },
 
@@ -431,6 +530,17 @@ const PartnersModule = {
         }, 300);
         document.body.style.overflow = '';
         document.getElementById('partnerApplicationForm').reset();
+
+        // Reset photo preview
+        const photoPreview = document.getElementById('partnerPhotoPreview');
+        if (photoPreview) {
+            photoPreview.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            `;
+        }
     },
 
     async submitPartnerApplication(form) {

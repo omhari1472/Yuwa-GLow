@@ -17,9 +17,9 @@ class ApplicationService
     /**
      * Submit a new application.
      */
-    public function submitApplication(array $data, $resumeFile = null)
+    public function submitApplication(array $data, $resumeFile = null, $photoFile = null)
     {
-        return DB::transaction(function () use ($data, $resumeFile) {
+        return DB::transaction(function () use ($data, $resumeFile, $photoFile) {
             // Check availability for partners
             if (in_array($data['application_type'], ['super_stockist', 'distributor'])) {
                 $this->checkSlotAvailability($data['application_type'], $data['state'], $data['district'] ?? null);
@@ -27,6 +27,10 @@ class ApplicationService
 
             if ($resumeFile) {
                 $data['resume_url'] = $this->fileUpload->upload($resumeFile, 'resumes');
+            }
+
+            if ($photoFile) {
+                $data['photo_url'] = $this->fileUpload->upload($photoFile, 'partners');
             }
 
             return Application::create($data);
@@ -78,6 +82,9 @@ class ApplicationService
     {
         if ($application->resume_url) {
             $this->fileUpload->delete($application->resume_url);
+        }
+        if ($application->photo_url) {
+            $this->fileUpload->delete($application->photo_url);
         }
         return $application->delete();
     }

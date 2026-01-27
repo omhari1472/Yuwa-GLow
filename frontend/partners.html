@@ -46,14 +46,92 @@
         }
         .partner-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f0f0f0;
+        }
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+        }
+        .partner-card-header {
+            position: relative;
+            padding: 25px 25px 15px;
+            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .partner-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gold), #f0c14b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: 3px solid white;
+        }
+        .partner-avatar.has-photo {
+            background: #e5e7eb;
+        }
+        .partner-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .avatar-initials {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .partner-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #f0f9ff;
+            color: #0284c7;
+        }
+        .partner-badge.stockist {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+        .partner-badge.distributor {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+        .partner-card-body {
+            padding: 20px 25px 25px;
         }
         .partner-card h3 {
-            color: #333;
-            margin-bottom: 12px;
+            color: #1f2937;
+            margin-bottom: 15px;
             font-size: 18px;
+            font-weight: 700;
+        }
+        .partner-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .partner-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .partner-info-item svg {
+            color: var(--primary-gold);
+            flex-shrink: 0;
         }
         .partner-card p {
             color: #666;
@@ -64,8 +142,42 @@
             color: #333;
         }
         .become-partner-btn {
-            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
             font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .become-stockist-btn {
+            background: linear-gradient(135deg, #C38636 0%, #E5A84B 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(195, 134, 54, 0.3);
+        }
+        .become-stockist-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(195, 134, 54, 0.4);
+            background: linear-gradient(135deg, #B07830 0%, #D49A40 100%);
+        }
+        .become-distributor-btn {
+            background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 95, 70, 0.3);
+        }
+        .become-distributor-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 95, 70, 0.4);
+            background: linear-gradient(135deg, #054d39 0%, #047857 100%);
+        }
+        .become-partner-btn svg {
+            width: 18px;
+            height: 18px;
         }
         .loading-state, .error-state, .empty-state {
             display: flex;
@@ -77,10 +189,16 @@
             color: var(--primary-gold);
             font-size: 16px;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .partner-category-header {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            .become-partner-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 20px;
+                font-size: 13px;
             }
         }
     </style>
@@ -124,7 +242,15 @@
             <div class="partner-category">
                 <div class="partner-category-header">
                     <h2 class="section-title fade-in">Super Stockists (State Level)</h2>
-                    <button class="cta-button become-partner-btn become-stockist-btn">Become a Super Stockist</button>
+                    <button class="become-partner-btn become-stockist-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <line x1="19" y1="8" x2="19" y2="14"/>
+                            <line x1="22" y1="11" x2="16" y2="11"/>
+                        </svg>
+                        Become a Super Stockist
+                    </button>
                 </div>
                 <div class="partner-grid" id="stockistGrid">
                     <!-- Loaded dynamically -->
@@ -138,7 +264,15 @@
             <div class="partner-category">
                 <div class="partner-category-header">
                     <h2 class="section-title fade-in">Distributors (District Level)</h2>
-                    <button class="cta-button become-partner-btn become-distributor-btn">Become a Distributor</button>
+                    <button class="become-partner-btn become-distributor-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <line x1="19" y1="8" x2="19" y2="14"/>
+                            <line x1="22" y1="11" x2="16" y2="11"/>
+                        </svg>
+                        Become a Distributor
+                    </button>
                 </div>
                 <div class="partner-grid" id="distributorGrid">
                     <!-- Loaded dynamically -->

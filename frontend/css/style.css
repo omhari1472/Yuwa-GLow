@@ -1103,7 +1103,7 @@ body {
     .job-card {
         flex-direction: column;
         align-items: flex-start;
-        text-align: left;
+        text-align:  left !important;
     }
 
     .job-apply {

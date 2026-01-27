@@ -12,11 +12,13 @@ class Application extends Model
         'name',
         'email',
         'phone',
+        'company_name',
         'career_id',
         'resume_url',
         'state',
         'district',
         'address',
+        'photo_url',
         'status',
     ];
 

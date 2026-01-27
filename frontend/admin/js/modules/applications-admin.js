@@ -99,25 +99,35 @@ const ApplicationsAdminModule = {
 
         const { data: items, meta } = UI.pagination.paginate(this.filteredApps, this.currentPage, this.perPage);
 
-        container.innerHTML = items.map(app => `
-            <tr>
-                <td><span class="badge badge-${app.application_type}">${app.application_type.replace('_', ' ').toUpperCase()}</span></td>
-                <td>
-                    <div class="user-info">
-                        <strong>${app.name}</strong>
-                        <span>${app.email}</span>
-                    </div>
-                </td>
-                <td>${app.phone}</td>
-                <td>${app.application_type === 'career' ? (app.career?.title || 'Job Posting') : `${app.state}, ${app.district || 'N/A'}`}</td>
-                <td><span class="status ${app.status}">${app.status}</span></td>
-                <td>
-                    <button class="btn-icon" onclick="window.AppsAdmin.viewDetails(${app.id})" title="View Details">
-                        <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        container.innerHTML = items.map(app => {
+            const isPartner = ['distributor', 'super_stockist'].includes(app.application_type);
+            const photoThumb = isPartner && app.photo_url
+                ? `<img src="${CONFIG.STORAGE_URL}${app.photo_url}" class="table-thumb-round" alt="${app.name}">`
+                : `<div class="table-avatar-placeholder">${app.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}</div>`;
+
+            return `
+                <tr>
+                    <td><span class="badge badge-${app.application_type}">${app.application_type.replace('_', ' ').toUpperCase()}</span></td>
+                    <td>
+                        <div class="user-info-with-photo">
+                            ${photoThumb}
+                            <div class="user-info">
+                                <strong>${app.company_name || app.name}</strong>
+                                <span>${app.email}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${app.phone}</td>
+                    <td>${app.application_type === 'career' ? (app.career?.title || 'Job Posting') : `${app.state}, ${app.district || 'N/A'}`}</td>
+                    <td><span class="status ${app.status}">${app.status}</span></td>
+                    <td>
+                        <button class="btn-icon" onclick="window.AppsAdmin.viewDetails(${app.id})" title="View Details">
+                            <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
         UI.pagination.render('application-pagination', meta, (page) => {
             this.currentPage = page;
@@ -131,8 +141,17 @@ const ApplicationsAdminModule = {
 
         const content = document.getElementById('app-modal-content');
         const footer = document.getElementById('app-modal-footer');
+        const isPartner = ['distributor', 'super_stockist'].includes(app.application_type);
+
+        // Build photo section for partners
+        const photoSection = isPartner && app.photo_url ? `
+            <div class="detail-photo">
+                <img src="${CONFIG.STORAGE_URL}${app.photo_url}" alt="${app.name}" class="partner-detail-photo">
+            </div>
+        ` : '';
 
         content.innerHTML = `
+            ${photoSection}
             <div class="detail-grid">
                 <div class="detail-item"><strong>Applicant Name</strong>${app.name}</div>
                 <div class="detail-item"><strong>Email Address</strong>${app.email}</div>
@@ -142,22 +161,56 @@ const ApplicationsAdminModule = {
                     <div class="detail-item"><strong>Job Position</strong>${app.career?.title || 'N/A'}</div>
                     <div class="detail-item"><strong>Documents</strong><br><a href="${CONFIG.STORAGE_URL}${app.resume_url}" target="_blank" class="btn-text">View Resume PDF</a></div>
                 ` : `
+                    ${app.company_name ? `<div class="detail-item"><strong>Firm Name</strong>${app.company_name}</div>` : ''}
                     <div class="detail-item"><strong>State</strong>${app.state}</div>
-                    <div class="detail-item"><strong>Location Details</strong>${app.district || app.address}</div>
+                    <div class="detail-item"><strong>District</strong>${app.district || 'N/A'}</div>
+                    ${app.address ? `<div class="detail-item full-width"><strong>Address</strong>${app.address}</div>` : ''}
                 `}
+                <div class="detail-item"><strong>Current Status</strong><span class="status ${app.status}">${app.status}</span></div>
                 <div class="detail-item"><strong>Submission Date</strong>${new Date(app.created_at).toLocaleString()}</div>
             </div>
         `;
 
-        footer.innerHTML = `
-            <button class="btn btn-secondary" onclick="window.AppsAdmin.closeModal()">Close</button>
-            ${app.status === 'pending' ? `
-                <button class="btn btn-primary" style="background:#ef4444" onclick="window.AppsAdmin.updateStatus(${app.id}, 'rejected')">Reject</button>
+        // Build footer buttons based on status
+        let footerButtons = `<button class="btn btn-secondary" onclick="window.AppsAdmin.closeModal()">Close</button>`;
+
+        if (app.status === 'pending') {
+            footerButtons += `
+                <button class="btn btn-danger" onclick="window.AppsAdmin.updateStatus(${app.id}, 'rejected')">Reject</button>
                 <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">${app.application_type === 'career' ? 'Approve Candidate' : 'Approve Partner'}</button>
-            ` : ''}
-        `;
+            `;
+        } else if (app.status === 'approved' && isPartner) {
+            footerButtons += `
+                <button class="btn btn-warning" onclick="window.AppsAdmin.revokePartner(${app.id})">Revoke Partnership</button>
+            `;
+        } else if (app.status === 'rejected') {
+            footerButtons += `
+                <button class="btn btn-primary" onclick="window.AppsAdmin.updateStatus(${app.id}, 'approved')">Re-Approve</button>
+            `;
+        }
+
+        footer.innerHTML = footerButtons;
 
         UI.modal.open('app-modal');
+    },
+
+    async revokePartner(id) {
+        if (!confirm('Are you sure you want to revoke this partnership? The slot will become available for new applications.')) {
+            return;
+        }
+
+        try {
+            const res = await API.admin.applications.updateStatus(id, 'rejected');
+            if (res.success) {
+                this.closeModal();
+                this.loadApplications();
+                UI.notify('Partnership revoked successfully');
+            } else {
+                UI.notify(res.message || 'Failed to revoke partnership', 'error');
+            }
+        } catch (error) {
+            UI.notify(error.message || 'A system error occurred', 'error');
+        }
     },
 
     async updateStatus(id, status) {
