@@ -46,7 +46,7 @@ const ProductsModule = {
         detailView.style.display = 'none';
 
         // Reset background classes
-        mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg');
+        mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg', 'salon-products-bg');
 
         if (hash === 'hair') {
             mainElement.classList.add('hair-products-bg');
@@ -54,6 +54,8 @@ const ProductsModule = {
             mainElement.classList.add('skin-products-bg');
         } else if (hash === 'makeup') {
             mainElement.classList.add('makeup-products-bg');
+        } else if (hash === 'salon') {
+            mainElement.classList.add('salon-products-bg');
         }
 
         if (hash === 'hair') {
@@ -68,8 +70,8 @@ const ProductsModule = {
             detailView.style.display = 'block';
             this.renderProductDetail(productId);
             window.scrollTo(0, 0);
-        } else if (['hair', 'skin', 'makeup'].includes(hash.toLowerCase())) {
-            // Category List: #skin, #makeup
+        } else if (['hair', 'skin', 'makeup', 'salon'].includes(hash.toLowerCase())) {
+            // Category List: #skin, #makeup, #salon
             this.currentCategory = hash.toLowerCase();
             productsView.style.display = 'block';
             this.renderCategoryProducts(this.currentCategory);
@@ -98,7 +100,7 @@ const ProductsModule = {
         
         if (!titleEl || !gridEl) return;
 
-        if (['hair', 'skin', 'makeup'].includes(categoryName)) {
+        if (['hair', 'skin', 'makeup', 'salon'].includes(categoryName)) {
             titleEl.style.display = 'none';
         } else {
             titleEl.style.display = 'block';
@@ -185,13 +187,14 @@ const ProductsModule = {
 
         // Apply background based on category
         if (mainElement) {
-            mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg');
+            mainElement.classList.remove('hair-products-bg', 'skin-products-bg', 'makeup-products-bg', 'salon-products-bg');
             const category = this.categories.find(c => c.id == product.category_id);
             if (category) {
                 const catName = category.name.toLowerCase();
                 if (catName.includes('hair')) mainElement.classList.add('hair-products-bg');
                 else if (catName.includes('skin')) mainElement.classList.add('skin-products-bg');
                 else if (catName.includes('makeup')) mainElement.classList.add('makeup-products-bg');
+                else if (catName.includes('salon')) mainElement.classList.add('salon-products-bg');
             }
         }
 

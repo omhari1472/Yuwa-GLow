@@ -5,6 +5,7 @@ import LOCATIONS from '../data/locations.js';
 const PartnersModule = {
     stockists: [],
     distributors: [],
+    distributorsByState: {},
     allStates: [],
     occupiedSlots: { super_stockists: [], distributors: [] },
 
@@ -26,16 +27,24 @@ const PartnersModule = {
 
             this.stockists = stockistsRes.data?.data || stockistsRes.data || [];
             this.distributors = distributorsRes.data?.data || distributorsRes.data || [];
-            
+
             // Process availability data
             const availabilityData = availabilityRes.data?.data || availabilityRes.data || [];
             this.occupiedSlots.super_stockists = availabilityData
                 .filter(a => a.application_type === 'super_stockist')
                 .map(a => a.state);
-            
+
             this.occupiedSlots.distributors = availabilityData
                 .filter(a => a.application_type === 'distributor')
                 .map(a => `${a.state}|${a.district}`);
+
+            // Group distributors by state
+            this.distributorsByState = this.distributors.reduce((acc, d) => {
+                if (!d.state) return acc;
+                if (!acc[d.state]) acc[d.state] = [];
+                acc[d.state].push(d);
+                return acc;
+            }, {});
 
             // Collect all unique states
             this.allStates = [...new Set([
@@ -43,9 +52,12 @@ const PartnersModule = {
                 ...this.distributors.map(d => d.state)
             ])].filter(Boolean).sort();
 
+            // Update stats
+            this.updateStats();
+
             this.renderStockists(stockistGrid);
             this.renderDistributors(distributorGrid);
-            this.initFilters();
+            this.initAccordions();
             this.initApplicationForms();
         } catch (error) {
             console.error('Partners Module Error:', error);
@@ -54,117 +66,136 @@ const PartnersModule = {
         }
     },
 
+    updateStats() {
+        const stockistCountEl = document.getElementById('stockistCount');
+        const distributorStateCountEl = document.getElementById('distributorStateCount');
+        const distributorCountEl = document.getElementById('distributorCount');
+
+        if (stockistCountEl) {
+            stockistCountEl.textContent = this.stockists.length;
+        }
+        if (distributorStateCountEl) {
+            distributorStateCountEl.textContent = Object.keys(this.distributorsByState).length;
+        }
+        if (distributorCountEl) {
+            distributorCountEl.textContent = this.distributors.length;
+        }
+    },
+
     renderStockists(container) {
         if (!container) return;
 
         if (this.stockists.length === 0) {
             container.innerHTML = `
-                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p>No super stockists in your area yet.</p>
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <p>We're expanding! No super stockists in your area yet.</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Be the first to join our network.</p>
                 </div>
             `;
             return;
         }
 
-        container.innerHTML = this.stockists.map(partner => this.renderPartnerCard(partner, 'stockist')).join('');
-    },
-
-    renderPartnerCard(partner, type) {
-        const photoUrl = partner.photo_url
-            ? `${CONFIG.STORAGE_URL}${partner.photo_url}`
-            : null;
-
-        const initials = partner.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
-        return `
-            <div class="partner-card fade-in" data-state="${partner.state || ''}" data-district="${partner.district || ''}">
-                <div class="partner-card-header">
-                    <div class="partner-avatar ${photoUrl ? 'has-photo' : ''}">
-                        ${photoUrl
-                            ? `<img src="${photoUrl}" alt="${partner.name}" loading="lazy">`
-                            : `<span class="avatar-initials">${initials}</span>`
-                        }
-                    </div>
-                    <div class="partner-badge ${type}">${type === 'stockist' ? 'Super Stockist' : 'Distributor'}</div>
+        container.innerHTML = this.stockists.map(partner => `
+            <div class="state-card fade-in">
+                <div class="state-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
                 </div>
-                <div class="partner-card-body">
-                    <h3>${partner.company_name || partner.name}</h3>
-                    <div class="partner-info">
-                        <div class="partner-info-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                            <span>${partner.name}</span>
-                        </div>
-                        <div class="partner-info-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            <span>${type === 'stockist' ? partner.state : `${partner.district}, ${partner.state}`}</span>
-                        </div>
-                        ${partner.phone ? `
-                        <div class="partner-info-item">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                            </svg>
-                            <span>${partner.phone}</span>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
+                <h3>${partner.state}</h3>
+                <span class="badge">Super Stockist</span>
             </div>
-        `;
+        `).join('');
     },
 
     renderDistributors(container) {
         if (!container) return;
 
-        if (this.distributors.length === 0) {
+        const states = Object.keys(this.distributorsByState).sort();
+
+        if (states.length === 0) {
             container.innerHTML = `
-                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p>No distributors in your area yet.</p>
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <p>We're expanding! No distributors in your area yet.</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Be the first to join our network.</p>
                 </div>
             `;
             return;
         }
 
-        container.innerHTML = this.distributors.map(partner => this.renderPartnerCard(partner, 'distributor')).join('');
+        container.innerHTML = states.map(state => {
+            const districts = this.distributorsByState[state];
+            const districtCount = districts.length;
+
+            return `
+                <div class="state-accordion fade-in">
+                    <div class="state-accordion-header">
+                        <div class="state-info">
+                            <div class="state-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>${state}</h3>
+                                <div class="district-count">${districtCount} District${districtCount > 1 ? 's' : ''} Covered</div>
+                            </div>
+                        </div>
+                        <div class="expand-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="state-accordion-content">
+                        <div class="districts-grid">
+                            ${districts.map(d => `
+                                <div class="district-chip">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 6L9 17l-5-5"/>
+                                    </svg>
+                                    ${d.district}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
     },
 
-    initFilters() {
-        const stateFilter = document.getElementById('stateFilter');
-        const districtFilter = document.getElementById('districtFilter');
+    initAccordions() {
+        document.querySelectorAll('.state-accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const accordion = header.closest('.state-accordion');
+                const wasActive = accordion.classList.contains('active');
 
-        if (stateFilter) {
-            // Populate state options
-            stateFilter.innerHTML = `<option value="all">All States</option>` +
-                this.allStates.map(state => `<option value="${state}">${state}</option>`).join('');
+                // Close all accordions
+                document.querySelectorAll('.state-accordion').forEach(acc => {
+                    acc.classList.remove('active');
+                });
 
-            stateFilter.addEventListener('change', () => this.applyFilters());
-        }
-
-        if (districtFilter) {
-            districtFilter.addEventListener('input', () => this.applyFilters());
-        }
-    },
-
-    applyFilters() {
-        const stateFilter = document.getElementById('stateFilter');
-        const districtFilter = document.getElementById('districtFilter');
-
-        const selectedState = stateFilter?.value || 'all';
-        const districtSearch = (districtFilter?.value || '').toLowerCase();
-
-        document.querySelectorAll('.partner-card').forEach(card => {
-            const cardState = card.dataset.state || '';
-            const cardDistrict = card.dataset.district || '';
-
-            const stateMatch = selectedState === 'all' || cardState === selectedState;
-            const districtMatch = !districtSearch || cardDistrict.toLowerCase().includes(districtSearch);
-
-            card.style.display = stateMatch && districtMatch ? '' : 'none';
+                // Open clicked one if it wasn't already open
+                if (!wasActive) {
+                    accordion.classList.add('active');
+                }
+            });
         });
     },
 
@@ -291,7 +322,7 @@ const PartnersModule = {
                 .form-group { margin-bottom: 18px; position: relative; }
                 .form-group label { position: absolute; top: 12px; left: 14px; font-size: 0.9rem; color: #999; pointer-events: none; transition: all 0.3s; background: white; padding: 0 5px; }
                 .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 0.95rem; transition: 0.2s; outline: none; background: white; }
-                
+
                 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary-gold); }
                 .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
                 .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label {
@@ -323,7 +354,7 @@ const PartnersModule = {
                 .btn-secondary { padding: 10px 20px; background: white; border: 1.5px solid #e5e7eb; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 0.9rem; }
                 .btn-secondary:hover { border-color: #999; }
                 .modal-footer .cta-button { padding: 10px 20px; font-size: 0.9rem; }
-                
+
                 /* Photo Upload */
                 .photo-upload-group { margin-top: 5px; margin-bottom: 0 !important; }
                 .photo-upload-wrapper { display: flex; align-items: center; gap: 15px; padding: 12px; background: #f9fafb; border-radius: 10px; border: 1.5px dashed #e5e7eb; }
@@ -419,7 +450,7 @@ const PartnersModule = {
             `;
 
             const selectedBox = container.querySelector('.dropdown-selected');
-            
+
             // Toggle Open
             selectedBox.onclick = (e) => {
                 e.stopPropagation();
@@ -462,12 +493,12 @@ const PartnersModule = {
 
                 selectedBox.innerText = text;
                 hiddenInput.value = value;
-                
+
                 optionsList.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
-                
+
                 container.classList.remove('active');
-                
+
                 if (onSelect) onSelect(value, text);
             };
         });
@@ -592,27 +623,17 @@ const PartnersModule = {
 
     renderLoading(container) {
         if (!container) return;
-        // Show skeleton loaders
-        const skeletons = Array(3).fill(`
-            <div class="partner-card skeleton-card" style="background: white; border-radius: 20px; overflow: hidden;">
-                <div style="padding: 25px 25px 15px; display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div class="skeleton" style="width: 70px; height: 70px; border-radius: 50%;"></div>
-                    <div class="skeleton" style="width: 100px; height: 28px; border-radius: 20px;"></div>
-                </div>
-                <div style="padding: 20px 25px 25px;">
-                    <div class="skeleton skeleton-text medium" style="margin-bottom: 15px;"></div>
-                    <div class="skeleton skeleton-text long" style="margin-bottom: 10px;"></div>
-                    <div class="skeleton skeleton-text short"></div>
-                </div>
+        container.innerHTML = `
+            <div class="loading-state" style="grid-column: 1 / -1;">
+                <div class="loader">Loading...</div>
             </div>
-        `).join('');
-        container.innerHTML = skeletons;
+        `;
     },
 
     renderError(container, message) {
         if (!container) return;
         container.innerHTML = `
-            <div class="error-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <div class="error-state" style="grid-column: 1 / -1;">
                 <p>${message}</p>
             </div>
         `;

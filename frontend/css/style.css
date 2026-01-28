@@ -1,3 +1,6 @@
+/* Google Fonts for Logo */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;500&display=swap');
+
 :root {
     --primary-gold: #C38636;
     --accent-gold: #DCB264;
@@ -47,11 +50,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 95px;
 }
 
 .logo img {
-    height: 60px;
+    height: 80px;
     padding-top: 5px;
     display: block;
 }
@@ -115,6 +118,12 @@ body {
 
 .makeup-products-bg {
     background-image: url('../assets/images/makeup-background.png'); /* Assuming standard png format, adjust if jpg */
+    background-size: cover;
+    background-position: center;
+}
+
+.salon-products-bg {
+    background-image: url('../assets/images/salon-tool-background.png');
     background-size: cover;
     background-position: center;
 }
@@ -485,18 +494,18 @@ body {
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
 }
 
 .category-card {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     text-decoration: none;
     color: var(--light-text);
-    height: 400px;
+    height: 350px;
 }
 
 .category-card img {
@@ -643,6 +652,7 @@ body {
 @media (max-width: 992px) {
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 }
 

@@ -3,144 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Partners - Join Our Network | YUVA GLOW</title>
-    <meta name="description" content="Find YUVA GLOW Super Stockists and Distributors in your area. Learn more about partnership opportunities with our growing beauty brand.">
+    <title>Our Presence - YUVA GLOW Network Across India</title>
+    <meta name="description" content="Explore YUVA GLOW's growing presence across India. See our network of Super Stockists and Distributors across different states.">
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/forms.js"></script>
     <script type="module" src="js/main.js"></script>
     <style>
-        .partner-filters {
+        /* Page Header Enhancement */
+        .presence-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+        .presence-intro p {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Stats Bar */
+        .presence-stats {
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
             flex-wrap: wrap;
         }
-        .partner-filters select,
-        .partner-filters input {
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            min-width: 200px;
+        .stat-item {
+            text-align: center;
         }
-        .partner-filters select:focus,
-        .partner-filters input:focus {
-            border-color: var(--primary-gold);
-            outline: none;
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            font-family: var(--font-primary);
+            line-height: 1;
         }
-        .partner-category {
-            margin-bottom: 60px;
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
         }
-        .partner-category-header {
+
+        /* Section Styling */
+        .presence-section {
+            margin-bottom: 70px;
+        }
+        .presence-section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--warm-cream);
         }
-        .partner-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .partner-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #f0f0f0;
-        }
-        .partner-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-        }
-        .partner-card-header {
-            position: relative;
-            padding: 25px 25px 15px;
-            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+        .presence-section-header h2 {
+            font-size: 1.6rem;
+            color: #1f2937;
+            margin: 0;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
-        .partner-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-gold), #f0c14b);
+        .presence-section-header h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            border: 3px solid white;
         }
-        .partner-avatar.has-photo {
-            background: #e5e7eb;
-        }
-        .partner-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .avatar-initials {
+        .presence-section-header h2 .icon svg {
+            width: 22px;
+            height: 22px;
             color: white;
-            font-size: 22px;
-            font-weight: 700;
-            text-transform: uppercase;
         }
-        .partner-badge {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: #f0f9ff;
-            color: #0284c7;
+
+        /* Super Stockist States Grid */
+        .stockist-states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
-        .partner-badge.stockist {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            color: #92400e;
+        .state-card {
+            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
         }
-        .partner-badge.distributor {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            color: #065f46;
+        .state-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--accent-gold));
         }
-        .partner-card-body {
-            padding: 20px 25px 25px;
+        .state-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(195, 134, 54, 0.15);
         }
-        .partner-card h3 {
-            color: #1f2937;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .partner-info {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .partner-info-item {
+        .state-card .state-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #6b7280;
-            font-size: 14px;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 15px rgba(195, 134, 54, 0.2);
         }
-        .partner-info-item svg {
+        .state-card .state-icon svg {
+            width: 26px;
+            height: 26px;
             color: var(--primary-gold);
+        }
+        .state-card h3 {
+            font-size: 1.15rem;
+            color: #1f2937;
+            margin: 0 0 8px;
+            font-weight: 700;
+        }
+        .state-card .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 20px;
+        }
+
+        /* Distributor States Accordion */
+        .distributor-states-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .state-accordion {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .state-accordion:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        .state-accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            transition: background 0.3s;
+        }
+        .state-accordion-header:hover {
+            background: linear-gradient(135deg, #fdf3d7 0%, #fef9e7 100%);
+        }
+        .state-accordion.active .state-accordion-header {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .state-accordion-header .state-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .state-accordion-header .state-icon {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(6, 95, 70, 0.15);
+        }
+        .state-accordion-header .state-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #059669;
+        }
+        .state-accordion-header h3 {
+            font-size: 1.1rem;
+            color: #1f2937;
+            margin: 0;
+            font-weight: 600;
+        }
+        .state-accordion-header .district-count {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .state-accordion-header .expand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .state-accordion-header .expand-icon svg {
+            width: 18px;
+            height: 18px;
+            color: #6b7280;
+            transition: transform 0.3s;
+        }
+        .state-accordion.active .expand-icon {
+            background: #059669;
+        }
+        .state-accordion.active .expand-icon svg {
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .state-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .state-accordion.active .state-accordion-content {
+            max-height: 500px;
+        }
+        .districts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            padding: 20px 25px;
+        }
+        .district-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #065f46;
+            font-weight: 500;
+            border: 1px solid #bbf7d0;
+            transition: all 0.2s;
+        }
+        .district-chip:hover {
+            background: #dcfce7;
+            transform: translateX(3px);
+        }
+        .district-chip svg {
+            width: 14px;
+            height: 14px;
+            color: #059669;
             flex-shrink: 0;
         }
-        .partner-card p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        .partner-card p strong {
-            color: #333;
-        }
+
+        /* Partner Buttons */
         .become-partner-btn {
             display: inline-flex;
             align-items: center;
@@ -163,7 +296,6 @@
         .become-stockist-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(195, 134, 54, 0.4);
-            background: linear-gradient(135deg, #B07830 0%, #D49A40 100%);
         }
         .become-distributor-btn {
             background: linear-gradient(135deg, #065f46 0%, #059669 100%);
@@ -173,32 +305,67 @@
         .become-distributor-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(6, 95, 70, 0.4);
-            background: linear-gradient(135deg, #054d39 0%, #047857 100%);
         }
         .become-partner-btn svg {
             width: 18px;
             height: 18px;
         }
+
+        /* Empty & Loading States */
         .loading-state, .error-state, .empty-state {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            color: #6b7280;
         }
-        .loader {
-            color: var(--primary-gold);
-            font-size: 16px;
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
+        .empty-state-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #9ca3af;
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .partner-category-header {
+            .presence-stats {
+                gap: 30px;
+            }
+            .stat-number {
+                font-size: 2.2rem;
+            }
+            .presence-section-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
             .become-partner-btn {
                 width: 100%;
                 justify-content: center;
-                padding: 12px 20px;
-                font-size: 13px;
+            }
+            .stockist-states-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .state-card {
+                padding: 20px 15px;
+            }
+            .state-accordion-header {
+                padding: 15px 18px;
+            }
+            .districts-grid {
+                grid-template-columns: 1fr 1fr;
+                padding: 15px 18px;
             }
         }
     </style>
@@ -218,7 +385,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="products.html">Products</a></li>
-                    <li><a href="partners.html" class="active">Business Partners</a></li>
+                    <li><a href="partners.html" class="active">Our Presence</a></li>
                     <li><a href="career.html">Career</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="blog.html">Blog</a></li>
@@ -232,16 +399,40 @@
         <div class="scroll-indicator"></div>
         <section class="page-header fade-in">
             <div class="container">
-                <h1>Our Valued Partners</h1>
-                <p>A network of trusted Super Stockists and Distributors bringing YUVA GLOW to you.</p>
+                <h1>Our Presence Across India</h1>
+                <p>Bringing beauty to every corner of the nation</p>
             </div>
         </section>
 
         <section class="container section-padding">
-            <!-- Super Stockists -->
-            <div class="partner-category">
-                <div class="partner-category-header">
-                    <h2 class="section-title fade-in">Super Stockists (State Level)</h2>
+            <!-- Stats Overview -->
+            <div class="presence-stats fade-in" id="presenceStats">
+                <div class="stat-item">
+                    <div class="stat-number" id="stockistCount">-</div>
+                    <div class="stat-label">States with Super Stockists</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="distributorStateCount">-</div>
+                    <div class="stat-label">States with Distributors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="distributorCount">-</div>
+                    <div class="stat-label">Total Districts Covered</div>
+                </div>
+            </div>
+
+            <!-- Super Stockists Section -->
+            <div class="presence-section">
+                <div class="presence-section-header">
+                    <h2>
+                        <span class="icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </span>
+                        States with Super Stockists
+                    </h2>
                     <button class="become-partner-btn become-stockist-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
@@ -252,18 +443,27 @@
                         Become a Super Stockist
                     </button>
                 </div>
-                <div class="partner-grid" id="stockistGrid">
-                    <!-- Loaded dynamically -->
-                    <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <div class="loader">Loading partners...</div>
+                <div class="stockist-states-grid" id="stockistGrid">
+                    <div class="loading-state" style="grid-column: 1 / -1;">
+                        <div class="loader">Loading...</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Distributors -->
-            <div class="partner-category">
-                <div class="partner-category-header">
-                    <h2 class="section-title fade-in">Distributors (District Level)</h2>
+            <!-- Distributors Section -->
+            <div class="presence-section">
+                <div class="presence-section-header">
+                    <h2>
+                        <span class="icon" style="background: linear-gradient(135deg, #065f46, #059669);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </span>
+                        States with Distributors
+                    </h2>
                     <button class="become-partner-btn become-distributor-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
@@ -274,10 +474,9 @@
                         Become a Distributor
                     </button>
                 </div>
-                <div class="partner-grid" id="distributorGrid">
-                    <!-- Loaded dynamically -->
-                    <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <div class="loader">Loading partners...</div>
+                <div class="distributor-states-container" id="distributorGrid">
+                    <div class="loading-state">
+                        <div class="loader">Loading...</div>
                     </div>
                 </div>
             </div>
