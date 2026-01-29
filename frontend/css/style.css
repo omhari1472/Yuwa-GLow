@@ -149,10 +149,16 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-size: cover;
-    background-position: center;
     position: relative;
-    /* Removed absolute positioning & opacity transitions */
+    overflow: hidden;
+    background-color: var(--warm-cream);
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .hero-slide.active {
@@ -2533,8 +2539,13 @@ body {
 /* Hero section loading placeholder */
 .hero-slide {
     background-color: var(--warm-cream);
-    background-size: cover;
-    background-position: center;
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 /* Card loading placeholder */

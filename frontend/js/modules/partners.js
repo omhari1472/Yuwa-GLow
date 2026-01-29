@@ -154,7 +154,7 @@ const PartnersModule = {
                             </div>
                             <div>
                                 <h3>${state}</h3>
-                                <div class="district-count">${districtCount} District${districtCount > 1 ? 's' : ''} Covered</div>
+                                <div class="district-count">We are present in ${districtCount} district${districtCount > 1 ? 's' : ''}</div>
                             </div>
                         </div>
                         <div class="expand-icon">
@@ -166,11 +166,14 @@ const PartnersModule = {
                     <div class="state-accordion-content">
                         <div class="districts-grid">
                             ${districts.map(d => `
-                                <div class="district-chip">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 6L9 17l-5-5"/>
-                                    </svg>
-                                    ${d.district}
+                                <div class="district-card">
+                                    <div class="district-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+                                            <circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <span class="district-name">${d.district}</span>
                                 </div>
                             `).join('')}
                         </div>
