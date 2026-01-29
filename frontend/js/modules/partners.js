@@ -370,35 +370,44 @@ const PartnersModule = {
                 .photo-hint { font-size: 11px; color: #9ca3af; }
 
                 @media (max-width: 768px) {
-                    .modal { padding: 0 10px; align-items: flex-end; }
+                    .modal { padding: 0; align-items: flex-start; overflow-y: auto; }
                     .modal-content {
-                        width: calc(100% - 20px);
-                        max-width: calc(100% - 20px);
-                        max-height: 85vh;
-                        border-radius: 20px 20px 0 0;
-                        margin: 0 auto 0 auto;
+                        width: 100%;
+                        max-width: 100%;
+                        max-height: none;
+                        min-height: 100vh;
+                        border-radius: 0;
+                        margin: 0;
                     }
-                    .modal-header { padding: 16px 20px; }
+                    .modal-header {
+                        padding: 16px 20px;
+                        position: sticky;
+                        top: 0;
+                        z-index: 10;
+                        background: white;
+                        border-bottom: 1px solid #eee;
+                    }
                     .modal-header h2 { font-size: 1.1rem; }
                     .modal-body {
-                        padding: 16px 20px;
-                        max-height: calc(90vh - 130px);
-                        overflow-y: auto;
-                        -webkit-overflow-scrolling: touch;
+                        padding: 20px;
+                        flex: 1;
+                        overflow-y: visible;
                     }
                     .modal-footer {
-                        padding: 12px 20px;
+                        padding: 15px 20px;
                         position: sticky;
                         bottom: 0;
                         background: #f9fafb;
+                        border-top: 1px solid #eee;
+                        z-index: 10;
                     }
                     .form-row { grid-template-columns: 1fr; gap: 0; }
-                    .form-group { margin-bottom: 14px; }
-                    .form-group input, .form-group textarea { padding: 12px 14px; font-size: 16px; }
-                    .photo-upload-wrapper { flex-direction: row; padding: 10px; }
+                    .form-group { margin-bottom: 16px; }
+                    .form-group input, .form-group textarea { padding: 14px 16px; font-size: 16px; }
+                    .photo-upload-wrapper { flex-direction: row; padding: 12px; }
                     .photo-preview { width: 50px; height: 50px; }
-                    .btn-secondary, .modal-footer .cta-button { padding: 12px 16px; font-size: 14px; flex: 1; text-align: center; }
-                    .dropdown-selected { min-height: 44px; padding: 10px 14px; }
+                    .btn-secondary, .modal-footer .cta-button { padding: 14px 20px; font-size: 15px; flex: 1; text-align: center; }
+                    .dropdown-selected { min-height: 48px; padding: 12px 16px; }
                 }
             `;
             document.head.appendChild(styleEl);
