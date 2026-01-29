@@ -105,25 +105,25 @@ body {
 }
 
 .hair-products-bg {
-    background-image: url('../assets/images/hair-background.png');
+    background-image: url('../assets/images/hair-background.webp');
     background-size: cover;
     background-position: center;
 }
 
 .skin-products-bg {
-    background-image: url('../assets/images/skin-background.png'); /* Assuming standard png format, adjust if jpg */
+    background-image: url('../assets/images/skin-background.webp'); /* Assuming standard png format, adjust if jpg */
     background-size: cover;
     background-position: center;
 }
 
 .makeup-products-bg {
-    background-image: url('../assets/images/makeup-background.png'); /* Assuming standard png format, adjust if jpg */
+    background-image: url('../assets/images/makeup-background.webp'); /* Assuming standard png format, adjust if jpg */
     background-size: cover;
     background-position: center;
 }
 
 .salon-products-bg {
-    background-image: url('../assets/images/salon-tool-background.png');
+    background-image: url('../assets/images/salon-tool-background.webp');
     background-size: cover;
     background-position: center;
 }
