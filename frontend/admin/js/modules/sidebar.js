@@ -26,7 +26,7 @@ const SidebarModule = {
                             <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6" /></svg>
                             <span class="nav-label">Carousel</span>
                         </a></li>
-                        <li><a href="gallery.html" class="${currentFileName === 'gallery.html' ? 'active' : ''}"
+                        <li><a href="gallery.html" class="${currentFileName === 'gallery.html' ? 'active' : ''}">
                             <svg class="nav-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19M8.5,13.5L11,16.5L14.5,12L19,18H5L8.5,13.5Z" /></svg>
                             <span class="nav-label">Gallery</span>
                         </a></li>

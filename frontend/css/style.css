@@ -2874,3 +2874,44 @@ body {
     border-bottom: 12px solid transparent;
     margin-left: 4px;
 }
+
+/* --- Coming Soon Placeholder --- */
+.coming-soon-container {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.coming-soon-content {
+    max-width: 500px;
+}
+
+.coming-soon-content .eyebrow-text {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+}
+
+.coming-soon-content h2 {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--dark-text);
+    margin-bottom: 15px;
+}
+
+.coming-soon-content p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.7;
+}

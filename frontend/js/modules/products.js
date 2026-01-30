@@ -122,12 +122,34 @@ const ProductsModule = {
         }
 
         if (filteredProducts.length === 0) {
-            gridEl.innerHTML = `<p class="text-center" style="grid-column: 1/-1; padding: 50px; font-size: 1.2rem; color: #666;">No products found in this collection yet. Check back soon!</p>`;
+            if (['skin', 'makeup', 'salon'].includes(categoryName)) {
+                gridEl.innerHTML = this.comingSoonTemplate(categoryName);
+            } else {
+                gridEl.innerHTML = `<p class="text-center" style="grid-column: 1/-1; padding: 50px; font-size: 1.2rem; color: #666;">No products found in this collection yet. Check back soon!</p>`;
+            }
         } else {
             gridEl.innerHTML = filteredProducts.map(product => this.productCardTemplate(product)).join('');
         }
 
         if (window.startScrollObserver) window.startScrollObserver();
+    },
+
+    comingSoonTemplate(categoryName) {
+        const title = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+        let message = `We are passionately crafting our new line of ${title} products. Get ready for something truly special.`;
+        if (categoryName === 'salon') {
+            message = `A professional-grade collection of salon tools is being designed for precision and elegance.`;
+        }
+
+        return `
+            <div class="coming-soon-container">
+                <div class="coming-soon-content">
+                    <span class="eyebrow-text">Launching Soon</span>
+                    <h2>The ${title} Collection</h2>
+                    <p>${message}</p>
+                </div>
+            </div>
+        `;
     },
 
     productCardTemplate(product) {
