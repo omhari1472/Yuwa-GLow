@@ -281,6 +281,27 @@ body {
     border-color: var(--accent-gold);
 }
 
+/* Carousel Loading State */
+.carousel-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--warm-cream) 0%, var(--off-white) 100%);
+}
+
+.carousel-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.carousel-loading .loading-spinner {
+    width: 50px;
+    height: 50px;
+}
+
 /* Text Reveal Animation */
 .hero-slide .reveal-text {
     opacity: 0;
@@ -1337,6 +1358,189 @@ body {
 /* --- ========================= --- */
 /* --- GALLERY PAGE STYLES --- */
 /* --- ========================= --- */
+
+/* --- Transformations Before/After Section --- */
+.transformations-section {
+    background: linear-gradient(135deg, var(--warm-cream) 0%, var(--off-white) 100%);
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin-top: -30px;
+    margin-bottom: 50px;
+}
+
+.transformations-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.transformation-row {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transformation-row:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(195, 134, 54, 0.15);
+}
+
+.before-after-pair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.ba-image {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ba-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.ba-image:hover img {
+    transform: scale(1.03);
+}
+
+.ba-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 20px;
+    color: white;
+}
+
+.ba-image.before .ba-badge {
+    background: linear-gradient(135deg, #666, #888);
+}
+
+.ba-image.after .ba-badge {
+    background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
+}
+
+.ba-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--primary-gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(195, 134, 54, 0.4);
+}
+
+.ba-arrow svg {
+    width: 18px;
+    height: 18px;
+    color: white;
+}
+
+.transformation-caption {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(195, 134, 54, 0.15);
+}
+
+.transformation-caption h3 {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    color: var(--dark-text);
+    margin-bottom: 5px;
+}
+
+.transformation-caption p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Responsive for Transformations */
+@media (max-width: 768px) {
+    .transformations-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 40px;
+        padding: 0 20px;
+    }
+
+    .transformation-row {
+        padding: 15px;
+        border-radius: 14px;
+    }
+
+    .before-after-pair {
+        gap: 10px;
+    }
+
+    .ba-image img {
+        aspect-ratio: 3/4;
+    }
+
+    .ba-arrow {
+        width: 32px;
+        height: 32px;
+    }
+
+    .ba-arrow svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .transformation-caption h3 {
+        font-size: 1.1rem;
+    }
+
+    .transformation-caption p {
+        font-size: 0.85rem;
+    }
+
+    .ba-badge {
+        padding: 5px 10px;
+        font-size: 0.65rem;
+        top: 10px;
+        left: 10px;
+    }
+
+    .transformation-caption {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+
+    .transformation-caption h3 {
+        font-size: 1.4rem;
+    }
+}
 
 /* --- Gallery Page Styles --- */
 .gallery-grid {

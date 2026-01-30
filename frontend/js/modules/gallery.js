@@ -7,9 +7,21 @@ const GalleryModule = {
         const videosGrid = document.getElementById('gallery-videos');
         const imagesSection = document.getElementById('gallery-images-section');
         const videosSection = document.getElementById('gallery-videos-section');
+        const transformationsList = document.getElementById('transformations-list');
+        const transformationsSection = document.getElementById('transformations-section');
 
-        if (!imagesGrid && !videosGrid) return;
+        // Load gallery (images and videos)
+        if (imagesGrid || videosGrid) {
+            await this.loadGallery(imagesGrid, videosGrid, imagesSection, videosSection);
+        }
 
+        // Load transformations
+        if (transformationsList) {
+            await this.loadTransformations(transformationsList, transformationsSection);
+        }
+    },
+
+    async loadGallery(imagesGrid, videosGrid, imagesSection, videosSection) {
         // Show loading state
         if (imagesGrid) this.renderLoading(imagesGrid);
         if (videosGrid) this.renderLoading(videosGrid);
@@ -55,6 +67,29 @@ const GalleryModule = {
         }
     },
 
+    async loadTransformations(container, section) {
+        this.renderTransformationsLoading(container);
+
+        try {
+            const res = await API.getTransformations();
+            if (res.success) {
+                const items = res.data?.data || res.data || [];
+
+                if (items.length > 0) {
+                    this.renderTransformations(container, items);
+                } else {
+                    // Hide section if no transformations
+                    if (section) section.style.display = 'none';
+                }
+            } else {
+                if (section) section.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Transformations load error:', error);
+            if (section) section.style.display = 'none';
+        }
+    },
+
     renderImages(container, images) {
         container.innerHTML = images.map(item => `
             <div class="gallery-item fade-in">
@@ -72,6 +107,32 @@ const GalleryModule = {
                 <iframe src="${this.formatEmbedUrl(item.media_url)}" title="${item.title}" frameborder="0" allowfullscreen loading="lazy"></iframe>
                 <div class="gallery-overlay">
                     <p>${item.title}</p>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    renderTransformations(container, items) {
+        container.innerHTML = items.map(item => `
+            <div class="transformation-row fade-in">
+                <div class="before-after-pair">
+                    <div class="ba-image before">
+                        <img src="${CONFIG.STORAGE_URL}${item.before_image}" alt="Before Treatment" loading="lazy">
+                        <span class="ba-badge">Before</span>
+                    </div>
+                    <div class="ba-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                    <div class="ba-image after">
+                        <img src="${CONFIG.STORAGE_URL}${item.after_image}" alt="After Treatment" loading="lazy">
+                        <span class="ba-badge">After</span>
+                    </div>
+                </div>
+                <div class="transformation-caption">
+                    <h3>${item.title}</h3>
+                    <p>${item.description || ''}</p>
                 </div>
             </div>
         `).join('');
@@ -97,6 +158,13 @@ const GalleryModule = {
     renderLoading(container) {
         const skeletons = Array(6).fill(`
             <div class="gallery-item skeleton" style="padding-bottom: 100%; position: relative; border-radius: 12px;"></div>
+        `).join('');
+        container.innerHTML = skeletons;
+    },
+
+    renderTransformationsLoading(container) {
+        const skeletons = Array(3).fill(`
+            <div class="transformation-row skeleton" style="height: 200px; border-radius: 12px; margin-bottom: 24px;"></div>
         `).join('');
         container.innerHTML = skeletons;
     }

@@ -4,10 +4,12 @@ use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CareerController;
+use App\Http\Controllers\Api\CarouselController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ContactEnquiryController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\TransformationController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
@@ -22,6 +24,8 @@ Route::get('/blogs/{slug}', [BlogController::class, 'show']);
 Route::get('/careers/open', [CareerController::class, 'getOpen']);
 Route::get('/careers/{career}', [CareerController::class, 'show']);
 Route::get('/gallery', [GalleryController::class, 'index']);
+Route::get('/carousel', [CarouselController::class, 'index']);
+Route::get('/transformations', [TransformationController::class, 'index']);
 Route::get('/partners/availability', [ApplicationController::class, 'checkAvailability']);
 Route::get('/distributors', [ApplicationController::class, 'getApproved'])->defaults('type', 'distributor');
 Route::get('/stockists', [ApplicationController::class, 'getApproved'])->defaults('type', 'super_stockist');
@@ -48,6 +52,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // Gallery Management
     Route::apiResource('gallery', GalleryController::class)->except(['index', 'show']);
     Route::post('gallery/{gallery}', [GalleryController::class, 'update']); // POST for file uploads
+
+    // Carousel Management
+    Route::post('carousel/reorder', [CarouselController::class, 'reorder']);
+    Route::apiResource('carousel', CarouselController::class)->except(['index']);
+    Route::post('carousel/{carousel}', [CarouselController::class, 'update']); // POST for file uploads
+
+    // Transformations Management
+    Route::post('transformations/reorder', [TransformationController::class, 'reorder']);
+    Route::apiResource('transformations', TransformationController::class)->except(['index']);
+    Route::post('transformations/{transformation}', [TransformationController::class, 'update']); // POST for file uploads
 
     // Blog Management
     Route::apiResource('blogs', BlogController::class)->except(['show']);

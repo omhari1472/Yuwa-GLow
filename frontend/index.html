@@ -48,29 +48,21 @@
 
     <main>
         <!-- Page content will go here -->
-        <section class="hero-carousel">
-             <div class="carousel-slides">
-                <!-- Slide 1 -->
-                <div class="hero-slide active">
-                    <img src="assets/images/a.webp" alt="Elegance in Every Drop">
-                </div>
-                <!-- Slide 2 -->
-                <div class="hero-slide">
-                    <img src="assets/images/b.webp" alt="Nature's Purest Touch" loading="lazy">
-                </div>
-                <!-- Slide 3 -->
-                <div class="hero-slide">
-                    <img src="assets/images/c.webp" alt="Radiate Confidence" loading="lazy">
+        <section class="hero-carousel" id="hero-carousel">
+             <div class="carousel-slides" id="carousel-slides">
+                <!-- Dynamic slides loaded from API -->
+                <div class="hero-slide active carousel-placeholder">
+                    <div class="carousel-loading">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
 
             <button class="carousel-prev" aria-label="Previous Slide">&#10094;</button>
             <button class="carousel-next" aria-label="Next Slide">&#10095;</button>
 
-            <div class="carousel-dots">
-                <span class="dot active" data-slide="0"></span>
-                <span class="dot" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
+            <div class="carousel-dots" id="carousel-dots">
+                <!-- Dynamic dots loaded from API -->
             </div>
 
             <div class="wave-container"></div>
