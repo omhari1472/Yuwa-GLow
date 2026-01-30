@@ -122,11 +122,7 @@ const ProductsModule = {
         }
 
         if (filteredProducts.length === 0) {
-            if (['skin', 'makeup', 'salon'].includes(categoryName)) {
-                gridEl.innerHTML = this.comingSoonTemplate(categoryName);
-            } else {
-                gridEl.innerHTML = `<p class="text-center" style="grid-column: 1/-1; padding: 50px; font-size: 1.2rem; color: #666;">No products found in this collection yet. Check back soon!</p>`;
-            }
+            gridEl.innerHTML = this.comingSoonTemplate(categoryName);
         } else {
             gridEl.innerHTML = filteredProducts.map(product => this.productCardTemplate(product)).join('');
         }
