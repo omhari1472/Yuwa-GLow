@@ -2402,10 +2402,27 @@ body {
 
 @media (max-width: 768px) {
     .hero-carousel {
-        height: calc(100vh - 70px);
+        height: auto;
+        max-height: calc(100vh - 70px);
         background: linear-gradient(-45deg, #f3e5c6, #fff5e6, #fef9f0, #f8e8d0);
         background-size: 400% 400%;
         animation: gradientShift 15s ease infinite;
+    }
+
+    .hero-slide {
+        display: block;
+    }
+
+    .hero-slide picture {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-slide picture img {
+        width: 100%;
+        height: auto;
+        object-fit: unset;
     }
 
     @keyframes gradientShift {
