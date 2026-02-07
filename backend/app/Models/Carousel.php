@@ -14,6 +14,7 @@ class Carousel extends Model
 
     protected $fillable = [
         'image_url',
+        'mobile_image_url',
         'sort_order',
         'status',
     ];

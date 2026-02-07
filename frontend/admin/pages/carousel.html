@@ -246,17 +246,31 @@
             <form id="carousel-form" class="admin-form">
                 <div class="modal-body">
                     <div class="form-group" id="image-field">
-                        <label>Upload High-Res Image</label>
+                        <label>Desktop Image (16:9 Landscape)</label>
                         <div id="existing-carousel-image" class="image-preview-container" style="margin-bottom: 10px;"></div>
                         <div class="file-input-wrapper">
                             <div class="file-input-label">
                                 <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
-                                <span>Select Image File</span>
+                                <span>Select Desktop Image</span>
                             </div>
                             <input type="file" name="image" accept="image/*" id="carousel-image-upload">
                         </div>
                         <div id="carousel-image-preview" class="image-preview-container"></div>
-                        <p class="input-hint">Recommended: 1920x800 pixels or similar wide aspect ratio</p>
+                        <p class="input-hint">Recommended: 1920x1080 pixels (16:9 landscape)</p>
+                    </div>
+
+                    <div class="form-group" id="mobile-image-field">
+                        <label>Mobile Image (9:16 Portrait) <span style="color:#6b7280;font-weight:normal;">— Optional</span></label>
+                        <div id="existing-mobile-image" class="image-preview-container" style="margin-bottom: 10px;"></div>
+                        <div class="file-input-wrapper">
+                            <div class="file-input-label">
+                                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                                <span>Select Mobile Image</span>
+                            </div>
+                            <input type="file" name="mobile_image" accept="image/*" id="carousel-mobile-upload">
+                        </div>
+                        <div id="carousel-mobile-preview" class="image-preview-container"></div>
+                        <p class="input-hint">Recommended: 1080x1920 pixels (9:16 portrait). If not provided, desktop image will be used.</p>
                     </div>
 
                     <div class="form-group">

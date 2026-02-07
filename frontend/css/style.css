@@ -130,7 +130,7 @@ body {
 /* Hero Carousel */
 .hero-carousel {
     position: relative;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 95px);
     overflow: hidden;
     background-color: var(--warm-cream);
 }
@@ -154,11 +154,17 @@ body {
     background-color: var(--warm-cream);
 }
 
-.hero-slide img {
+.hero-slide picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.hero-slide picture img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: top center;
 }
 
 .hero-slide.active {
@@ -166,14 +172,8 @@ body {
 }
 
 .wave-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px; 
-    background: var(--off-white); /* Flat color matching the next section's background */
-    z-index: 5;
-    pointer-events: none;
+    display: none; /* Hidden - dots now overlay on image */
+}
     /* Removed SVG background and animation for a flat look */
 }
 
@@ -263,11 +263,12 @@ body {
 .dot {
     width: 12px;
     height: 12px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .dot.active {
@@ -518,10 +519,10 @@ body {
 /* --- Scroll Indicator --- */
 .scroll-indicator {
     position: fixed;
-    top: 80px; /* Height of header */
+    top: 95px; /* Height of desktop header */
     left: 0;
-    height: 4px;
-    background-color: var(--primary-gold);
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-gold), #d4a853);
     width: 0%;
     z-index: 1001;
     transition: width 0.1s ease-out;
@@ -2400,8 +2401,8 @@ body {
 /* --- =================== --- */
 
 @media (max-width: 768px) {
-    /* Animated Gradient Background for Hero */
     .hero-carousel {
+        height: calc(100vh - 70px);
         background: linear-gradient(-45deg, #f3e5c6, #fff5e6, #fef9f0, #f8e8d0);
         background-size: 400% 400%;
         animation: gradientShift 15s ease infinite;
@@ -2762,13 +2763,6 @@ body {
 /* Hero section loading placeholder */
 .hero-slide {
     background-color: var(--warm-cream);
-}
-
-.hero-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
 }
 
 /* Card loading placeholder */

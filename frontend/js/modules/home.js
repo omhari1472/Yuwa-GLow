@@ -40,12 +40,23 @@ async function loadCarouselFromAPI() {
 }
 
 function renderCarousel(slidesContainer, dotsContainer, items) {
-    // Render slides
-    slidesContainer.innerHTML = items.map((item, index) => `
-        <div class="hero-slide ${index === 0 ? 'active' : ''}">
-            <img src="${CONFIG.STORAGE_URL}${item.image_url}" alt="Carousel Image ${index + 1}" ${index > 0 ? 'loading="lazy"' : ''}>
-        </div>
-    `).join('');
+    // Render slides with <picture> element for responsive images
+    slidesContainer.innerHTML = items.map((item, index) => {
+        const desktopSrc = `${CONFIG.STORAGE_URL}${item.image_url}`;
+        const mobileSrc = item.mobile_image_url
+            ? `${CONFIG.STORAGE_URL}${item.mobile_image_url}`
+            : desktopSrc;
+
+        return `
+            <div class="hero-slide ${index === 0 ? 'active' : ''}">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="${mobileSrc}">
+                    <source media="(min-width: 769px)" srcset="${desktopSrc}">
+                    <img src="${desktopSrc}" alt="Carousel Image ${index + 1}" ${index > 0 ? 'loading="lazy"' : ''}>
+                </picture>
+            </div>
+        `;
+    }).join('');
 
     // Render dots
     dotsContainer.innerHTML = items.map((_, index) => `
@@ -54,16 +65,20 @@ function renderCarousel(slidesContainer, dotsContainer, items) {
 }
 
 function renderFallbackCarousel(slidesContainer, dotsContainer) {
-    // Fallback to static images
+    // Fallback to static images with mobile variants
     const fallbackImages = [
-        { src: 'assets/images/a.webp', alt: 'Elegance in Every Drop' },
-        { src: 'assets/images/b.webp', alt: "Nature's Purest Touch" },
-        { src: 'assets/images/c.webp', alt: 'Radiate Confidence' }
+        { desktop: 'assets/images/a.webp', mobile: 'assets/images/a-mobile.webp', alt: 'Elegance in Every Drop' },
+        { desktop: 'assets/images/b.webp', mobile: 'assets/images/b-mobile.webp', alt: "Nature's Purest Touch" },
+        { desktop: 'assets/images/c.webp', mobile: 'assets/images/c-mobile.webp', alt: 'Radiate Confidence' }
     ];
 
     slidesContainer.innerHTML = fallbackImages.map((img, index) => `
         <div class="hero-slide ${index === 0 ? 'active' : ''}">
-            <img src="${img.src}" alt="${img.alt}" ${index > 0 ? 'loading="lazy"' : ''}>
+            <picture>
+                <source media="(max-width: 768px)" srcset="${img.mobile}">
+                <source media="(min-width: 769px)" srcset="${img.desktop}">
+                <img src="${img.desktop}" alt="${img.alt}" ${index > 0 ? 'loading="lazy"' : ''}>
+            </picture>
         </div>
     `).join('');
 

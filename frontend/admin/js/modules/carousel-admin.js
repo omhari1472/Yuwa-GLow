@@ -146,6 +146,7 @@ const CarouselAdminModule = {
     initEventListeners() {
         document.getElementById('open-add-modal')?.addEventListener('click', () => this.openAddModal());
 
+        // Desktop image preview
         const imageInput = document.getElementById('carousel-image-upload');
         if (imageInput) {
             imageInput.onchange = () => {
@@ -160,6 +161,26 @@ const CarouselAdminModule = {
                         preview.appendChild(img);
                     };
                     reader.readAsDataURL(imageInput.files[0]);
+                }
+            };
+        }
+
+        // Mobile image preview
+        const mobileInput = document.getElementById('carousel-mobile-upload');
+        if (mobileInput) {
+            mobileInput.onchange = () => {
+                const preview = document.getElementById('carousel-mobile-preview');
+                preview.innerHTML = '';
+                if (mobileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'preview-item';
+                        img.style.maxHeight = '200px';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(mobileInput.files[0]);
                 }
             };
         }
@@ -194,6 +215,8 @@ const CarouselAdminModule = {
         document.getElementById('carousel-form').reset();
         document.getElementById('carousel-image-preview').innerHTML = '';
         document.getElementById('existing-carousel-image').innerHTML = '';
+        document.getElementById('carousel-mobile-preview').innerHTML = '';
+        document.getElementById('existing-mobile-image').innerHTML = '';
         document.getElementById('modal-title').textContent = 'Add Carousel Image';
         this.initStatusDropdown('active');
         UI.modal.open('carousel-modal');
@@ -206,13 +229,25 @@ const CarouselAdminModule = {
         this.editingId = id;
         document.getElementById('modal-title').textContent = 'Edit Carousel Image';
         document.getElementById('carousel-image-preview').innerHTML = '';
+        document.getElementById('carousel-mobile-preview').innerHTML = '';
 
-        // Show existing image
+        // Show existing desktop image
         const existingContainer = document.getElementById('existing-carousel-image');
         existingContainer.innerHTML = `
-            <p class="text-muted" style="margin-bottom: 8px; font-size: 12px;">Current Image:</p>
+            <p class="text-muted" style="margin-bottom: 8px; font-size: 12px;">Current Desktop Image:</p>
             <img src="${CONFIG.STORAGE_URL}${item.image_url}" class="preview-item" style="max-width: 100%;">
         `;
+
+        // Show existing mobile image if available
+        const existingMobileContainer = document.getElementById('existing-mobile-image');
+        if (item.mobile_image_url) {
+            existingMobileContainer.innerHTML = `
+                <p class="text-muted" style="margin-bottom: 8px; font-size: 12px;">Current Mobile Image:</p>
+                <img src="${CONFIG.STORAGE_URL}${item.mobile_image_url}" class="preview-item" style="max-height: 200px;">
+            `;
+        } else {
+            existingMobileContainer.innerHTML = '';
+        }
 
         this.initStatusDropdown(item.status || 'active');
         UI.modal.open('carousel-modal');

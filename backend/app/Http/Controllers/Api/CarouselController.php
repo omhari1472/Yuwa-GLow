@@ -41,7 +41,8 @@ class CarouselController extends Controller
         try {
             $carousel = $this->carouselService->createCarousel(
                 $request->validated(),
-                $request->file('image')
+                $request->file('image'),
+                $request->file('mobile_image')
             );
             return $this->successResponse($carousel, 'Carousel image added', 201);
         } catch (\Exception $e) {
@@ -61,7 +62,8 @@ class CarouselController extends Controller
             $updated = $this->carouselService->updateCarousel(
                 $carousel,
                 $request->validated(),
-                $request->file('image')
+                $request->file('image'),
+                $request->file('mobile_image')
             );
             return $this->successResponse($updated, 'Carousel image updated');
         } catch (\Exception $e) {
