@@ -17,12 +17,13 @@ class CarouselService
     public function createCarousel(array $data, $file = null, $mobileFile = null)
     {
         return DB::transaction(function () use ($data, $file, $mobileFile) {
+            // Carousel images are full-screen hero banners — use high quality & resolution
             if ($file) {
-                $data['image_url'] = $this->fileUpload->upload($file, 'carousel');
+                $data['image_url'] = $this->fileUpload->upload($file, 'carousel', 'public', 92, 2560);
             }
 
             if ($mobileFile) {
-                $data['mobile_image_url'] = $this->fileUpload->upload($mobileFile, 'carousel/mobile');
+                $data['mobile_image_url'] = $this->fileUpload->upload($mobileFile, 'carousel/mobile', 'public', 90, 1080);
             }
 
             // Set default sort_order to be at the end
@@ -46,10 +47,10 @@ class CarouselService
                 'status' => $data['status'] ?? $carousel->status,
             ];
 
-            // If new desktop image uploaded, delete old one and upload new
+            // If new desktop image uploaded, delete old one and upload new (high quality for hero)
             if ($file) {
                 $this->fileUpload->delete($carousel->image_url);
-                $updateData['image_url'] = $this->fileUpload->upload($file, 'carousel');
+                $updateData['image_url'] = $this->fileUpload->upload($file, 'carousel', 'public', 92, 2560);
             }
 
             // If new mobile image uploaded, delete old one and upload new
@@ -57,7 +58,7 @@ class CarouselService
                 if ($carousel->mobile_image_url) {
                     $this->fileUpload->delete($carousel->mobile_image_url);
                 }
-                $updateData['mobile_image_url'] = $this->fileUpload->upload($mobileFile, 'carousel/mobile');
+                $updateData['mobile_image_url'] = $this->fileUpload->upload($mobileFile, 'carousel/mobile', 'public', 90, 1080);
             }
 
             $carousel->update($updateData);

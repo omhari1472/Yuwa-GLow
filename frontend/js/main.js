@@ -144,10 +144,16 @@ function initCommonUI() {
         });
     }
 
-    // Scroll Progress + Header auto-hide
+    // Scroll Progress + Transparent header on homepage
     const scrollIndicator = document.querySelector('.scroll-indicator');
     const header = document.querySelector('.main-header');
+    const heroCarousel = document.getElementById('hero-carousel');
     let lastScroll = 0;
+
+    // If homepage has a hero carousel, start with transparent header
+    if (header && heroCarousel) {
+        header.classList.add('header-transparent');
+    }
 
     window.addEventListener('scroll', () => {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -158,15 +164,36 @@ function initCommonUI() {
             scrollIndicator.style.width = scrolled + "%";
         }
 
-        // Smart header: hide on scroll down, show on scroll up
-        if (header && winScroll > 200) {
-            if (winScroll > lastScroll && winScroll - lastScroll > 5) {
-                header.classList.add('header-hidden');
-            } else if (lastScroll > winScroll && lastScroll - winScroll > 5) {
-                header.classList.remove('header-hidden');
+        if (header && heroCarousel) {
+            // Homepage: transparent in hero zone, solid after scrolling past hero
+            const heroBottom = heroCarousel.offsetHeight - 100;
+
+            if (winScroll > heroBottom) {
+                // Past the hero — solid header, smart hide on scroll
+                header.classList.remove('header-transparent');
+                header.classList.add('header-solid');
+
+                if (winScroll > lastScroll && winScroll - lastScroll > 5) {
+                    header.classList.add('header-hidden');
+                } else if (lastScroll > winScroll && lastScroll - winScroll > 5) {
+                    header.classList.remove('header-hidden');
+                }
+            } else {
+                // Inside hero zone — transparent, always visible
+                header.classList.add('header-transparent');
+                header.classList.remove('header-solid', 'header-hidden');
             }
         } else if (header) {
-            header.classList.remove('header-hidden');
+            // Other pages: standard smart hide
+            if (winScroll > 200) {
+                if (winScroll > lastScroll && winScroll - lastScroll > 5) {
+                    header.classList.add('header-hidden');
+                } else if (lastScroll > winScroll && lastScroll - winScroll > 5) {
+                    header.classList.remove('header-hidden');
+                }
+            } else {
+                header.classList.remove('header-hidden');
+            }
         }
         lastScroll = winScroll;
     }, { passive: true });

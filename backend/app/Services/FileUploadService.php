@@ -10,8 +10,11 @@ class FileUploadService
     /**
      * Upload a file to a specific disk and directory.
      * Automatically converts images to WebP format for better performance.
+     *
+     * @param int $quality  WebP quality 1-100 (default 80, use 90+ for hero/carousel)
+     * @param int $maxWidth Max pixel width before resize (default 1920)
      */
-    public function upload(UploadedFile $file, string $directory, string $disk = 'public'): string
+    public function upload(UploadedFile $file, string $directory, string $disk = 'public', int $quality = 80, int $maxWidth = 1920): string
     {
         // Check if it's an image that can be converted to WebP
         $mimeType = $file->getMimeType();
@@ -19,7 +22,7 @@ class FileUploadService
 
         // Only convert if GD supports WebP
         if (in_array($mimeType, $imageTypes) && function_exists('imagewebp')) {
-            return $this->uploadAndConvertToWebp($file, $directory, $disk);
+            return $this->uploadAndConvertToWebp($file, $directory, $disk, $quality, $maxWidth);
         }
 
         // For non-image files or if WebP not supported, store as-is
@@ -29,7 +32,7 @@ class FileUploadService
     /**
      * Convert image to WebP format and upload using GD library.
      */
-    protected function uploadAndConvertToWebp(UploadedFile $file, string $directory, string $disk = 'public'): string
+    protected function uploadAndConvertToWebp(UploadedFile $file, string $directory, string $disk = 'public', int $quality = 80, int $maxWidth = 1920): string
     {
         $mimeType = $file->getMimeType();
         $sourcePath = $file->getPathname();
@@ -57,10 +60,9 @@ class FileUploadService
             return $file->store($directory, $disk);
         }
 
-        // Resize if too large (max 1920px width)
+        // Resize if too large
         $width = imagesx($image);
         $height = imagesy($image);
-        $maxWidth = 1920;
 
         if ($width > $maxWidth) {
             $newHeight = (int) ($height * ($maxWidth / $width));
@@ -86,8 +88,8 @@ class FileUploadService
         // Create temp file for WebP
         $tempPath = sys_get_temp_dir() . '/' . $filename;
 
-        // Convert to WebP with 80% quality
-        imagewebp($image, $tempPath, 80);
+        // Convert to WebP
+        imagewebp($image, $tempPath, $quality);
         imagedestroy($image);
 
         // Store the WebP image

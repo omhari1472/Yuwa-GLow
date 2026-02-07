@@ -52,7 +52,7 @@ function renderCarousel(slidesContainer, dotsContainer, items) {
                 <picture>
                     <source media="(max-width: 768px)" srcset="${mobileSrc}">
                     <source media="(min-width: 769px)" srcset="${desktopSrc}">
-                    <img src="${desktopSrc}" alt="Carousel Image ${index + 1}" ${index > 0 ? 'loading="lazy"' : ''}>
+                    <img src="${desktopSrc}" alt="Carousel Image ${index + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                 </picture>
             </div>
         `;
