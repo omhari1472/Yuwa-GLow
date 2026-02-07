@@ -53,14 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initModules();
 });
 
-// Hide page loader (only exists on home page)
+// Cinematic page loader — wait for brand reveal animations to finish
 function hidePageLoader() {
     const loader = document.getElementById('pageLoader');
     if (loader) {
+        // Let the logo shimmer + gold line + tagline play out (~1.8s), then reveal
         setTimeout(() => {
             loader.classList.add('hidden');
-            setTimeout(() => loader.remove(), 400);
-        }, 500);
+            document.body.classList.add('page-revealed');
+            setTimeout(() => loader.remove(), 800);
+        }, 1800);
+    } else {
+        document.body.classList.add('page-revealed');
     }
 }
 
@@ -140,14 +144,30 @@ function initCommonUI() {
         });
     }
 
-    // Scroll Progress
+    // Scroll Progress + Header auto-hide
     const scrollIndicator = document.querySelector('.scroll-indicator');
-    window.onscroll = () => {
+    const header = document.querySelector('.main-header');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+
         if (scrollIndicator) {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             scrollIndicator.style.width = scrolled + "%";
         }
-    };
+
+        // Smart header: hide on scroll down, show on scroll up
+        if (header && winScroll > 200) {
+            if (winScroll > lastScroll && winScroll - lastScroll > 5) {
+                header.classList.add('header-hidden');
+            } else if (lastScroll > winScroll && lastScroll - winScroll > 5) {
+                header.classList.remove('header-hidden');
+            }
+        } else if (header) {
+            header.classList.remove('header-hidden');
+        }
+        lastScroll = winScroll;
+    }, { passive: true });
 }

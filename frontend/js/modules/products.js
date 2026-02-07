@@ -97,26 +97,21 @@ const ProductsModule = {
     renderCategoryProducts(categoryName) {
         const titleEl = document.getElementById('current-category-title');
         const gridEl = document.getElementById('category-products-grid');
-        
+
         if (!titleEl || !gridEl) return;
 
-        if (['hair', 'skin', 'makeup', 'salon'].includes(categoryName)) {
-            titleEl.style.display = 'none';
-        } else {
-            titleEl.style.display = 'block';
-            titleEl.innerText = `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Products`;
-        }
-        
+        // Always hide the old title — the editorial hero replaces it
+        titleEl.style.display = 'none';
+
         // Find category ID based on name
         const category = this.categories.find(c => c.name.toLowerCase().includes(categoryName));
-        
+
         let filteredProducts = [];
         if (category) {
             filteredProducts = this.products.filter(p => p.category_id == category.id);
         } else {
-            // Fallback: search in product names or descriptions if category not found in metadata
-            filteredProducts = this.products.filter(p => 
-                p.name.toLowerCase().includes(categoryName) || 
+            filteredProducts = this.products.filter(p =>
+                p.name.toLowerCase().includes(categoryName) ||
                 (p.description && p.description.toLowerCase().includes(categoryName))
             );
         }
@@ -148,6 +143,30 @@ const ProductsModule = {
         `;
     },
 
+    getBadges(product) {
+        const badges = [];
+        const name = (product.name || '').toLowerCase();
+        const desc = (product.description || '').toLowerCase();
+        const combined = name + ' ' + desc;
+
+        if (combined.includes('salon') || combined.includes('professional')) badges.push('Salon Professional');
+        if (combined.includes('sulfate free') || combined.includes('sulphate free')) badges.push('Sulfate Free');
+        if (combined.includes('brazilian') || combined.includes('keratin')) badges.push('Brazilian Tech');
+        if (combined.includes('rebond')) badges.push('Rebonding');
+        if (combined.includes('organic') || combined.includes('natural')) badges.push('Natural');
+
+        return badges.slice(0, 2); // max 2 badges
+    },
+
+    getVariantSize(product) {
+        if (product.variants && product.variants.length > 0) {
+            const v = product.variants[0];
+            if (v.variant_value) return v.variant_value;
+            if (v.variant_name) return v.variant_name;
+        }
+        return '';
+    },
+
     productCardTemplate(product) {
         const placeholder = 'assets/images/placeholder.png';
         const imgUrl = (product.images && product.images[0])
@@ -155,16 +174,31 @@ const ProductsModule = {
             : placeholder;
 
         const productId = product.id;
+        const badges = this.getBadges(product);
+        const sizeText = this.getVariantSize(product);
+        const cleanDesc = product.description
+            ? product.description.replace(/<[^>]*>/g, '').substring(0, 90)
+            : '';
+
+        const badgesHtml = badges.length > 0
+            ? `<div class="ed-card-badges">${badges.map(b => `<span class="ed-badge">${b}</span>`).join('')}</div>`
+            : '';
+
+        const sizeHtml = sizeText
+            ? `<p class="ed-card-size">${sizeText}</p>`
+            : '';
 
         return `
-            <div class="product-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <a href="#product/${productId}" class="product-image-link" style="display: block; height: 350px; background: #f5f5f5;">
-                    <img src="${imgUrl}" alt="${product.name}" loading="lazy" onerror="this.src='${placeholder}'" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="ed-product-card fade-in">
+                <a href="#product/${productId}" class="ed-card-image-area">
+                    ${badgesHtml}
+                    <img src="${imgUrl}" alt="${product.name}" loading="lazy" onerror="this.src='${placeholder}'">
                 </a>
-                <div class="product-info" style="padding: 20px; text-align: center;">
-                    <h3 style="margin-bottom: 10px; font-size: 18px;"><a href="#product/${productId}" style="color: #3a3a3a; text-decoration: none;">${product.name}</a></h3>
-                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">${product.description ? (product.description.replace(/<[^>]*>/g, '').substring(0, 80)) : ''}...</p>
-                    <p style="color: var(--primary-gold); font-weight: 700; font-size: 20px;">₹${product.price}</p>
+                <div class="ed-card-body">
+                    <h3 class="ed-card-name"><a href="#product/${productId}">${product.name}</a></h3>
+                    ${sizeHtml}
+                    <p class="ed-card-benefit">${cleanDesc}</p>
+                    <a href="#product/${productId}" class="ed-card-cta">Explore Product &rarr;</a>
                 </div>
             </div>
         `;
@@ -173,12 +207,13 @@ const ProductsModule = {
     // Skeleton loader template for products
     skeletonCardTemplate() {
         return `
-            <div class="skeleton-card fade-in" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <div class="skeleton" style="height: 350px; border-radius: 0;"></div>
-                <div style="padding: 20px; text-align: center;">
-                    <div class="skeleton skeleton-text medium" style="margin: 0 auto 10px;"></div>
-                    <div class="skeleton skeleton-text long" style="margin-bottom: 8px;"></div>
-                    <div class="skeleton skeleton-text short" style="margin: 0 auto;"></div>
+            <div class="ed-product-card fade-in">
+                <div class="skeleton" style="height: 420px; border-radius: 0; background: linear-gradient(135deg, #f5ede0, #ece3d4);"></div>
+                <div style="padding: 28px;">
+                    <div class="skeleton skeleton-text medium" style="margin-bottom: 10px;"></div>
+                    <div class="skeleton skeleton-text short" style="margin-bottom: 12px;"></div>
+                    <div class="skeleton skeleton-text long" style="margin-bottom: 20px;"></div>
+                    <div class="skeleton skeleton-text short"></div>
                 </div>
             </div>
         `;

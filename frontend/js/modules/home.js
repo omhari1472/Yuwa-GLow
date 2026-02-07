@@ -65,24 +65,40 @@ function renderCarousel(slidesContainer, dotsContainer, items) {
 }
 
 function renderFallbackCarousel(slidesContainer, dotsContainer) {
-    // Fallback to static images with mobile variants
-    const fallbackImages = [
-        { desktop: 'assets/images/a.webp', mobile: 'assets/images/a-mobile.webp', alt: 'Elegance in Every Drop' },
-        { desktop: 'assets/images/b.webp', mobile: 'assets/images/b-mobile.webp', alt: "Nature's Purest Touch" },
-        { desktop: 'assets/images/c.webp', mobile: 'assets/images/c-mobile.webp', alt: 'Radiate Confidence' }
+    const fallbackSlides = [
+        {
+            eyebrow: 'Salon Professional',
+            heading: 'Crafted for<br>Excellence',
+            subtext: 'Advanced salon-grade formulations designed for repair, rebonding & nourishment.',
+            theme: 'hero-slide--warm'
+        },
+        {
+            eyebrow: 'The Science of Care',
+            heading: 'Where Nature<br>Meets Precision',
+            subtext: 'Biomimetic K-Cell technology for deep cellular repair and lasting transformation.',
+            theme: 'hero-slide--dark'
+        },
+        {
+            eyebrow: 'YuvaGlow Professional Co.',
+            heading: 'Trusted by<br>Professionals',
+            subtext: 'Premium hair care trusted by salon professionals across the country.',
+            theme: 'hero-slide--gold'
+        }
     ];
 
-    slidesContainer.innerHTML = fallbackImages.map((img, index) => `
-        <div class="hero-slide ${index === 0 ? 'active' : ''}">
-            <picture>
-                <source media="(max-width: 768px)" srcset="${img.mobile}">
-                <source media="(min-width: 769px)" srcset="${img.desktop}">
-                <img src="${img.desktop}" alt="${img.alt}" ${index > 0 ? 'loading="lazy"' : ''}>
-            </picture>
+    slidesContainer.innerHTML = fallbackSlides.map((slide, index) => `
+        <div class="hero-slide hero-slide--editorial ${slide.theme} ${index === 0 ? 'active' : ''}">
+            <div class="hero-editorial-content">
+                <span class="hero-eyebrow">${slide.eyebrow}</span>
+                <div class="hero-gold-line"></div>
+                <h1 class="hero-editorial-heading">${slide.heading}</h1>
+                <p class="hero-editorial-sub">${slide.subtext}</p>
+                <a href="products.html#hair" class="hero-editorial-cta">Explore Collection &rarr;</a>
+            </div>
         </div>
     `).join('');
 
-    dotsContainer.innerHTML = fallbackImages.map((_, index) => `
+    dotsContainer.innerHTML = fallbackSlides.map((_, index) => `
         <span class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></span>
     `).join('');
 }
@@ -97,7 +113,7 @@ function initHeroCarousel() {
     const dots = document.querySelectorAll('.dot');
     let currentSlide = 0;
     let slideInterval;
-    const intervalTime = 3000;
+    const intervalTime = 5000;
 
     function showSlide(index) {
         // Wrap around

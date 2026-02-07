@@ -15,11 +15,12 @@
     <script type="module" src="js/main.js"></script>
 </head>
 <body>
-    <!-- Page Loader -->
+    <!-- Cinematic Page Loader -->
     <div class="page-loader" id="pageLoader">
         <div class="page-loader-content">
             <img src="assets/icons/logo.svg" alt="Loading..." class="page-loader-logo">
-            <div class="loading-spinner"></div>
+            <div class="loader-gold-line"></div>
+            <span class="loader-tagline">Professional Hair Care</span>
         </div>
     </div>
 
@@ -47,8 +48,10 @@
     </header>
 
     <main>
-        <!-- Page content will go here -->
+        <!-- Hero Carousel -->
         <section class="hero-carousel" id="hero-carousel">
+            <div class="hero-grain"></div>
+            <div class="hero-vignette"></div>
              <div class="carousel-slides" id="carousel-slides">
                 <!-- Dynamic slides loaded from API -->
                 <div class="hero-slide active carousel-placeholder">
@@ -65,14 +68,51 @@
                 <!-- Dynamic dots loaded from API -->
             </div>
 
-            <div class="wave-container"></div>
+            <!-- Scroll cue -->
+            <div class="hero-scroll-cue">
+                <span>Scroll</span>
+                <div class="scroll-cue-line"></div>
+            </div>
         </section>
 
         <div class="scroll-indicator"></div>
 
+        <!-- Brand Manifesto -->
+        <section class="brand-manifesto fade-in">
+            <div class="container">
+                <p class="manifesto-eyebrow">The YuvaGlow Philosophy</p>
+                <h2 class="manifesto-heading">Where Science<br>Meets Luxury</h2>
+                <p class="manifesto-body">We believe every strand deserves salon-grade care. Our formulations blend advanced biomimetic technology with nature's finest botanicals &mdash; crafted for professionals who demand nothing less than extraordinary results.</p>
+                <div class="manifesto-gold-line"></div>
+            </div>
+        </section>
+
+        <!-- Gold Marquee Strip -->
+        <div class="gold-marquee">
+            <div class="marquee-track">
+                <span>Salon Professional</span>
+                <span class="marquee-dot"></span>
+                <span>Keratin Technology</span>
+                <span class="marquee-dot"></span>
+                <span>Premium Formulations</span>
+                <span class="marquee-dot"></span>
+                <span>Trusted by Experts</span>
+                <span class="marquee-dot"></span>
+                <span>Salon Professional</span>
+                <span class="marquee-dot"></span>
+                <span>Keratin Technology</span>
+                <span class="marquee-dot"></span>
+                <span>Premium Formulations</span>
+                <span class="marquee-dot"></span>
+                <span>Trusted by Experts</span>
+                <span class="marquee-dot"></span>
+            </div>
+        </div>
+
         <!-- Desktop Categories -->
         <section class="featured-categories container section-padding fade-in desktop-only">
-            <h2 class="section-title">Our Products</h2>
+            <p class="section-eyebrow">Explore</p>
+            <h2 class="section-title">Our Collections</h2>
             <div class="category-grid">
                 <a href="products.html#hair" class="category-card">
                     <img src="assets/images/hair-feature-product.webp" alt="Hair care products" loading="lazy">
@@ -259,24 +299,48 @@
             </div>
         </section>
 
+        <!-- Promise Pillars -->
         <section class="brand-highlights section-padding fade-in">
             <div class="container">
+                <p class="section-eyebrow">Our Commitment</p>
                 <h2 class="section-title">The YUVA Glow Promise</h2>
                 <div class="highlights-grid">
-                    <div class="highlight-item">
-                        <img src="assets/icons/natural-ingredients.svg" alt="Natural Ingredients">
+                    <div class="highlight-item fade-in">
+                        <div class="highlight-number">01</div>
                         <h3>Natural Ingredients</h3>
                         <p>Crafted with the finest elements from nature for a pure, gentle touch.</p>
                     </div>
-                    <div class="highlight-item">
-                        <img src="assets/icons/cruelty-free.svg" alt="Cruelty-Free">
+                    <div class="highlight-item fade-in">
+                        <div class="highlight-number">02</div>
                         <h3>Cruelty-Free</h3>
                         <p>We believe in beauty without compromise. Our products are never tested on animals.</p>
                     </div>
-                    <div class="highlight-item">
-                        <img src="assets/icons/premium-quality.svg" alt="Premium Quality">
+                    <div class="highlight-item fade-in">
+                        <div class="highlight-number">03</div>
                         <h3>Premium Quality</h3>
                         <p>Experience luxurious formulas designed for exceptional performance and results.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Strip -->
+        <section class="stats-strip fade-in">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="500">500+</span>
+                        <span class="stat-label">Salons Trust Us</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="25">25+</span>
+                        <span class="stat-label">Premium Products</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="15">15+</span>
+                        <span class="stat-label">Years of Expertise</span>
                     </div>
                 </div>
             </div>
