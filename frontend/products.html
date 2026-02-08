@@ -37,49 +37,60 @@
     </header>
 
     <main id="main-product-section" class="product-grid-container">
+        <div class="scroll-indicator"></div>
+
         <!-- Categories Landing View -->
-        <div id="categories-view" class="container section-padding stagger-wrapper">
-            <h2 class="section-title stagger-item">Our Products</h2>
-            <div class="category-grid">
-                <!-- Hair Card -->
-                <a href="#hair" class="category-card stagger-item">
-                    <img src="assets/images/hair-feature-product.webp" alt="Hair care products" loading="lazy">
-                    <div class="category-title">
-                        <h3>Hair Products</h3>
-                    </div>
-                </a>
-                <!-- Skin Card -->
-                <a href="#skin" class="category-card stagger-item">
-                    <img src="assets/images/body-feature-product.webp" alt="Skin care products" loading="lazy">
-                    <div class="category-title">
-                        <h3>Skin Products</h3>
-                    </div>
-                </a>
-                <!-- Makeup Card -->
-                <a href="#makeup" class="category-card stagger-item">
-                    <img src="assets/images/makeup-feature-product.webp" alt="Makeup products" loading="lazy">
-                    <div class="category-title">
-                        <h3>Makeup Products</h3>
-                    </div>
-                </a>
-                <!-- Salon Card -->
-                <a href="#salon" class="category-card stagger-item">
-                    <img src="assets/images/salon-tool-featured-product.webp" alt="Salon products" loading="lazy">
-                    <div class="category-title">
-                        <h3>Salon Tools</h3>
-                    </div>
-                </a>
+        <div id="categories-view" style="display: block;">
+            <div class="products-page-header">
+                <div class="container fade-in">
+                    <p class="section-eyebrow">The Collection</p>
+                    <h1 class="products-page-title">Our Products</h1>
+                </div>
+            </div>
+            <div class="container">
+                <div class="category-grid">
+                    <a href="#hair" class="category-card fade-in">
+                        <img src="assets/images/hair-feature-product.webp" alt="Hair care products" loading="lazy">
+                        <div class="category-title">
+                            <span class="category-eyebrow">Explore</span>
+                            <h3>Hair Care</h3>
+                        </div>
+                    </a>
+                    <a href="#skin" class="category-card fade-in">
+                        <img src="assets/images/body-feature-product.webp" alt="Skin care products" loading="lazy">
+                        <div class="category-title">
+                            <span class="category-eyebrow">Explore</span>
+                            <h3>Skin Care</h3>
+                        </div>
+                    </a>
+                    <a href="#makeup" class="category-card fade-in">
+                        <img src="assets/images/makeup-feature-product.webp" alt="Makeup products" loading="lazy">
+                        <div class="category-title">
+                            <span class="category-eyebrow">Explore</span>
+                            <h3>Makeup</h3>
+                        </div>
+                    </a>
+                    <a href="#salon" class="category-card fade-in">
+                        <img src="assets/images/salon-tool-featured-product.webp" alt="Salon products" loading="lazy">
+                        <div class="category-title">
+                            <span class="category-eyebrow">Explore</span>
+                            <h3>Salon Tools</h3>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- Individual Category Products View (Hidden by default) -->
         <div id="products-view" style="display: none;">
-            <!-- Editorial Hero Section -->
-            <div class="products-editorial-hero">
-                <h1 class="products-editorial-heading">Our Professional Range</h1>
-                <p class="products-editorial-subheading">Advanced salon-grade formulations designed for repair, rebonding &amp; nourishment.</p>
+            <div class="products-category-header">
+                <div class="container fade-in">
+                    <a href="products.html" class="products-back-link">&larr; All Collections</a>
+                    <p class="section-eyebrow" id="products-hero-eyebrow">Professional Range</p>
+                    <h1 class="products-page-title" id="products-hero-heading">Hair Care</h1>
+                </div>
             </div>
-            <h2 id="current-category-title" class="section-title fade-in" style="text-align: left; margin-bottom: 40px;">Products</h2>
+            <h2 id="current-category-title" style="display: none;">Products</h2>
             <div class="container">
                 <div id="category-products-grid" class="product-grid-editorial">
                     <!-- Products will be injected here -->
@@ -89,6 +100,7 @@
 
         <!-- Single Product Detail View (Hidden by default) -->
         <div id="product-detail-view" class="container section-padding" style="display: none;">
+            <a href="javascript:history.back()" class="products-back-link fade-in" style="display: inline-block; margin-bottom: 20px;">&larr; Back to Products</a>
             <div id="product-detail-content" class="product-detail-layout fade-in">
                 <!-- Product Details Injected Here -->
             </div>

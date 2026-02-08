@@ -82,6 +82,9 @@ const ProductsModule = {
             this.currentCategory = null;
             window.scrollTo(0, 0);
         }
+
+        // Re-trigger scroll observer for newly visible fade-in elements
+        if (window.startScrollObserver) window.startScrollObserver();
     },
 
     toSlug(text) {
@@ -94,14 +97,30 @@ const ProductsModule = {
             .replace(/-+$/, '');            // Trim - from end of text
     },
 
+    getCategoryLabel(categoryName) {
+        const labels = {
+            hair: { eyebrow: 'Professional Range', title: 'Hair Care' },
+            skin: { eyebrow: 'Radiance Collection', title: 'Skin Care' },
+            makeup: { eyebrow: 'Beauty Essentials', title: 'Makeup' },
+            salon: { eyebrow: 'Professional Tools', title: 'Salon Tools' }
+        };
+        return labels[categoryName] || { eyebrow: 'Collection', title: categoryName };
+    },
+
     renderCategoryProducts(categoryName) {
         const titleEl = document.getElementById('current-category-title');
         const gridEl = document.getElementById('category-products-grid');
 
         if (!titleEl || !gridEl) return;
 
-        // Always hide the old title — the editorial hero replaces it
         titleEl.style.display = 'none';
+
+        // Update compact header
+        const label = this.getCategoryLabel(categoryName);
+        const eyebrowEl = document.getElementById('products-hero-eyebrow');
+        const headingEl = document.getElementById('products-hero-heading');
+        if (eyebrowEl) eyebrowEl.textContent = label.eyebrow;
+        if (headingEl) headingEl.textContent = label.title;
 
         // Find category ID based on name
         const category = this.categories.find(c => c.name.toLowerCase().includes(categoryName));
@@ -293,7 +312,9 @@ const ProductsModule = {
         // Render Detail View
         container.innerHTML = `
             <div class="product-image-section">
-                <img src="${mainImgUrl}" class="main-product-image" id="mainProductImage" alt="${product.name}" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <div class="main-image-wrapper">
+                    <img src="${mainImgUrl}" class="main-product-image" id="mainProductImage" alt="${product.name}">
+                </div>
                 ${thumbnailsHtml}
                 ${variantsHtml}
             </div>
@@ -347,7 +368,11 @@ const ProductsModule = {
                 thumbnails.forEach(t => t.classList.remove('active'));
                 thumb.classList.add('active');
                 if (mainImage) {
-                    mainImage.src = thumb.dataset.img;
+                    mainImage.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImage.src = thumb.dataset.img;
+                        mainImage.style.opacity = '1';
+                    }, 300);
                 }
             });
         });

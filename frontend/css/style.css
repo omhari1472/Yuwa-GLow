@@ -962,6 +962,12 @@ body {
     left: 150%;
 }
 
+/* Category card stagger */
+.category-grid .category-card.fade-in:nth-child(1) { transition-delay: 0.1s; }
+.category-grid .category-card.fade-in:nth-child(2) { transition-delay: 0.2s; }
+.category-grid .category-card.fade-in:nth-child(3) { transition-delay: 0.3s; }
+.category-grid .category-card.fade-in:nth-child(4) { transition-delay: 0.4s; }
+
 
 /* --- Brand Highlights --- */
 .brand-highlights {
@@ -1049,13 +1055,23 @@ body {
     }
 
     .category-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
         padding: 0 15px;
     }
 
     .category-card {
-        height: 280px;
-        border-radius: 16px;
+        height: 240px;
+        border-radius: 14px;
+    }
+
+    .category-title h3 {
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+    }
+
+    .category-eyebrow {
+        font-size: 0.55rem;
     }
 
     .highlights-grid {
@@ -1187,37 +1203,333 @@ body {
 }
 
 
+/* ============================================ */
+/* ABOUT PAGE — EDITORIAL HERO                  */
+/* ============================================ */
+.about-hero {
+    background: #1c1a17;
+    padding: 160px 0 120px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle radial glow behind heading */
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(195, 134, 54, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Thin gold line from top */
+.about-hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--accent-gold));
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about-hero-heading {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: #f5efe5;
+    line-height: 1.1;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+}
+
+.about-hero-sub {
+    font-family: var(--font-secondary);
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: #9a938b;
+    max-width: 520px;
+    margin: 0 auto 40px;
+}
+
+.about-hero .manifesto-gold-line {
+    width: 50px;
+    height: 1px;
+    background: var(--accent-gold);
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        padding: 120px 0 80px;
+    }
+    .about-hero-heading {
+        font-size: 2.8rem;
+    }
+    .about-hero-sub {
+        font-size: 0.95rem;
+        padding: 0 10px;
+    }
+}
+
+
+/* ============================================ */
+/* ABOUT PAGE — STORY SECTION ENHANCEMENTS      */
+/* ============================================ */
+.about-story .section-eyebrow {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.story-image img {
+    border-radius: 16px;
+}
+
+.story-content h2 {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--dark-text);
+    margin-bottom: 24px;
+}
+
+.story-content h3 {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--primary-gold);
+    margin-top: 36px;
+    margin-bottom: 12px;
+}
+
+.story-content p {
+    color: #555;
+    line-height: 1.85;
+    font-size: 0.98rem;
+}
+
+
+/* ============================================ */
+/* ABOUT PAGE — VALUES SECTION                  */
+/* ============================================ */
+.about-values {
+    background: #1c1a17;
+    padding: 120px 0 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Thin gold line from top */
+.about-values::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--accent-gold));
+}
+
+.about-values .section-title {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.about-values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin-top: 60px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-value-item {
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+}
+
+.about-value-number {
+    display: block;
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(195, 134, 54, 0.15);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: color 0.4s ease;
+}
+
+.about-value-item:hover .about-value-number {
+    color: rgba(195, 134, 54, 0.3);
+}
+
+.about-value-item h3 {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #f5efe5;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+}
+
+.about-value-item p {
+    font-family: var(--font-secondary);
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #9a938b;
+}
+
+/* Stagger animation for value items */
+.about-values-grid .about-value-item.fade-in:nth-child(1) { transition-delay: 0.1s; }
+.about-values-grid .about-value-item.fade-in:nth-child(2) { transition-delay: 0.25s; }
+.about-values-grid .about-value-item.fade-in:nth-child(3) { transition-delay: 0.4s; }
+
+@media (max-width: 768px) {
+    .about-values {
+        padding: 80px 0 70px;
+    }
+    .about-values-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-top: 40px;
+    }
+    .about-value-number {
+        font-size: 2.8rem;
+    }
+}
+
+
+/* ============================================ */
+/* ABOUT PAGE — LEADERSHIP ENHANCEMENTS         */
+/* ============================================ */
+.leadership-section {
+    background: #f5f2ed;
+}
+
+.leadership-section .section-eyebrow {
+    margin-bottom: 10px;
+}
+
+.leadership-section .section-title {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: var(--dark-text);
+}
+
+/* Stagger animation for leader cards */
+.leadership-grid .leader-card.fade-in:nth-child(1) { transition-delay: 0.1s; }
+.leadership-grid .leader-card.fade-in:nth-child(2) { transition-delay: 0.25s; }
+.leadership-grid .leader-card.fade-in:nth-child(3) { transition-delay: 0.4s; }
+
+
 /* --- ====================== --- */
 /* --- PRODUCTS PAGE STYLES --- */
 /* --- ====================== --- */
 
-/* ---- Editorial Hero ---- */
-.products-editorial-hero {
-    background: linear-gradient(180deg, #f5efe5 0%, #efe7db 60%, #e9e0d3 100%);
+/* ---- Compact Products Page Header ---- */
+.products-page-header {
+    padding: 100px 0 40px;
     text-align: center;
-    padding: 72px 20px 52px;
+    background: #f5f2ed;
 }
 
-.products-editorial-heading {
+.products-page-title {
     font-family: 'Cormorant Garamond', 'Garamond', serif;
-    font-size: 2.8rem;
-    font-weight: 400;
-    color: #8b6914;
-    letter-spacing: 8px;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--dark-text);
+    letter-spacing: 1px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.products-page-header .section-eyebrow {
+    margin-bottom: 10px;
+}
+
+/* ---- Category Products Header ---- */
+.products-category-header {
+    padding: 100px 0 40px;
+    background: #f5f2ed;
+}
+
+.products-category-header .products-back-link {
+    margin-bottom: 16px;
+}
+
+.products-category-header .section-eyebrow {
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.products-category-header .products-page-title {
+    text-align: left;
+    font-size: 2.6rem;
+}
+
+/* Category eyebrow inside cards */
+.category-eyebrow {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    margin: 0 0 22px 0;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.products-editorial-subheading {
-    font-family: 'Cormorant Garamond', 'Garamond', serif;
-    font-size: 1.18rem;
-    font-weight: 400;
-    font-style: italic;
-    color: #7a7168;
-    letter-spacing: 0.4px;
-    max-width: 620px;
-    margin: 0 auto;
-    line-height: 1.6;
+.category-card:hover .category-eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Back link */
+.products-back-link {
+    display: inline-block;
+    font-family: var(--font-secondary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--primary-gold);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.products-back-link:hover {
+    color: var(--dark-text);
+    transform: translateX(-3px);
+}
+
+#product-detail-view .products-back-link {
+    margin-bottom: 20px;
 }
 
 /* ---- Editorial Product Grid ---- */
@@ -1242,7 +1554,7 @@ body {
 
 .ed-product-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
 /* ---- Card Image Area ---- */
@@ -1253,7 +1565,7 @@ body {
     position: relative;
     height: 420px;
     overflow: hidden;
-    background: radial-gradient(ellipse at 50% 60%, #f0e8da 0%, #e8dece 45%, #ddd4c4 100%);
+    background: radial-gradient(ellipse at center, #f0e8da 0%, #ddd4c4 100%);
 }
 
 .ed-card-image-area img {
@@ -1265,30 +1577,30 @@ body {
 }
 
 .ed-product-card:hover .ed-card-image-area img {
-    transform: scale(1.03);
+    transform: scale(1.04);
 }
 
 /* ---- Card Badges ---- */
 .ed-card-badges {
     position: absolute;
-    top: 18px;
-    left: 18px;
+    top: 14px;
+    left: 14px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     z-index: 2;
 }
 
 .ed-badge {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     color: #8b6a3e;
-    font-size: 0.78rem;
+    font-size: 0.68rem;
     font-weight: 500;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.5px;
     padding: 7px 16px;
     border-radius: 24px;
     white-space: nowrap;
@@ -1299,10 +1611,8 @@ body {
     padding: 26px 28px 32px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     flex-grow: 1;
-    background: #ffffff;
+    text-align: center;
 }
 
 /* Product Name */
@@ -1310,8 +1620,8 @@ body {
     font-family: 'Cormorant Garamond', 'Garamond', serif;
     font-size: 1.6rem;
     font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 5px;
+    line-height: 1.3;
+    margin-bottom: 6px;
 }
 
 .ed-card-name a {
@@ -1326,41 +1636,39 @@ body {
 
 /* Size Label */
 .ed-card-size {
-    font-size: 0.95rem;
+    font-family: var(--font-secondary);
+    font-size: 0.78rem;
     color: #9a938b;
-    letter-spacing: 0.3px;
-    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
     font-weight: 400;
 }
 
 /* Benefit Description */
 .ed-card-benefit {
-    font-size: 0.92rem;
+    font-size: 0.85rem;
     color: #7a7168;
     line-height: 1.55;
     margin-bottom: auto;
-    padding-bottom: 22px;
-    max-width: 280px;
+    padding-bottom: 16px;
 }
 
 /* Editorial CTA */
 .ed-card-cta {
     display: inline-block;
     font-family: var(--font-secondary);
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 500;
-    color: var(--accent-gold);
+    color: var(--primary-gold);
     text-decoration: underline;
     text-underline-offset: 4px;
-    text-decoration-color: rgba(220, 178, 100, 0.5);
     letter-spacing: 0.5px;
-    transition: color 0.3s ease, text-decoration-color 0.3s ease;
-    padding-top: 8px;
+    transition: color 0.3s ease;
+    margin-top: 8px;
 }
 
 .ed-card-cta:hover {
-    color: var(--primary-gold);
-    text-decoration-color: var(--primary-gold);
+    color: var(--dark-text);
 }
 
 /* ---- Legacy grid classes (keep for detail pages) ---- */
@@ -1387,62 +1695,69 @@ body {
 @media (max-width: 992px) {
     .product-grid-editorial {
         grid-template-columns: repeat(2, 1fr);
-        gap: 26px;
-    }
-
-    .products-editorial-heading {
-        font-size: 2.2rem;
-        letter-spacing: 5px;
-    }
-
-    .ed-card-image-area {
-        height: 360px;
-    }
-
-    .ed-card-image-area img {
-        max-width: 70%;
-        max-height: 85%;
+        gap: 20px;
     }
 
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .products-page-title {
+        font-size: 2.4rem;
+    }
+
+    .products-category-header .products-page-title {
+        font-size: 2.2rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .products-editorial-hero {
-        padding: 50px 20px 35px;
+    .products-page-header {
+        padding: 85px 0 30px;
     }
 
-    .products-editorial-heading {
-        font-size: 1.6rem;
-        letter-spacing: 3px;
+    .products-page-title {
+        font-size: 2rem;
     }
 
-    .products-editorial-subheading {
-        font-size: 0.95rem;
+    .products-category-header {
+        padding: 85px 0 30px;
+    }
+
+    .products-category-header .products-page-title {
+        font-size: 1.8rem;
+    }
+
+    .products-back-link {
+        font-size: 0.7rem;
     }
 
     .product-grid-editorial {
         grid-template-columns: 1fr;
-        gap: 22px;
-        padding: 30px 0 50px;
-    }
-
-    .ed-card-image-area {
-        height: 340px;
-    }
-
-    .ed-card-image-area img {
-        max-width: 65%;
+        gap: 24px;
+        padding: 15px 0 50px;
     }
 
     .ed-card-body {
-        padding: 20px 22px 28px;
+        padding: 18px 16px 22px;
     }
 
     .ed-card-name {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
+    }
+
+    .ed-card-benefit {
+        font-size: 0.78rem;
+        display: none;
+    }
+
+    .ed-card-cta {
+        font-size: 0.7rem;
+    }
+
+    .ed-badge {
+        font-size: 0.6rem;
+        padding: 4px 8px;
     }
 
     .product-grid {
@@ -1468,103 +1783,136 @@ body {
     top: 100px;
 }
 
-.main-product-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border: 1px solid #eee;
-    transition: opacity 0.3s ease-in-out;
+/* Main image showcase area */
+.product-image-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
+.main-image-wrapper {
+    background: radial-gradient(ellipse at center, #f0e8da 0%, #ddd4c4 100%);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 480px;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-image-wrapper img {
+    max-width: 85%;
+    max-height: 400px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.12));
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.main-image-wrapper img:hover {
+    transform: scale(1.03);
+}
+
+/* Thumbnail strip */
 .thumbnail-images {
     display: flex;
-    gap: 15px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 0;
 }
 
 .thumbnail-images .thumbnail {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 14px;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    background: radial-gradient(ellipse at center, #f0e8da 0%, #ddd4c4 100%);
+    padding: 6px;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .thumbnail-images .thumbnail:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .thumbnail-images .thumbnail.active {
     border-color: var(--primary-gold);
+    box-shadow: 0 4px 14px rgba(195, 134, 54, 0.25);
 }
 
 /* Product Category Badge */
 .product-category {
+    font-family: var(--font-secondary);
     color: var(--primary-gold);
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
     display: inline-block;
-    background: rgba(195, 134, 54, 0.1);
-    padding: 6px 14px;
+    background: rgba(195, 134, 54, 0.08);
+    padding: 6px 16px;
     border-radius: 20px;
 }
 
 /* Glossy Card for Product Info */
 .product-detail-info {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 35px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
+    padding: 40px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 .product-detail-title {
-    font-family: var(--font-primary);
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
     font-size: 2.5rem;
     font-weight: 400;
     margin-bottom: 10px;
     color: var(--dark-text);
+    line-height: 1.2;
 }
 
 .product-detail-price {
+    font-family: 'Cormorant Garamond', 'Garamond', serif;
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 700;
     color: var(--primary-gold);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .product-detail-description {
-    line-height: 1.8;
-    margin-bottom: 25px;
+    line-height: 1.85;
+    margin-bottom: 28px;
     color: #555;
-    background: rgba(243, 229, 198, 0.8);
-    padding: 20px;
-    border-radius: 12px;
-    border-left: 4px solid var(--primary-gold);
+    font-size: 0.95rem;
+    background: #f9f6f1;
+    padding: 24px;
+    border-radius: 16px;
+    border-left: 3px solid var(--accent-gold);
 }
 
 /* Product Variants - Below Image */
 .product-variants {
     margin-top: 20px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    border: 1px solid rgba(195, 134, 54, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .product-variants h3 {
     font-family: var(--font-primary);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
     margin-bottom: 15px;
     color: var(--dark-text);
 }
@@ -1577,25 +1925,26 @@ body {
 
 .variant-btn {
     padding: 12px 24px;
-    border: 2px solid #e5e7eb;
+    border: 1.5px solid #e0dcd6;
     background: white;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.88rem;
     font-weight: 500;
+    color: var(--dark-text);
     transition: all 0.3s ease;
 }
 
 .variant-btn:hover {
     border-color: var(--primary-gold);
-    background: rgba(195, 134, 54, 0.05);
+    background: rgba(195, 134, 54, 0.04);
 }
 
 .variant-btn.active {
     border-color: var(--primary-gold);
     background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
     color: white;
-    box-shadow: 0 4px 15px rgba(195, 134, 54, 0.3);
+    box-shadow: 0 4px 14px rgba(195, 134, 54, 0.35);
 }
 
 /* Benefits & Usage Sections */
@@ -1664,20 +2013,23 @@ body {
 }
 
 .whatsapp-btn {
-    background: linear-gradient(135deg, #25D366, #128C7E);
+    background: linear-gradient(135deg, #25D366, #20bd5a);
+    border-radius: 12px;
 }
 
 .whatsapp-btn:hover {
-    background: linear-gradient(135deg, #20bd5a, #0e7a6d);
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+    background: linear-gradient(135deg, #20bd5a, #1aab50);
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.35);
 }
 
 .enquiry-btn {
-    background: linear-gradient(135deg, var(--dark-text), #1a1a1a);
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    border-radius: 12px;
 }
 
 .enquiry-btn:hover {
-    background: linear-gradient(135deg, #1a1a1a, #000);
+    background: linear-gradient(135deg, #1a1a1a, #111);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Responsive for Product Details --- */
@@ -1688,6 +2040,11 @@ body {
 
     .product-gallery {
         position: static;
+    }
+
+    .main-image-wrapper {
+        min-height: 380px;
+        padding: 30px;
     }
 
     .product-detail-info {
@@ -1711,6 +2068,23 @@ body {
     .product-detail-layout {
         padding: 0 15px;
         gap: 30px;
+    }
+
+    .main-image-wrapper {
+        min-height: 300px;
+        padding: 24px;
+        border-radius: 18px;
+    }
+
+    .main-image-wrapper img {
+        max-height: 260px;
+    }
+
+    .thumbnail-images .thumbnail {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        padding: 4px;
     }
 
     .product-detail-info {
