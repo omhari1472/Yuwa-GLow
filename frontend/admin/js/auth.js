@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_BASE_URL: 'http://localhost:8000/api'
+    API_BASE_URL: 'https://b3d6-2a09-bac1-36a0-248-00-2a5-a1.ngrok-free.app/api'
 };
 
 document.addEventListener('DOMContentLoaded', () => {

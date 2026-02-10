@@ -91,10 +91,78 @@ window.startScrollObserver = function() {
     }, 100);
 };
 
+// Initialize Hero Fade Slider
+function initHeroFadeSlider() {
+    const slides = document.querySelectorAll('.fade-slide');
+    const dots = document.querySelectorAll('.fade-dot');
+    let currentSlide = 0;
+    const intervalTime = 6000;
+    let slideInterval;
+
+    if (slides.length === 0) return;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        slides[index].classList.add('active');
+        if(dots[index]) dots[index].classList.add('active');
+        
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        let nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex);
+    }
+
+    function startAutoPlay() {
+        slideInterval = setInterval(nextSlide, intervalTime);
+    }
+
+    function stopAutoPlay() {
+        clearInterval(slideInterval);
+    }
+
+    // Event Listeners for Dots
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            stopAutoPlay();
+            showSlide(index);
+            startAutoPlay();
+        });
+    });
+
+    startAutoPlay();
+}
+
+// Initialize Trending Slider
+function initTrendingSlider() {
+    const container = document.querySelector('.trending-scroll-container');
+    const prevBtn = document.querySelector('.prev-trend');
+    const nextBtn = document.querySelector('.next-trend');
+
+    if (!container || !prevBtn || !nextBtn) return;
+
+    const scrollAmount = 320; // Card width + gap
+
+    nextBtn.addEventListener('click', () => {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    prevBtn.addEventListener('click', () => {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+}
+
 function initCommonUI() {
     // Mobile Nav
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
+    
+    // Init Sliders
+    initTrendingSlider();
+    initHeroFadeSlider();
 
     if (navToggle && navLinks) {
         // Toggle menu function

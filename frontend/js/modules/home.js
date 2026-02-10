@@ -3,14 +3,61 @@ import CONFIG from '../config.js';
 
 const HomeModule = {
     init: async () => {
-        await loadCarouselFromAPI();
+        // Load independent data in parallel
+        await Promise.all([
+            loadCarouselFromAPI(),
+            loadCategoriesForBento()
+        ]);
+        initTrendingSlider();
     }
 };
+
+async function loadCategoriesForBento() {
+    try {
+        const res = await API.getCategories();
+        if (res.success) {
+            const categories = res.data?.data || res.data || [];
+            if (categories.length > 0) {
+                updateBentoGrid(categories);
+            }
+        }
+    } catch (e) {
+        console.error('Bento Load Error:', e);
+    }
+}
+
+function updateBentoGrid(categories) {
+    // Map CSS classes to category keywords to find the right image
+    const mapping = {
+        '.item-hair': ['hair'],
+        '.item-skin': ['skin', 'face', 'body'],
+        '.item-makeup': ['makeup', 'cosmetic'],
+        '.item-tools': ['salon', 'tool', 'equipment']
+    };
+
+    Object.keys(mapping).forEach(selector => {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        
+        const keywords = mapping[selector];
+        // Find a category that matches one of the keywords
+        const cat = categories.find(c => 
+            keywords.some(k => c.name.toLowerCase().includes(k))
+        );
+        
+        if (cat && cat.image_url) {
+            const img = el.querySelector('img');
+            if (img) {
+                // Update image source to DB image
+                img.src = `${CONFIG.STORAGE_URL}${cat.image_url}`;
+            }
+        }
+    });
+}
 
 async function loadCarouselFromAPI() {
     const slidesContainer = document.getElementById('carousel-slides');
     const dotsContainer = document.getElementById('carousel-dots');
-    const carouselSection = document.getElementById('hero-carousel');
 
     if (!slidesContainer || !dotsContainer) return;
 
@@ -20,14 +67,11 @@ async function loadCarouselFromAPI() {
             const items = res.data?.data || res.data || [];
 
             if (items.length === 0) {
-                // Show fallback static images if no carousel items
                 renderFallbackCarousel(slidesContainer, dotsContainer);
             } else {
-                // Render dynamic carousel
                 renderCarousel(slidesContainer, dotsContainer, items);
             }
         } else {
-            // On error, show fallback
             renderFallbackCarousel(slidesContainer, dotsContainer);
         }
     } catch (error) {
@@ -35,115 +79,108 @@ async function loadCarouselFromAPI() {
         renderFallbackCarousel(slidesContainer, dotsContainer);
     }
 
-    // Initialize carousel functionality after content is loaded
-    initHeroCarousel();
+    initHeroFadeSlider();
 }
 
 function renderCarousel(slidesContainer, dotsContainer, items) {
-    // Render slides with <picture> element for responsive images
     slidesContainer.innerHTML = items.map((item, index) => {
         const desktopSrc = `${CONFIG.STORAGE_URL}${item.image_url}`;
-        const mobileSrc = item.mobile_image_url
-            ? `${CONFIG.STORAGE_URL}${item.mobile_image_url}`
-            : desktopSrc;
-
+        const tagline = item.subtitle || 'Crafted in India. Loved Globally.';
+        const title = item.title || 'The Golden<br><span class="italic-accent">Standard.</span>';
+        const desc = item.description || 'Luxury Ayurvedic formulations meet modern clinical science.';
+        
         return `
-            <div class="hero-slide ${index === 0 ? 'active' : ''}">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="${mobileSrc}">
-                    <source media="(min-width: 769px)" srcset="${desktopSrc}">
-                    <img src="${desktopSrc}" alt="Carousel Image ${index + 1}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
-                </picture>
+            <div class="fade-slide ${index === 0 ? 'active' : ''}">
+                <div class="hero-bg-wrapper">
+                    <img src="${desktopSrc}" alt="${item.title || 'Yuva Glow'}" class="hero-bg-img" loading="${index === 0 ? 'eager' : 'lazy'}">
+                    <div class="hero-overlay-gradient"></div>
+                </div>
+                <div class="container hero-content-center">
+                    <span class="hero-tagline">${tagline}</span>
+                    <h1 class="hero-title-large">${title}</h1>
+                    <p class="hero-desc-text">${desc}</p>
+                    <div class="hero-btn-wrapper">
+                        <a href="${item.link || 'products.html'}" class="btn-editorial-outline">Discover More</a>
+                    </div>
+                </div>
             </div>
         `;
     }).join('');
 
-    // Render dots
     dotsContainer.innerHTML = items.map((_, index) => `
-        <span class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></span>
+        <button class="fade-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></button>
     `).join('');
 }
 
 function renderFallbackCarousel(slidesContainer, dotsContainer) {
     const fallbackSlides = [
         {
-            eyebrow: 'Salon Professional',
-            heading: 'Crafted for<br>Excellence',
-            subtext: 'Advanced salon-grade formulations designed for repair, rebonding & nourishment.',
-            theme: 'hero-slide--warm'
+            img: 'https://images.unsplash.com/photo-1616766098956-c81f12114571?q=80&w=1920&auto=format&fit=crop',
+            tagline: 'Crafted in India',
+            title: 'The Golden<br><span class="italic-accent">Standard.</span>',
+            desc: 'Luxury Ayurvedic formulations meet modern clinical science.'
         },
         {
-            eyebrow: 'The Science of Care',
-            heading: 'Where Nature<br>Meets Precision',
-            subtext: 'Biomimetic K-Cell technology for deep cellular repair and lasting transformation.',
-            theme: 'hero-slide--dark'
+            img: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1920&auto=format&fit=crop',
+            tagline: 'Pure Potency',
+            title: 'Rituals of<br><span class="italic-accent">Repair.</span>',
+            desc: 'Biomimetic ingredients that penetrate deep for lasting transformation.'
         },
         {
-            eyebrow: 'YuvaGlow Professional Co.',
-            heading: 'Trusted by<br>Professionals',
-            subtext: 'Premium hair care trusted by salon professionals across the country.',
-            theme: 'hero-slide--gold'
+            img: 'https://images.unsplash.com/photo-1629198727546-3729e46955a5?q=80&w=1920&auto=format&fit=crop',
+            tagline: 'Modern Ayurveda',
+            title: 'Science of<br><span class="italic-accent">Silk.</span>',
+            desc: 'Infused with saffron and 24k gold for hair that gleams.'
         }
     ];
 
     slidesContainer.innerHTML = fallbackSlides.map((slide, index) => `
-        <div class="hero-slide hero-slide--editorial ${slide.theme} ${index === 0 ? 'active' : ''}">
-            <div class="hero-editorial-content">
-                <span class="hero-eyebrow">${slide.eyebrow}</span>
-                <div class="hero-gold-line"></div>
-                <h1 class="hero-editorial-heading">${slide.heading}</h1>
-                <p class="hero-editorial-sub">${slide.subtext}</p>
-                <a href="products.html#hair" class="hero-editorial-cta">Explore Collection &rarr;</a>
+        <div class="fade-slide ${index === 0 ? 'active' : ''}">
+            <div class="hero-bg-wrapper">
+                <img src="${slide.img}" class="hero-bg-img">
+                <div class="hero-overlay-gradient"></div>
+            </div>
+            <div class="container hero-content-center">
+                <span class="hero-tagline">${slide.tagline}</span>
+                <h1 class="hero-title-large">${slide.title}</h1>
+                <p class="hero-desc-text">${slide.desc}</p>
+                <div class="hero-btn-wrapper">
+                    <a href="products.html" class="btn-editorial-outline">Discover Collection</a>
+                </div>
             </div>
         </div>
     `).join('');
 
     dotsContainer.innerHTML = fallbackSlides.map((_, index) => `
-        <span class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></span>
+        <button class="fade-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></button>
     `).join('');
 }
 
-function initHeroCarousel() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const track = document.querySelector('.carousel-slides');
-    if (slides.length === 0 || !track) return;
-
-    const prevBtn = document.querySelector('.carousel-prev');
-    const nextBtn = document.querySelector('.carousel-next');
-    const dots = document.querySelectorAll('.dot');
+function initHeroFadeSlider() {
+    const slides = document.querySelectorAll('.fade-slide');
+    const dots = document.querySelectorAll('.fade-dot');
     let currentSlide = 0;
+    const intervalTime = 6000;
     let slideInterval;
-    const intervalTime = 5000;
+
+    if (slides.length === 0) return;
 
     function showSlide(index) {
-        // Wrap around
-        if (index >= slides.length) currentSlide = 0;
-        else if (index < 0) currentSlide = slides.length - 1;
-        else currentSlide = index;
-
-        // Slide the track
-        track.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-        // Update active class for internal animations & dots
         slides.forEach(slide => slide.classList.remove('active'));
         dots.forEach(dot => dot.classList.remove('active'));
 
-        slides[currentSlide].classList.add('active');
-        if (dots[currentSlide]) {
-            dots[currentSlide].classList.add('active');
-        }
+        slides[index].classList.add('active');
+        if(dots[index]) dots[index].classList.add('active');
+        currentSlide = index;
     }
 
     function nextSlide() {
-        showSlide(currentSlide + 1);
-    }
-
-    function prevSlide() {
-        showSlide(currentSlide - 1);
+        let nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex);
     }
 
     function startAutoPlay() {
-        stopAutoPlay(); // Ensure no duplicates
+        if (slideInterval) clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, intervalTime);
     }
 
@@ -151,34 +188,33 @@ function initHeroCarousel() {
         if (slideInterval) clearInterval(slideInterval);
     }
 
-    // Event Listeners
-    if(nextBtn) nextBtn.addEventListener('click', () => {
-        nextSlide();
-        startAutoPlay(); // Reset timer
-    });
-
-    if(prevBtn) prevBtn.addEventListener('click', () => {
-        prevSlide();
-        startAutoPlay(); // Reset timer
-    });
-
-    dots.forEach(dot => {
+    dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            const slideIndex = parseInt(dot.getAttribute('data-slide'));
-            showSlide(slideIndex);
-            startAutoPlay(); // Reset timer
+            stopAutoPlay();
+            showSlide(index);
+            startAutoPlay();
         });
     });
 
-    // Start Auto Play
     startAutoPlay();
+}
 
-    // Pause on hover
-    const carouselContainer = document.querySelector('.hero-carousel');
-    if(carouselContainer) {
-        carouselContainer.addEventListener('mouseenter', stopAutoPlay);
-        carouselContainer.addEventListener('mouseleave', startAutoPlay);
-    }
+function initTrendingSlider() {
+    const container = document.querySelector('.trending-scroll-container');
+    const prevBtn = document.querySelector('.prev-trend');
+    const nextBtn = document.querySelector('.next-trend');
+
+    if (!container || !prevBtn || !nextBtn) return;
+
+    const scrollAmount = 320; 
+
+    nextBtn.addEventListener('click', () => {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    prevBtn.addEventListener('click', () => {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
 }
 
 export default HomeModule;
