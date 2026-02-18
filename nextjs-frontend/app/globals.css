@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* shadcn vars */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Brand tokens */
+  --color-gold: #C38636;
+  --color-gold-accent: #DCB264;
+  --color-gold-soft: #E7CC97;
+  --color-cream: #F3E5C6;
+  --color-cream-body: #f5f2ed;
+  --color-brand-dark: #2c2c2c;
+  --color-brand-footer: #2c2a26;
+
+  /* Fonts */
+  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Cormorant Garamond', Garamond, serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* Brand vars */
+  --gold: #C38636;
+  --gold-accent: #DCB264;
+  --gold-soft: #E7CC97;
+  --cream: #F3E5C6;
+  --cream-body: #f5f2ed;
+  --brand-dark: #2c2c2c;
+  --brand-footer: #2c2a26;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #f5f2ed;
+    color: #2c2c2c;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', Garamond, serif;
+  }
+}
+
+
+/* Utility classes */
+.font-serif { font-family: 'Cormorant Garamond', Garamond, serif; }
+.font-sans  { font-family: 'Helvetica Neue', Arial, sans-serif; }
+.text-gold  { color: #C38636; }
+.bg-gold    { background-color: #C38636; }
+.border-gold { border-color: #C38636; }
+
+/* Editorial section titles */
+.section-title {
+  font-family: 'Cormorant Garamond', Garamond, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2c2c2c;
+}
+
+/* Gold underline CTA */
+.cta-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C38636;
+  text-decoration: none;
+  border-bottom: 1px solid #C38636;
+  padding-bottom: 2px;
+  transition: opacity 0.2s;
+}
+.cta-link:hover { opacity: 0.75; }
+
+/* Ghost button */
+.btn-ghost-gold {
+  display: inline-block;
+  padding: 10px 24px;
+  border: 1.5px solid #C38636;
+  color: #C38636;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+}
+.btn-ghost-gold:hover {
+  background: #C38636;
+  color: #fff;
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #e8e0d0 25%, #f0e8da 50%, #e8e0d0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
