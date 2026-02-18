@@ -66,7 +66,7 @@ function BlogDetail({ slug }: { slug: string }) {
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
           <div className="mt-12 pt-8 border-t border-[#e8ddd0]">
-            <Link href="/blog/" className="cta-link">← Back to Blog</Link>
+            <Link href="/blog/" className="cta-link cta-link-back">← Back to Blog</Link>
           </div>
         </article>
       )}

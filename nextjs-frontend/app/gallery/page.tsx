@@ -183,56 +183,124 @@ export default function GalleryPage() {
 
       {/* Before & After Transformations */}
       {!loading && transformations.length > 0 && (
-        <section className="py-20 px-4 max-w-5xl mx-auto">
-          <ScrollReveal className="text-center mb-14">
-            <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: '#C38636' }}>
-              Real Results
-            </p>
-            <h2 className="section-title text-3xl sm:text-4xl">Before &amp; After</h2>
-            <p className="text-sm text-gray-400 mt-3 max-w-sm mx-auto">
-              Witness the transformative power of YuvaGlow professional care.
-            </p>
-          </ScrollReveal>
+        <section
+          className="py-24 px-4 relative overflow-hidden"
+          style={{ background: 'linear-gradient(160deg, #0d0600 0%, #1a0c00 55%, #0a0400 100%)' }}
+        >
+          {/* Ambient glow */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-20"
+              style={{ background: 'radial-gradient(circle, rgba(195,134,54,0.3), transparent 70%)' }} />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-15"
+              style={{ background: 'radial-gradient(circle, rgba(220,178,100,0.2), transparent 70%)' }} />
+          </div>
 
-          <div className="flex flex-col gap-16">
-            {transformations.map((item, i) => (
-              <ScrollReveal key={item.id} delay={i * 0.1}>
-                <div className="grid sm:grid-cols-[1fr_auto_1fr] items-center gap-6">
-                  {/* Before */}
-                  <div className="relative">
-                    <div className="relative h-72 rounded-2xl overflow-hidden bg-[#f0e8da]">
-                      <Image src={getImageUrl(item.before_image)} alt="Before" fill className="object-cover" sizes="(max-width: 640px) 90vw, 40vw" />
+          <div className="max-w-4xl mx-auto relative z-10">
+            <ScrollReveal className="text-center mb-14">
+              <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-3" style={{ color: '#DCB264' }}>
+                Real Results
+              </p>
+              <h2 className="section-title text-3xl sm:text-4xl" style={{ color: 'rgba(255,255,255,0.93)' }}>
+                Before &amp; After
+              </h2>
+              <div className="flex items-center justify-center gap-3 mt-5">
+                <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.4)' }} />
+                <div className="w-1.5 h-1.5 rotate-45 flex-shrink-0" style={{ background: '#C38636' }} />
+                <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.4)' }} />
+              </div>
+            </ScrollReveal>
+
+            <div className="flex flex-col gap-10">
+              {transformations.map((item, i) => (
+                <ScrollReveal key={item.id} delay={i * 0.12}>
+                  <div
+                    className="rounded-2xl overflow-hidden"
+                    style={{ boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }}
+                  >
+                    {/* Split-screen */}
+                    <div className="relative flex" style={{ height: 'clamp(260px, 40vw, 420px)' }}>
+
+                      {/* BEFORE */}
+                      <div className="relative w-1/2 overflow-hidden">
+                        <Image
+                          src={getImageUrl(item.before_image)}
+                          alt="Before"
+                          fill
+                          className="object-cover"
+                          sizes="50vw"
+                        />
+                        <div className="absolute inset-0 bg-black/20" />
+                        <div
+                          className="absolute bottom-0 left-0 right-0 px-4 py-3"
+                          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)' }}
+                        >
+                          <span className="text-[9px] font-bold tracking-[0.2em] uppercase"
+                            style={{ color: 'rgba(255,255,255,0.8)' }}>Before</span>
+                        </div>
+                      </div>
+
+                      {/* Gold centre divider */}
+                      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                        <div className="flex-1 w-px"
+                          style={{ background: 'linear-gradient(to bottom, transparent, #C38636 30%, #C38636 70%, transparent)' }} />
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm"
+                          style={{ background: '#C38636', boxShadow: '0 0 20px rgba(195,134,54,0.6)' }}
+                        >
+                          ✦
+                        </div>
+                        <div className="flex-1 w-px"
+                          style={{ background: 'linear-gradient(to top, transparent, #C38636 30%, #C38636 70%, transparent)' }} />
+                      </div>
+
+                      {/* AFTER */}
+                      <div className="relative w-1/2 overflow-hidden">
+                        <Image
+                          src={getImageUrl(item.after_image)}
+                          alt="After"
+                          fill
+                          className="object-cover"
+                          sizes="50vw"
+                        />
+                        <div
+                          className="absolute bottom-0 left-0 right-0 px-4 py-3"
+                          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)' }}
+                        >
+                          <span className="text-right block text-[9px] font-bold tracking-[0.2em] uppercase"
+                            style={{ color: '#DCB264' }}>After</span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="absolute top-3 left-3 text-[10px] font-bold tracking-[0.12em] uppercase px-3 py-1 rounded-full" style={{ background: 'rgba(44,44,44,0.8)', color: '#fff' }}>
-                      Before
-                    </span>
-                  </div>
 
-                  {/* Arrow */}
-                  <div className="flex-shrink-0 flex flex-col items-center gap-2 text-[#C38636]">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                    <p className="font-serif text-sm font-semibold hidden sm:block" style={{ color: '#C38636' }}>
-                      {item.title}
-                    </p>
+                    {/* Caption bar */}
+                    {(item.title || item.description) && (
+                      <div
+                        className="px-6 py-4 flex items-center gap-4"
+                        style={{
+                          background: 'rgba(255,255,255,0.04)',
+                          backdropFilter: 'blur(8px)',
+                          borderTop: '1px solid rgba(195,134,54,0.15)',
+                        }}
+                      >
+                        <div className="w-px h-6 flex-shrink-0" style={{ background: '#C38636' }} />
+                        <div>
+                          {item.title && (
+                            <p className="font-serif text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                              {item.title}
+                            </p>
+                          )}
+                          {item.description && (
+                            <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  {/* After */}
-                  <div className="relative">
-                    <div className="relative h-72 rounded-2xl overflow-hidden bg-[#f0e8da]">
-                      <Image src={getImageUrl(item.after_image)} alt="After" fill className="object-cover" sizes="(max-width: 640px) 90vw, 40vw" />
-                    </div>
-                    <span className="absolute top-3 right-3 text-[10px] font-bold tracking-[0.12em] uppercase px-3 py-1 rounded-full" style={{ background: 'rgba(195,134,54,0.9)', color: '#fff' }}>
-                      After
-                    </span>
-                  </div>
-                </div>
-                {item.description && (
-                  <p className="text-center text-sm mt-3" style={{ color: '#888' }}>{item.description}</p>
-                )}
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              ))}
+            </div>
           </div>
         </section>
       )}

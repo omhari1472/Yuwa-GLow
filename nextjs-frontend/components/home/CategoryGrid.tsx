@@ -49,6 +49,7 @@ export default function CategoryGrid() {
 
                 <span className="cta-link text-[10px]">Shop Now</span>
 
+
                 {/* Hover gold line */}
                 <div
                   className="absolute bottom-0 inset-x-0 h-0.5 transition-all duration-300 scale-x-0 group-hover:scale-x-100"

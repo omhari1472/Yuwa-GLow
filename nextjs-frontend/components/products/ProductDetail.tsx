@@ -149,7 +149,7 @@ export default function ProductDetail({ product, category }: ProductDetailProps)
 
         {/* Back */}
         <div className="mt-8">
-          <Link href={`/products/${category}/`} className="cta-link text-[10px]">
+          <Link href={`/products/${category}/`} className="cta-link cta-link-back text-[10px]">
             ← Back to {category.charAt(0).toUpperCase() + category.slice(1)} Products
           </Link>
         </div>

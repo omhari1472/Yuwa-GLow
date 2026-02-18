@@ -1,6 +1,7 @@
 import HeroSection from '@/components/home/HeroSection';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import BrandPromises from '@/components/home/BrandPromises';
+import IngredientMarquee from '@/components/home/IngredientMarquee';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import TransformationStrip from '@/components/home/TransformationStrip';
 import LeadershipSection from '@/components/home/LeadershipSection';
@@ -17,6 +18,7 @@ export default function HomePage() {
       <HeroSection />
       <CategoryGrid />
       <BrandPromises />
+      <IngredientMarquee />
       <FeaturedProducts />
       <TransformationStrip />
 

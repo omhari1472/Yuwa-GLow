@@ -112,9 +112,11 @@
   color: #2c2c2c;
 }
 
-/* Gold underline CTA */
+/* Gold underline CTA — with arrow that slides on hover */
 .cta-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -123,9 +125,18 @@
   text-decoration: none;
   border-bottom: 1px solid #C38636;
   padding-bottom: 2px;
-  transition: opacity 0.2s;
+  transition: gap 0.2s ease, opacity 0.2s;
 }
-.cta-link:hover { opacity: 0.75; }
+.cta-link:hover { gap: 10px; opacity: 0.85; }
+/* Append arrow to forward-navigation cta-links via class */
+.cta-link::after {
+  content: '→';
+  font-size: 0.85em;
+  transition: transform 0.2s ease;
+}
+.cta-link:hover::after { transform: translateX(3px); }
+/* Override for back-navigation links that already have ← */
+.cta-link-back::after { content: ''; }
 
 /* Ghost button */
 .btn-ghost-gold {
@@ -146,6 +157,17 @@
   background: #C38636;
   color: #fff;
 }
+
+/* Ingredient marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover { animation-play-state: paused; }
 
 /* Skeleton animation */
 @keyframes shimmer {

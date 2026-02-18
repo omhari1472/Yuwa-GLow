@@ -206,22 +206,34 @@ export default function AboutPage() {
       </section>
 
       {/* Visionary Leadership */}
-      <section className="py-20 px-4" style={{ background: 'linear-gradient(180deg, #faf8f5 0%, #f5f2ed 100%)' }}>
-        <div className="max-w-5xl mx-auto">
+      <section
+        className="py-24 px-4 relative overflow-hidden"
+        style={{ background: 'linear-gradient(160deg, #0d0600 0%, #1a0c00 55%, #0a0400 100%)' }}
+      >
+        {/* Ambient bokeh */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, rgba(195,134,54,0.35), transparent 70%)' }} />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-15"
+            style={{ background: 'radial-gradient(circle, rgba(220,178,100,0.25), transparent 70%)' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle, rgba(195,134,54,0.2), transparent 60%)' }} />
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-10">
         <ScrollReveal className="text-center mb-14">
-          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: '#C38636' }}>
+          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: '#DCB264' }}>
             The People Behind the Brand
           </p>
-          <h2 className="section-title text-4xl sm:text-5xl">Visionary Leadership</h2>
-          {/* Decorative divider */}
+          <h2 className="section-title text-4xl sm:text-5xl" style={{ color: 'rgba(255,255,255,0.93)' }}>Visionary Leadership</h2>
           <div className="flex items-center justify-center gap-3 mt-5">
-            <div className="h-px w-16" style={{ background: '#ddd4c4' }} />
+            <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.4)' }} />
             <div className="w-1.5 h-1.5 rotate-45" style={{ background: '#C38636' }} />
-            <div className="h-px w-16" style={{ background: '#ddd4c4' }} />
+            <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.4)' }} />
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           {[
             {
               name: 'Manish Rathod',
@@ -249,64 +261,74 @@ export default function AboutPage() {
             },
           ].map((leader, i) => (
             <ScrollReveal key={leader.name} delay={i * 0.12}>
-              <div className="flex flex-col items-center text-center group">
-
-                {/* Portrait with gold ring frame */}
+              {/* Glassmorphism card */}
+              <div
+                className="flex flex-col items-center text-center group rounded-2xl px-6 py-8 transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(195,134,54,0.2)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)',
+                }}
+              >
+                {/* Portrait with conic gold ring */}
                 <div className="relative mb-6">
-                  {/* Outer gold ring */}
                   <div
                     className="absolute -inset-[5px] rounded-full"
-                    style={{ background: 'conic-gradient(#C38636 0deg, #DCB264 90deg, #C38636 180deg, #ddd4c4 270deg, #C38636 360deg)' }}
+                    style={{ background: 'conic-gradient(#C38636 0deg, #DCB264 90deg, #C38636 180deg, rgba(195,134,54,0.3) 270deg, #C38636 360deg)' }}
                   />
-                  {/* White gap ring */}
-                  <div className="absolute -inset-[3px] rounded-full bg-white" />
-                  {/* Photo */}
+                  {/* gap ring — match card bg */}
                   <div
-                    className="relative w-36 h-36 rounded-full overflow-hidden"
-                    style={{ background: 'radial-gradient(circle, #f0e8da, #ddd4c4)' }}
+                    className="absolute -inset-[3px] rounded-full"
+                    style={{ background: '#120800' }}
+                  />
+                  <div
+                    className="relative w-32 h-32 rounded-full overflow-hidden"
+                    style={{ background: 'radial-gradient(circle, #2a1a08, #1a0c00)' }}
                   >
                     <Image
                       src={leader.image}
                       alt={leader.name}
                       fill
                       className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                      sizes="144px"
+                      sizes="128px"
                     />
                   </div>
-                  {/* Gold dot accent bottom */}
                   <div
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-white"
-                    style={{ background: '#C38636' }}
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full"
+                    style={{ background: '#C38636', boxShadow: '0 0 8px rgba(195,134,54,0.8)', border: '2px solid #120800' }}
                   />
                 </div>
 
-                {/* Name & role */}
-                <p className="text-[10px] tracking-[0.2em] uppercase mb-1" style={{ color: '#C38636' }}>
+                {/* Role */}
+                <p className="text-[10px] tracking-[0.22em] uppercase mb-1" style={{ color: '#DCB264' }}>
                   {leader.role}
                 </p>
-                <h3 className="font-serif text-xl font-semibold mb-1" style={{ color: '#2c2c2c' }}>
+                {/* Name */}
+                <h3 className="font-serif text-xl font-semibold mb-1" style={{ color: 'rgba(255,255,255,0.93)' }}>
                   {leader.name}
                 </h3>
 
-                {/* Thin gold line */}
-                <div className="w-8 h-px my-3" style={{ background: '#C38636' }} />
+                {/* Gold separator */}
+                <div className="w-8 h-px my-3" style={{ background: 'rgba(195,134,54,0.6)' }} />
 
                 {/* Bio */}
-                <p className="text-[12px] leading-relaxed max-w-xs" style={{ color: '#888' }}>
+                <p className="text-[12px] leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   {leader.bio}
                 </p>
 
                 {/* Stat pills */}
-                <div className="flex gap-3 mt-5">
+                <div className="flex gap-3 mt-auto">
                   <span
                     className="text-[10px] font-semibold tracking-wide px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(195,134,54,0.08)', color: '#C38636', border: '1px solid rgba(195,134,54,0.2)' }}
+                    style={{ background: 'rgba(195,134,54,0.15)', color: '#DCB264', border: '1px solid rgba(195,134,54,0.3)' }}
                   >
                     {leader.exp}
                   </span>
                   <span
                     className="text-[10px] font-semibold tracking-wide px-3 py-1.5 rounded-full"
-                    style={{ background: '#f0e8da', color: '#888' }}
+                    style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.1)' }}
                   >
                     {leader.focus}
                   </span>
