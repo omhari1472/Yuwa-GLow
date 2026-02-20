@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState, useMemo, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
-import API from '@/lib/api';
-import type { Product, Category } from '@/lib/types';
-import ProductGrid from '@/components/products/ProductGrid';
 import ProductDetail from '@/components/products/ProductDetail';
+import ProductGrid from '@/components/products/ProductGrid';
 import { DetailSkeleton } from '@/components/shared/LoadingSkeleton';
+import API from '@/lib/api';
 import { PRODUCT_CATEGORIES } from '@/lib/constants';
+import type { Category, Product } from '@/lib/types';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 type SortOption = 'default' | 'price-asc' | 'price-desc' | 'az';
 
@@ -98,88 +97,90 @@ function CategoryClientInner({ category }: CategoryClientInnerProps) {
   // Product detail view
   if (productId) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <nav className="flex items-center gap-2 text-[11px] text-gray-400 mb-10 flex-wrap">
-          <Link href="/" className="hover:text-[#C38636] transition-colors">Home</Link>
-          <span className="text-gray-300">/</span>
-          <Link href="/products/" className="hover:text-[#C38636] transition-colors">Products</Link>
-          <span className="text-gray-300">/</span>
-          <Link href={`/products/${category}/`} className="hover:text-[#C38636] transition-colors">{title}</Link>
-          {selectedProduct && (
-            <>
-              <span className="text-gray-300">/</span>
-              <span style={{ color: '#C38636' }}>{selectedProduct.name}</span>
-            </>
+      <div className="bg-[#faf8f4] min-h-screen pt-32 pb-20">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <nav className="flex items-center gap-2 text-[10px] tracking-[0.15em] uppercase text-[#2c2c2c]/50 mb-12 flex-wrap font-medium">
+            <Link href="/" className="hover:text-[#C38636] transition-colors">Home</Link>
+            <span className="text-[#2c2c2c]/30">/</span>
+            <Link href="/products/" className="hover:text-[#C38636] transition-colors">Products</Link>
+            <span className="text-[#2c2c2c]/30">/</span>
+            <Link href={`/products/${category}/`} className="hover:text-[#C38636] transition-colors">{title}</Link>
+            {selectedProduct && (
+              <>
+                <span className="text-[#2c2c2c]/30">/</span>
+                <span style={{ color: '#C38636' }}>{selectedProduct.name}</span>
+              </>
+            )}
+          </nav>
+
+          {(detailLoading || (!selectedProduct && loading)) && <DetailSkeleton />}
+
+          {!detailLoading && !selectedProduct && !loading && (
+            <div className="text-center py-32">
+              <h2 className="font-serif text-3xl sm:text-4xl mb-6 text-[#2c2c2c]">Product Not Found</h2>
+              <Link
+                href={`/products/${category}/`}
+                className="inline-flex items-center justify-center px-8 py-3 text-[11px] tracking-[0.2em] uppercase font-semibold text-white transition-all duration-300 hover:bg-black"
+                style={{ background: '#0a0804' }}
+              >
+                Back to {title}
+              </Link>
+            </div>
           )}
-        </nav>
 
-        {(detailLoading || (!selectedProduct && loading)) && <DetailSkeleton />}
-
-        {!detailLoading && !selectedProduct && !loading && (
-          <div className="text-center py-20">
-            <h2 className="font-serif text-3xl mb-4">Product Not Found</h2>
-            <Link href={`/products/${category}/`} className="cta-link">Back to {title}</Link>
-          </div>
-        )}
-
-        {selectedProduct && (
-          <ProductDetail
-            product={selectedProduct}
-            category={category}
-            relatedProducts={products.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
-          />
-        )}
+          {selectedProduct && (
+            <ProductDetail
+              product={selectedProduct}
+              category={category}
+              relatedProducts={products.filter((p) => p.id !== selectedProduct.id).slice(0, 4)}
+            />
+          )}
+        </div>
       </div>
     );
   }
 
   // Category grid view
   return (
-    <div>
+    <div className="bg-[#faf8f4] min-h-screen">
       {/* Category Hero Header */}
       <div
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #faf8f5 0%, #f0e8da 60%, #e8d9c4 100%)' }}
+        className="relative overflow-hidden bg-[#0A0804]"
       >
-        {/* Decorative orb */}
+        {/* Decorative lighting */}
         <div
-          className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(195,134,54,0.12), transparent 70%)' }}
+          className="absolute -bottom-40 -right-20 w-[500px] h-[500px] rounded-full pointer-events-none opacity-20"
+          style={{ background: 'radial-gradient(circle, rgba(195,134,54,0.3), transparent 70%)', filter: 'blur(50px)' }}
         />
         <div
-          className="absolute -top-10 left-1/4 w-64 h-64 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(220,178,100,0.08), transparent 70%)' }}
+          className="absolute -top-20 left-1/4 w-[400px] h-[400px] rounded-full pointer-events-none opacity-10"
+          style={{ background: 'radial-gradient(circle, rgba(220,178,100,0.2), transparent 70%)', filter: 'blur(40px)' }}
         />
 
-        <div className="relative z-10 max-w-3xl mx-auto px-4 py-20 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 py-24 sm:py-32 text-center">
           {/* Breadcrumb */}
-          <nav className="flex items-center justify-center gap-2 text-[10px] text-gray-400 mb-8">
+          <nav className="flex items-center justify-center gap-2 text-[10px] tracking-[0.15em] uppercase text-white/40 mb-10">
             <Link href="/" className="hover:text-[#C38636] transition-colors">Home</Link>
             <span>/</span>
             <Link href="/products/" className="hover:text-[#C38636] transition-colors">Products</Link>
             <span>/</span>
-            <span style={{ color: '#C38636' }}>{title}</span>
+            <span style={{ color: '#DCB264' }}>{title}</span>
           </nav>
 
           {/* Category label */}
-          <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-4" style={{ color: '#C38636' }}>
-            {catMeta?.emoji}&nbsp; YuvaGlow Collection
-          </p>
-
-          {/* Title */}
-          <h1 className="section-title text-5xl sm:text-6xl mb-5" style={{ color: '#2c2c2c' }}>
+          <h1 className="font-serif text-5xl sm:text-7xl mb-6 text-[#faf8f4]">
             {title}
           </h1>
 
           {/* Divider */}
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-12" style={{ background: 'rgba(195,134,54,0.4)' }} />
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.2)' }} />
             <div className="w-1.5 h-1.5 rotate-45 flex-shrink-0" style={{ background: '#C38636' }} />
-            <div className="h-px w-12" style={{ background: 'rgba(195,134,54,0.4)' }} />
+            <div className="h-px w-16" style={{ background: 'rgba(195,134,54,0.2)' }} />
           </div>
 
           {catMeta?.description && (
-            <p className="text-sm leading-relaxed max-w-md mx-auto" style={{ color: '#777' }}>
+            <p className="text-sm sm:text-base leading-relaxed max-w-lg mx-auto text-white/60">
               {catMeta.description}
             </p>
           )}
@@ -187,30 +188,28 @@ function CategoryClientInner({ category }: CategoryClientInnerProps) {
       </div>
 
       {/* Product Grid Section */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-16">
 
         {/* Sort / Count Toolbar */}
         {!loading && (
           <div
-            className="flex items-center justify-between mb-8 pb-5"
-            style={{ borderBottom: '1px solid #f0ebe3' }}
+            className="flex items-center justify-between mb-10 pb-6 border-b border-black/5"
           >
-            <p className="text-[12px]" style={{ color: '#999' }}>
+            <p className="font-sans text-[11px] tracking-[0.1em] text-[#2c2c2c]/50 uppercase font-medium">
               {products.length > 0
-                ? `${products.length} ${products.length === 1 ? 'product' : 'products'}`
+                ? `${products.length} ${products.length === 1 ? 'Product' : 'Products'} found`
                 : ''}
             </p>
 
             {products.length > 1 && (
-              <div className="relative flex items-center">
+              <div className="relative flex items-center group">
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value as SortOption)}
-                  className="appearance-none pl-3 pr-8 py-2 text-[12px] rounded-lg cursor-pointer focus:outline-none transition-colors"
+                  className="appearance-none pl-4 pr-10 py-2.5 text-[11px] tracking-[0.05em] uppercase font-medium rounded-sm cursor-pointer focus:outline-none transition-all duration-300 bg-transparent"
                   style={{
-                    border: '1.5px solid #e8ddd0',
-                    color: '#555',
-                    background: 'white',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    color: '#2c2c2c',
                   }}
                 >
                   <option value="default">Sort: Featured</option>
@@ -218,11 +217,11 @@ function CategoryClientInner({ category }: CategoryClientInnerProps) {
                   <option value="price-desc">Price: High → Low</option>
                   <option value="az">Name: A → Z</option>
                 </select>
-                <ChevronDown
-                  size={14}
-                  className="absolute right-2.5 pointer-events-none"
-                  style={{ color: '#C38636' }}
-                />
+                <div className="absolute right-3 pointer-events-none text-[#C38636] transition-transform duration-300 group-hover:translate-y-0.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
               </div>
             )}
           </div>
