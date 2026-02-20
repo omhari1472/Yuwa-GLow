@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { getImageUrl } from '@/lib/api';
 import type { Product } from '@/lib/types';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface ProductCardProps {
   product: Product;
@@ -54,14 +54,13 @@ export default function ProductCard({ product, category, index = 0, badge }: Pro
         >
           {/* Image */}
           <div
-            className="relative overflow-hidden"
-            style={{ height: 320, background: 'radial-gradient(circle, #f0e8da, #ddd4c4)' }}
+            className="relative overflow-hidden w-full aspect-[4/5] bg-[#faf8f4] flex items-center justify-center group-hover:bg-white transition-colors duration-500"
           >
             <Image
               src={imgUrl}
               alt={product.name}
               fill
-              className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+              className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = '/assets/images/placeholder.png';
@@ -70,18 +69,18 @@ export default function ProductCard({ product, category, index = 0, badge }: Pro
 
             {/* Badge */}
             {resolvedBadge && (
-              <div className="absolute top-3 left-3">
+              <div className="absolute top-4 left-4 z-10">
                 {resolvedBadge === 'bestseller' ? (
                   <span
-                    className="text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full"
+                    className="text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full shadow-sm"
                     style={{ background: '#C38636', color: '#fff' }}
                   >
                     Bestseller
                   </span>
                 ) : (
                   <span
-                    className="text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full"
-                    style={{ background: 'rgba(44,44,44,0.85)', color: '#fff' }}
+                    className="text-[9px] font-bold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full shadow-sm"
+                    style={{ background: '#2c2c2c', color: '#fff' }}
                   >
                     New
                   </span>

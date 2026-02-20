@@ -27,6 +27,8 @@ export interface Product {
   category?: Category;
   images: ProductImage[];
   variants: ProductVariant[];
+  created_at?: string;
+  is_active?: boolean;
 }
 
 export interface Blog {

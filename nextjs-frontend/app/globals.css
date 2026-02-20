@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
+/* ─── FONTS ────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,6 +7,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─── THEME TOKENS ─────────────────────────────────────────────────────────── */
 @theme inline {
   /* shadcn vars */
   --color-background: var(--background);
@@ -31,19 +33,23 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Brand tokens */
-  --color-gold: #C38636;
-  --color-gold-accent: #DCB264;
-  --color-gold-soft: #E7CC97;
-  --color-cream: #F3E5C6;
-  --color-cream-body: #f5f2ed;
-  --color-brand-dark: #2c2c2c;
+  /* ── Brand palette ── */
+  --color-gold:         #C38636;
+  --color-gold-accent:  #DCB264;
+  --color-gold-soft:    #E7CC97;
+  --color-gold-deep:    #9A6820;
+  --color-cream:        #F3E5C6;
+  --color-cream-body:   #f5f2ed;
+  --color-ivory:        #faf8f4;
+  --color-brand-dark:   #2c2c2c;
   --color-brand-footer: #2c2a26;
+  --color-obsidian:     #0a0804;
+  --color-obsidian-mid: #1a0c00;
 
-  /* Fonts */
-  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  /* ── Fonts ── */
+  --font-sans:  'DM Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-serif: 'Cormorant Garamond', Garamond, serif;
-  --font-mono: var(--font-geist-mono);
+  --font-mono:  var(--font-geist-mono);
 }
 
 :root {
@@ -67,109 +73,236 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 
-  /* Brand vars */
-  --gold: #C38636;
-  --gold-accent: #DCB264;
-  --gold-soft: #E7CC97;
-  --cream: #F3E5C6;
-  --cream-body: #f5f2ed;
-  --brand-dark: #2c2c2c;
+  /* Brand CSS vars (for use in plain CSS) */
+  --gold:         #C38636;
+  --gold-accent:  #DCB264;
+  --gold-soft:    #E7CC97;
+  --gold-deep:    #9A6820;
+  --cream:        #F3E5C6;
+  --cream-body:   #f5f2ed;
+  --ivory:        #faf8f4;
+  --brand-dark:   #2c2c2c;
   --brand-footer: #2c2a26;
+  --obsidian:     #0a0804;
+  --obsidian-mid: #1a0c00;
 }
 
+/* ─── BASE STYLES ───────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   html {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     background-color: #f5f2ed;
     color: #2c2c2c;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
   }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', Garamond, serif;
   }
 }
 
-
-/* Utility classes */
+/* ─── TYPOGRAPHY UTILITIES ─────────────────────────────────────────────────── */
 .font-serif { font-family: 'Cormorant Garamond', Garamond, serif; }
-.font-sans  { font-family: 'Helvetica Neue', Arial, sans-serif; }
+.font-sans  { font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif; }
 .text-gold  { color: #C38636; }
 .bg-gold    { background-color: #C38636; }
 .border-gold { border-color: #C38636; }
 
-/* Editorial section titles */
-.section-title {
-  font-family: 'Cormorant Garamond', Garamond, serif;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+/* Section eyebrow — tiny overline label */
+.section-eyebrow {
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #2c2c2c;
+  color: #C38636;
+  display: block;
 }
 
-/* Gold underline CTA — with arrow that slides on hover */
+/* Section titles — editorial scale */
+.section-title {
+  font-family: 'Cormorant Garamond', Garamond, serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #2c2c2c;
+  line-height: 1.05;
+}
+.section-title-dark {
+  font-family: 'Cormorant Garamond', Garamond, serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.93);
+  line-height: 1.05;
+}
+
+/* Gradient gold text — for key words in headings */
+.text-gradient-gold {
+  background: linear-gradient(130deg, #C38636 0%, #DCB264 45%, #E7CC97 70%, #DCB264 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── LUXURY DIVIDERS ───────────────────────────────────────────────────────── */
+.luxury-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.luxury-divider::before,
+.luxury-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  max-width: 80px;
+  background: linear-gradient(to right, transparent, rgba(195,134,54,0.5));
+}
+.luxury-divider::after {
+  background: linear-gradient(to left, transparent, rgba(195,134,54,0.5));
+}
+.luxury-divider-gem {
+  width: 5px;
+  height: 5px;
+  background: #C38636;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ─── CTA LINKS & BUTTONS ───────────────────────────────────────────────────── */
 .cta-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #C38636;
   text-decoration: none;
-  border-bottom: 1px solid #C38636;
+  border-bottom: 1px solid rgba(195,134,54,0.4);
   padding-bottom: 2px;
-  transition: gap 0.2s ease, opacity 0.2s;
+  transition: gap 0.3s ease, border-color 0.3s ease, opacity 0.3s;
+  font-family: 'DM Sans', Arial, sans-serif;
 }
-.cta-link:hover { gap: 10px; opacity: 0.85; }
-/* Append arrow to forward-navigation cta-links via class */
+.cta-link:hover {
+  gap: 12px;
+  border-color: #C38636;
+  opacity: 0.9;
+}
 .cta-link::after {
   content: '→';
   font-size: 0.85em;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
-.cta-link:hover::after { transform: translateX(3px); }
-/* Override for back-navigation links that already have ← */
+.cta-link:hover::after { transform: translateX(4px); }
 .cta-link-back::after { content: ''; }
 
 /* Ghost button */
 .btn-ghost-gold {
   display: inline-block;
-  padding: 10px 24px;
-  border: 1.5px solid #C38636;
+  padding: 12px 32px;
+  border: 1px solid rgba(195,134,54,0.5);
   color: #C38636;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   background: transparent;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.3s ease;
   text-decoration: none;
+  font-family: 'DM Sans', Arial, sans-serif;
 }
 .btn-ghost-gold:hover {
   background: #C38636;
+  border-color: #C38636;
   color: #fff;
 }
 
-/* Ingredient marquee */
+/* Solid gold button */
+.btn-solid-gold {
+  display: inline-block;
+  padding: 14px 36px;
+  background: #C38636;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+.btn-solid-gold:hover {
+  background: #9A6820;
+  opacity: 0.92;
+}
+
+/* ─── ANIMATIONS ────────────────────────────────────────────────────────────── */
+
+/* Ingredient marquee — forward */
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 .marquee-track {
-  animation: marquee 32s linear infinite;
+  animation: marquee 38s linear infinite;
   will-change: transform;
 }
 .marquee-track:hover { animation-play-state: paused; }
 
-/* Skeleton animation */
+/* Ingredient marquee — reverse */
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.marquee-track-reverse {
+  animation: marquee-reverse 42s linear infinite;
+  will-change: transform;
+}
+.marquee-track-reverse:hover { animation-play-state: paused; }
+
+/* Gold shimmer sweep */
+@keyframes shimmerGold {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-gold-text {
+  background: linear-gradient(
+    90deg,
+    #C38636 0%,
+    #E7CC97 30%,
+    #C38636 50%,
+    #DCB264 70%,
+    #C38636 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerGold 4s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Line reveal from center */
+@keyframes lineReveal {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.line-reveal {
+  transform-origin: center;
+  animation: lineReveal 1s ease-out forwards;
+}
+
+/* Skeleton shimmer */
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -179,4 +312,40 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 8px;
+}
+
+/* ─── GRAIN TEXTURE OVERLAY ─────────────────────────────────────────────────── */
+/* Use as a ::before on any dark section for depth */
+.grain-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ─── SECTION-LEVEL BACKGROUNDS ─────────────────────────────────────────────── */
+.bg-obsidian {
+  background: linear-gradient(160deg, #0a0804 0%, #1a0c00 55%, #0a0804 100%);
+}
+.bg-obsidian-flat {
+  background-color: #0d0906;
+}
+.bg-ivory {
+  background-color: #faf8f4;
+}
+.bg-cream-gradient {
+  background: linear-gradient(135deg, #f0e8da, #e8ddd0);
+}
+
+/* ─── CARD HOVER EFFECTS ────────────────────────────────────────────────────── */
+.card-luxury {
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.card-luxury:hover {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
 }

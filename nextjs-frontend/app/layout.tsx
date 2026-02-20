@@ -1,18 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Header from "@/components/layout/Header";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import ChatBot from "@/components/shared/ChatBot";
 import WhatsAppFloat from "@/components/shared/WhatsAppFloat";
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "YuvaGlow Professional Co. — Premium Salon Hair Care",
+    default: "YuvaGlow Professional Co. — Premium Salon Beauty",
     template: "%s | YuvaGlow",
   },
   description:
     "Premium salon-grade hair care and beauty products crafted with nature's finest botanicals. Cruelty-free. Professional. Luxurious.",
-  keywords: ["hair care", "salon products", "YuvaGlow", "premium hair care", "Indian beauty"],
+  keywords: ["hair care", "salon products", "YuvaGlow", "premium hair care", "Indian beauty", "beauty brand"],
   openGraph: {
     siteName: "YuvaGlow Professional Co.",
     type: "website",
@@ -31,8 +32,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="antialiased" style={{ background: '#f5f2ed' }}>
+        <AnnouncementBar />
         <Header />
-        <main className="min-h-screen pt-16 sm:pt-20">{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
         <WhatsAppFloat />
         <ChatBot />
