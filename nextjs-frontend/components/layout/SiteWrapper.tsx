@@ -10,8 +10,9 @@ import { usePathname } from 'next/navigation';
 export default function SiteWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const isAdminRoute = pathname?.startsWith('/admin');
+    const isConnectRoute = pathname?.startsWith('/connect');
 
-    if (isAdminRoute) {
+    if (isAdminRoute || isConnectRoute) {
         return <main className="min-h-screen bg-[#0A0804]">{children}</main>;
     }
 
