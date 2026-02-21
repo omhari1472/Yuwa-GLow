@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
                 <div className="mb-10 text-center relative z-10">
                     <div className="mx-auto w-32 h-14 relative mb-6">
                         <Image
-                            src="/testv9/assets/icons/logo.svg"
+                            src="/assets/icons/logo.svg"
                             alt="YuvaGlow Logo"
                             fill
                             className="object-contain filter brightness-200 contrast-100 invert"

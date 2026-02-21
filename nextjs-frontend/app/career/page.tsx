@@ -113,7 +113,18 @@ function CareerDetail({ id }: { id: string }) {
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold tracking-wide mb-1.5" style={{ color: '#666' }}>Resume / CV</label>
-                  <input type="file" name="resume" accept=".pdf,.doc,.docx" className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[11px] file:font-semibold" />
+                  <label
+                    className="flex flex-col items-center justify-center w-full py-5 px-4 rounded-lg cursor-pointer transition-all duration-200 hover:border-[#C38636] hover:bg-[#faf8f4] group"
+                    style={{ border: '2px dashed #d4cec4', borderRadius: 8 }}
+                  >
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="mb-2 text-gray-400 group-hover:text-[#C38636] transition-colors">
+                      <path d="M12 16V4m0 0l-4 4m4-4l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="text-xs font-medium text-gray-500 group-hover:text-[#C38636] transition-colors">Click to upload resume</span>
+                    <span className="text-[10px] text-gray-400 mt-1">PDF, DOC, DOCX (Max 5MB)</span>
+                    <input type="file" name="resume" accept=".pdf,.doc,.docx" className="hidden" />
+                  </label>
                 </div>
                 {submitError && <p className="text-sm text-red-500">{submitError}</p>}
                 <button type="submit" disabled={submitting} className="btn-ghost-gold w-full sm:w-auto">

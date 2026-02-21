@@ -5,10 +5,12 @@ export const BRAND = {
   phone: '+91 73000 45513',
   tel: 'tel:+917300045513',
   whatsapp: 'https://wa.me/917300045513',
-  email: 'hello@yuvaglow.com',
-  address: 'India',
-  instagram: 'https://instagram.com/yuvaglow',
-  facebook: 'https://facebook.com/yuvaglow',
+  email: 'seasilkprofessional@gmail.com',
+  address: 'Chaudhari Plaza, Near Hotel Dhruv, Tonk Road, Sanganer, Jaipur, Rajasthan — 302029',
+  instagram: 'https://www.instagram.com/seesilkprofessional?igsh=Y2lrNmIyaTR2bmNh',
+  facebook: 'https://www.facebook.com/seesilkprofessional',
+  youtube: 'https://www.youtube.com/channel/UC4ei5Ba7XN5gqfhPgf8ve4Q',
+  mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3138.8637265354746!2d75.80021780000001!3d26.8151666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dcbc8f6aca843%3A0x6d68b3c713a4b249!2sChoudhary%20Plaza!5e1!3m2!1sen!2sin!4v1769322000110!5m2!1sen!2sin',
 };
 
 export const NAV_LINKS = [

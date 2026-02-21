@@ -213,7 +213,7 @@ export default function GalleryPage() {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, 33vw"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/testv9/assets/images/placeholder.png'; }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/assets/images/placeholder.png'; }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                   <ZoomIn size={28} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -1,6 +1,6 @@
 'use client';
 
-import AnnouncementBar from '@/components/layout/AnnouncementBar';
+
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import ChatBot from '@/components/shared/ChatBot';
@@ -17,7 +17,7 @@ export default function SiteWrapper({ children }: { children: React.ReactNode })
 
     return (
         <>
-            <AnnouncementBar />
+
             <Header />
             <main className="min-h-screen">{children}</main>
             <Footer />

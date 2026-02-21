@@ -135,7 +135,7 @@ export default function Footer() {
             <div className="md:col-span-1">
               <div className="mb-6">
                 <Image
-                  src="/testv9/logo.svg"
+                  src="/logo.svg"
                   alt="YuvaGlow Professional Co."
                   width={150}
                   height={38}
@@ -179,6 +179,22 @@ export default function Footer() {
                 >
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                </a>
+                <a href={BRAND.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                  className="w-9 h-9 flex items-center justify-center transition-all duration-300"
+                  style={{ border: '1px solid rgba(195,134,54,0.2)', color: 'rgba(255,255,255,0.35)' }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = '#C38636';
+                    (e.currentTarget as HTMLElement).style.color = '#C38636';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(195,134,54,0.2)';
+                    (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)';
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="m10 15 5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73Z" />
                   </svg>
                 </a>
               </div>

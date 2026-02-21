@@ -63,7 +63,7 @@ export default function ProductCard({ product, category, index = 0, badge }: Pro
               className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/testv9/assets/images/placeholder.png';
+                (e.target as HTMLImageElement).src = '/assets/images/placeholder.png';
               }}
             />
 

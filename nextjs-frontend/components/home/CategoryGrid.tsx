@@ -10,7 +10,7 @@ const CATEGORIES = [
     label: 'Hair Care',
     sub: 'Nourishing treatments, serums & shampoos for luminous hair.',
     bg: '#1a0f06',
-    bgImg: '/testv9/category-hair.jpg',
+    bgImg: '/category-hair.jpg',
     accent: '#C38636',
     icon: (
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
@@ -28,7 +28,7 @@ const CATEGORIES = [
     label: 'Skin Care',
     sub: 'Botanical serums & creams for radiant, healthy skin.',
     bg: '#0f1a18',
-    bgImg: '/testv9/category-skin.jpg',
+    bgImg: '/category-skin.jpg',
     accent: '#7DBBA8',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
@@ -45,7 +45,7 @@ const CATEGORIES = [
     label: 'Makeup',
     sub: 'Premium colour cosmetics for professional results.',
     bg: '#1a0d12',
-    bgImg: '/testv9/category-makeup.jpg',
+    bgImg: '/category-makeup.jpg',
     accent: '#D4789A',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
@@ -62,7 +62,7 @@ const CATEGORIES = [
     label: 'Professional Tools',
     sub: 'Manufactured for precision & elegance in professional settings.',
     bg: '#0d1018',
-    bgImg: '/testv9/category-salon.jpg',
+    bgImg: '/category-salon.jpg',
     accent: '#8AA4C8',
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">

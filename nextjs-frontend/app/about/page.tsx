@@ -238,7 +238,7 @@ export default function AboutPage() {
             {
               name: 'Manish Rathod',
               role: 'Managing Director',
-              image: '/testv9/assets/images/manish-rathod.webp',
+              image: '/assets/images/manish-rathod.webp',
               bio: 'Starting as a delivery boy in Limbdi, Manish grew through the ranks—from Sales Officer to RSM—over 20 years in the cosmetics industry. His persistence laid the foundation for YuvaGlow Professional Company.',
               exp: '20 Yrs',
               focus: 'Cosmetics',
@@ -246,7 +246,7 @@ export default function AboutPage() {
             {
               name: 'Sandeep Singh',
               role: 'MD & Lead Director',
-              image: '/testv9/assets/images/sandeep-singh.webp',
+              image: '/assets/images/sandeep-singh.webp',
               bio: 'A versatile leader with 15 years of expertise in Hair Care. Sandeep brings a unique perspective as a Business Consultant and entrepreneur, driving the brand with a vision for excellence and strategic growth.',
               exp: '15 Yrs',
               focus: 'Hair Care',
@@ -254,7 +254,7 @@ export default function AboutPage() {
             {
               name: 'Jaiprakash Rathod',
               role: 'Director',
-              image: '/testv9/assets/images/jaiprakash-rathod.webp',
+              image: '/assets/images/jaiprakash-rathod.webp',
               bio: 'A strategic visionary committed to scaling YuvaGlow\'s reach. Jaiprakash combines industry insight with a passion for innovation, driving expansion and ensuring products reach every corner of the market.',
               exp: '12+ Yrs',
               focus: 'Expansion',
