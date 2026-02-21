@@ -4,7 +4,7 @@ import { useAdminAuth } from '@/components/admin/AdminAuthProvider';
 import { Key, Settings as SettingsIcon, User } from 'lucide-react';
 import { useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
 
 export default function AdminSettings() {
     const { token, user } = useAdminAuth();

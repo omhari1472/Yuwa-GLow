@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
         setError('');
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api'}/login`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api'}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
                 <div className="mb-10 text-center relative z-10">
                     <div className="mx-auto w-32 h-14 relative mb-6">
                         <Image
-                            src="/assets/icons/logo.svg"
+                            src="/testv9/assets/icons/logo.svg"
                             alt="YuvaGlow Logo"
                             fill
                             className="object-contain filter brightness-200 contrast-100 invert"

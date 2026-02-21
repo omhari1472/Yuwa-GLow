@@ -1,12 +1,18 @@
 import type {
-  Product, Category, Blog, Career,
-  GalleryItem, CarouselItem, Transformation,
-  Stockist, Distributor, PartnerAvailability,
+  Blog, Career,
+  CarouselItem,
+  Category,
+  Distributor,
   EnquiryData,
+  GalleryItem,
+  PartnerAvailability,
+  Product,
+  Stockist,
+  Transformation,
 } from './types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.1.7:8000/api';
-export const STORAGE_URL = process.env.NEXT_PUBLIC_STORAGE_URL || 'http://192.168.1.7:8000/storage/';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
+export const STORAGE_URL = process.env.NEXT_PUBLIC_STORAGE_URL || 'https://yuvaglow.com/api/storage/';
 
 async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<{ success: boolean; data: T; message: string }> {
   const headers: Record<string, string> = {

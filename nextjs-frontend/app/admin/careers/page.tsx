@@ -6,7 +6,7 @@ import RichTextEditor from '@/components/admin/RichTextEditor';
 import { Briefcase, Edit, Plus, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
 
 interface Career { id: number; title: string; department: string; location: string; description: string; status: string; created_at: string; }
 

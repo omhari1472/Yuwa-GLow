@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -135,7 +135,7 @@ export default function Footer() {
             <div className="md:col-span-1">
               <div className="mb-6">
                 <Image
-                  src="/logo.svg"
+                  src="/testv9/logo.svg"
                   alt="YuvaGlow Professional Co."
                   width={150}
                   height={38}

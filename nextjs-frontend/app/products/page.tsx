@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 };
 
 const CATEGORIES_ENHANCED = [
-  { slug: 'hair', bgImg: '/category-hair.jpg', bg: '#1a0f06' },
-  { slug: 'skin', bgImg: '/category-skin.jpg', bg: '#0f1a18' },
-  { slug: 'makeup', bgImg: '/category-makeup.jpg', bg: '#1a0d12' },
-  { slug: 'salon', bgImg: '/category-salon.jpg', bg: '#0d1018' },
+  { slug: 'hair', bgImg: '/testv9/category-hair.jpg', bg: '#1a0f06' },
+  { slug: 'skin', bgImg: '/testv9/category-skin.jpg', bg: '#0f1a18' },
+  { slug: 'makeup', bgImg: '/testv9/category-makeup.jpg', bg: '#1a0d12' },
+  { slug: 'salon', bgImg: '/testv9/category-salon.jpg', bg: '#0d1018' },
 ];
 
 export default function ProductsPage() {

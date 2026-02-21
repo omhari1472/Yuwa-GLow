@@ -7,8 +7,8 @@ import { Edit, FileText, Plus, Trash2, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
-const STORAGE = 'http://127.0.0.1:8000/storage';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
+const STORAGE = process.env.NEXT_PUBLIC_STORAGE_URL || 'https://yuvaglow.com/storage';
 
 interface Blog { id: number; title: string; slug: string; featured_image: string | null; content: string; status: string; created_at: string; }
 

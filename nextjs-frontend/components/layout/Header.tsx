@@ -55,7 +55,7 @@ export default function Header() {
         {/* ── WORDMARK ── */}
         <Link href="/" className="flex items-center gap-3 transition-opacity duration-300 hover:opacity-80">
           <Image
-            src="/logo.svg"
+            src="/testv9/logo.svg"
             alt="YuvaGlow Professional Co."
             width={160}
             height={40}
@@ -162,7 +162,7 @@ export default function Header() {
                 >
                   <div className="flex items-baseline gap-1.5 pt-1">
                     <Image
-                      src="/logo.svg"
+                      src="/testv9/logo.svg"
                       alt="YuvaGlow"
                       width={120}
                       height={30}

@@ -6,8 +6,8 @@ import { Plus, Sparkles, Trash2, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
-const STORAGE = 'http://127.0.0.1:8000/storage';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
+const STORAGE = process.env.NEXT_PUBLIC_STORAGE_URL || 'https://yuvaglow.com/storage';
 
 interface Transformation { id: number; title: string; description: string | null; before_image: string; after_image: string; sort_order: number; status: string; }
 

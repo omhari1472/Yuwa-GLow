@@ -80,7 +80,7 @@ export default function AdminAuthProvider({ children }: { children: React.ReactN
     const logout = async () => {
         try {
             if (token) {
-                await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/logout`, {
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api'}/logout`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,

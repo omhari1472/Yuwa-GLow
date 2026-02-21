@@ -4,7 +4,7 @@ import { useAdminAuth } from '@/components/admin/AdminAuthProvider';
 import { Download, Mail, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
 
 interface Subscriber { id: number; email: string; created_at: string; }
 

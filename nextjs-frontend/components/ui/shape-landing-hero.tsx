@@ -18,9 +18,9 @@ const STATS = [
 ];
 
 const HERO_IMAGES = [
-  '/hero-bg.jpg',
-  '/hero-bg-2.jpg',
-  '/hero-bg-3.jpg'
+  '/testv9/hero-bg.jpg',
+  '/testv9/hero-bg-2.jpg',
+  '/testv9/hero-bg-3.jpg'
 ];
 
 export default function HeroGeometric({

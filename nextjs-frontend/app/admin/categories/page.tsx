@@ -5,7 +5,8 @@ import { Edit, Image as ImageIcon, Plus, Tags, Trash2, Upload, X } from 'lucide-
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API = process.env.NEXT_PUBLIC_API_URL || 'https://yuvaglow.com/api';
+const STORAGE = process.env.NEXT_PUBLIC_STORAGE_URL || 'https://yuvaglow.com/storage';
 
 interface Category { id: number; name: string; slug: string; description: string | null; image: string | null; is_active: boolean; }
 
@@ -32,7 +33,7 @@ export default function AdminCategories() {
     useEffect(() => { if (token) fetchCategories(); }, [token]);
 
     const openAdd = () => { setEditItem(null); setForm({ name: '', description: '', is_active: true }); setImageFile(null); setImagePreview(null); setModalOpen(true); };
-    const openEdit = (c: Category) => { setEditItem(c); setForm({ name: c.name, description: c.description || '', is_active: c.is_active }); setImageFile(null); setImagePreview(c.image ? (c.image.startsWith('http') ? c.image : `http://127.0.0.1:8000/storage/${c.image}`) : null); setModalOpen(true); };
+    const openEdit = (c: Category) => { setEditItem(c); setForm({ name: c.name, description: c.description || '', is_active: c.is_active }); setImageFile(null); setImagePreview(c.image ? (c.image.startsWith('http') ? c.image : `${STORAGE}/${c.image}`) : null); setModalOpen(true); };
 
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]; if (!file) return; setImageFile(file);
@@ -74,7 +75,7 @@ export default function AdminCategories() {
                                 : categories.length === 0 ? <tr><td colSpan={4} className="px-6 py-12 text-center text-gray-400"><Tags className="mx-auto mb-2" size={32} />No categories found.</td></tr>
                                     : categories.map(cat => (
                                         <tr key={cat.id} className="hover:bg-gray-50/50 transition-colors">
-                                            <td className="px-6 py-4"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 flex flex-shrink-0 items-center justify-center overflow-hidden">{cat.image ? <Image src={cat.image.startsWith('http') ? cat.image : `http://127.0.0.1:8000/storage/${cat.image}`} alt={cat.name} width={48} height={48} className="object-cover w-full h-full" /> : <ImageIcon size={20} className="text-gray-400" />}</div><div><p className="font-medium text-gray-900">{cat.name}</p><p className="text-xs text-gray-500 font-mono mt-0.5">/{cat.slug}</p></div></div></td>
+                                            <td className="px-6 py-4"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 flex flex-shrink-0 items-center justify-center overflow-hidden">{cat.image ? <Image src={cat.image.startsWith('http') ? cat.image : `${STORAGE}/${cat.image}`} alt={cat.name} width={48} height={48} className="object-cover w-full h-full" /> : <ImageIcon size={20} className="text-gray-400" />}</div><div><p className="font-medium text-gray-900">{cat.name}</p><p className="text-xs text-gray-500 font-mono mt-0.5">/{cat.slug}</p></div></div></td>
                                             <td className="px-6 py-4 text-gray-600 max-w-xs truncate">{cat.description || <span className="text-gray-400 italic">No description</span>}</td>
                                             <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase ${cat.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>{cat.is_active ? 'Active' : 'Hidden'}</span></td>
                                             <td className="px-6 py-4 text-right"><div className="flex items-center justify-end gap-2"><button onClick={() => openEdit(cat)} className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"><Edit size={16} /></button><button onClick={() => setDeleteConfirm(cat)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button></div></td>

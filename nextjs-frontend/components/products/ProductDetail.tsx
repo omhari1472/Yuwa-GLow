@@ -44,7 +44,7 @@ export default function ProductDetail({ product, category, relatedProducts = [] 
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
             onError={(e) => {
-              (e.target as HTMLImageElement).src = '/assets/images/placeholder.png';
+              (e.target as HTMLImageElement).src = '/testv9/assets/images/placeholder.png';
             }}
           />
 
@@ -74,7 +74,7 @@ export default function ProductDetail({ product, category, relatedProducts = [] 
                       className="object-cover p-0.5"
                       sizes="64px"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/assets/images/placeholder.png';
+                        (e.target as HTMLImageElement).src = '/testv9/assets/images/placeholder.png';
                       }}
                     />
                   </button>
