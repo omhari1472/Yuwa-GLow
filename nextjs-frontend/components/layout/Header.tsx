@@ -142,7 +142,7 @@ export default function Header() {
                 className="lg:hidden p-2 flex items-center justify-center transition-opacity hover:opacity-70"
                 aria-label="Open menu"
                 style={{
-                  color: scrolled || !isHeroPage ? '#2c2c2c' : 'rgba(255,255,255,0.85)',
+                  color: '#2c2c2c',
                 }}
               >
                 <Menu size={22} strokeWidth={1.5} />

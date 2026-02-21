@@ -38,7 +38,7 @@ export default function HeroGeometric({
   }, []);
 
   return (
-    <div className="relative min-h-[50vh] md:min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative min-h-[50vh] md:min-h-screen w-full flex flex-col items-center justify-center overflow-hidden mt-[70px] md:mt-0">
 
       {/* ── FULL-BLEED HERO CAROUSEL ── */}
       {HERO_IMAGES.map((src, idx) => (
