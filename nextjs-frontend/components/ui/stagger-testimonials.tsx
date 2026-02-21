@@ -34,25 +34,25 @@ const testimonials = [
     {
         tempId: 4,
         testimonial: "I've been searching for a professional-grade solution for years. So glad I finally found YuvaGlow!",
-        by: "Zoe, Lead Esthetician",
+        by: "Kavya Nair, Lead Esthetician",
         imgSrc: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=150&h=150"
     },
     {
         tempId: 5,
         testimonial: "The efficiency and ease of these formulations makes our work 5x better.",
-        by: "Alex, Senior Colorist",
+        by: "Rohit Menon, Senior Colorist",
         imgSrc: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&q=80&w=150&h=150"
     },
     {
         tempId: 6,
         testimonial: "Took some convincing, but now that we use YuvaGlow exclusively, we're never going back.",
-        by: "Pam, Spa Director",
+        by: "Deepa Kapoor, Spa Director",
         imgSrc: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150&h=150"
     },
     {
         tempId: 7,
         testimonial: "Our clients noticed the difference immediately. The ROI on our treatments is easily 100X.",
-        by: "Daniel, Clinic Manager",
+        by: "Arjun Verma, Clinic Manager",
         imgSrc: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150"
     }
 ];

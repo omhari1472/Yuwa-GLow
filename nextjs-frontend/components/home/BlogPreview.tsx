@@ -50,9 +50,9 @@ export default function BlogPreview() {
                 boxShadow: '0 16px 56px rgba(0,0,0,0.1)',
               }}
             >
-              {feature.image_url && (
+              {(feature.featured_image || feature.image_url) && (
                 <Image
-                  src={getImageUrl(feature.image_url)}
+                  src={getImageUrl(feature.featured_image || feature.image_url)}
                   alt={feature.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -97,7 +97,7 @@ export default function BlogPreview() {
                   {feature.title}
                 </h3>
                 <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, letterSpacing: '0.04em', fontFamily: "'DM Sans', Arial, sans-serif" }}>
-                  {feature.excerpt || feature.content?.replace(/<[^>]*>/g, '').slice(0, 120)}
+                  {feature.excerpt || feature.content?.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').slice(0, 120)}
                 </p>
                 <span className="inline-flex items-center gap-2 mt-4 transition-all duration-300 group-hover:gap-3"
                   style={{ fontSize: 9, letterSpacing: '0.24em', textTransform: 'uppercase', color: '#DCB264', fontFamily: "'DM Sans', Arial, sans-serif", fontWeight: 500 }}>
@@ -121,9 +121,9 @@ export default function BlogPreview() {
                     boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
                   }}
                 >
-                  {blog.image_url && (
+                  {(blog.featured_image || blog.image_url) && (
                     <Image
-                      src={getImageUrl(blog.image_url)}
+                      src={getImageUrl(blog.featured_image || blog.image_url)}
                       alt={blog.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"

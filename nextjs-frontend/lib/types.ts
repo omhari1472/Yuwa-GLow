@@ -38,6 +38,7 @@ export interface Blog {
   excerpt?: string;
   content: string;
   image_url?: string;
+  featured_image?: string;
   author?: string;
   published_at?: string;
   created_at: string;

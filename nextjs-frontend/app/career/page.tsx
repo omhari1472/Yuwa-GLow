@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { DetailSkeleton } from '@/components/shared/LoadingSkeleton';
+import ScrollReveal from '@/components/shared/ScrollReveal';
+import { Skeleton } from '@/components/ui/skeleton';
 import API from '@/lib/api';
 import type { Career } from '@/lib/types';
-import ScrollReveal from '@/components/shared/ScrollReveal';
-import { DetailSkeleton } from '@/components/shared/LoadingSkeleton';
-import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
 function CareerDetail({ id }: { id: string }) {
   const [career, setCareer] = useState<Career | null>(null);
@@ -73,11 +73,11 @@ function CareerDetail({ id }: { id: string }) {
                 <span className="px-3 py-1 rounded-full text-[11px]" style={{ background: '#f0e8da', color: '#888' }}>{career.type}</span>
               )}
             </div>
-            <div className="prose prose-sm max-w-none text-sm leading-relaxed" style={{ color: '#555' }} dangerouslySetInnerHTML={{ __html: career.description }} />
+            <div className="prose prose-sm max-w-none text-sm leading-relaxed" style={{ color: '#555' }} dangerouslySetInnerHTML={{ __html: career.description.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ') }} />
             {career.requirements && (
               <div className="mt-6">
                 <h3 className="font-serif text-xl font-semibold mb-3" style={{ color: '#2c2c2c' }}>Requirements</h3>
-                <div className="prose prose-sm max-w-none text-sm leading-relaxed" style={{ color: '#555' }} dangerouslySetInnerHTML={{ __html: career.requirements }} />
+                <div className="prose prose-sm max-w-none text-sm leading-relaxed" style={{ color: '#555' }} dangerouslySetInnerHTML={{ __html: career.requirements.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ') }} />
               </div>
             )}
           </div>
