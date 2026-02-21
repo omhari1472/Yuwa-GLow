@@ -21,7 +21,6 @@ const HERO_IMAGES = [
   '/hero-bg.jpg',
   '/hero-bg-2.jpg',
   '/hero-bg-3.jpg',
-  '/hero-bg-4.jpg'
 ];
 
 export default function HeroGeometric({
@@ -39,7 +38,7 @@ export default function HeroGeometric({
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative min-h-[50vh] md:min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
 
       {/* ── FULL-BLEED HERO CAROUSEL ── */}
       {HERO_IMAGES.map((src, idx) => (
@@ -60,7 +59,7 @@ export default function HeroGeometric({
       ))}
 
       {/* ── DOT NAVIGATION ── */}
-      <div className="absolute bottom-12 left-8 sm:left-12 z-30 flex gap-2.5">
+      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 z-30 flex gap-2.5">
         {HERO_IMAGES.map((_, idx) => (
           <button
             key={idx}
@@ -100,7 +99,7 @@ export default function HeroGeometric({
       />
 
       {/* ── CONTENT — left-aligned for editorial feel ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 sm:px-12 pb-24 pt-36">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-12 pb-10 sm:pb-24 pt-20 sm:pt-36">
         <div className="max-w-2xl">
 
           {/* Badge */}
@@ -108,7 +107,7 @@ export default function HeroGeometric({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.3 }}
-            className="flex items-center gap-4 mb-8"
+            className="hidden sm:flex items-center gap-4 mb-4 sm:mb-8"
           >
             <div className="h-px w-10" style={{ background: 'rgba(195,134,54,0.7)' }} />
             <span style={{
@@ -128,7 +127,7 @@ export default function HeroGeometric({
             transition={{ duration: 1.3, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'Cormorant Garamond', Garamond, serif",
-              fontSize: 'clamp(56px, 9vw, 108px)',
+              fontSize: 'clamp(36px, 9vw, 108px)',
               lineHeight: 0.95,
               fontWeight: 300,
               color: 'rgba(255,255,255,0.95)',
@@ -147,7 +146,7 @@ export default function HeroGeometric({
             transition={{ duration: 1.3, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'Cormorant Garamond', Garamond, serif",
-              fontSize: 'clamp(56px, 9vw, 108px)',
+              fontSize: 'clamp(36px, 9vw, 108px)',
               lineHeight: 0.95,
               fontWeight: 500,
               fontStyle: 'italic',
@@ -156,7 +155,7 @@ export default function HeroGeometric({
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              marginBottom: '2.5rem',
+              marginBottom: '1.2rem',
               filter: 'drop-shadow(0 2px 16px rgba(195,134,54,0.4))',
             }}
           >
@@ -168,7 +167,7 @@ export default function HeroGeometric({
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 1, delay: 0.95, ease: 'easeOut' }}
-            className="flex items-center gap-4 mb-7"
+            className="hidden sm:flex items-center gap-4 mb-4 sm:mb-7"
             style={{ transformOrigin: 'left center' }}
           >
             <div className="w-[5px] h-[5px] rotate-45 flex-shrink-0" style={{ background: '#C38636' }} />
@@ -180,12 +179,13 @@ export default function HeroGeometric({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 1.1 }}
+            className="hidden sm:block"
             style={{
               color: 'rgba(255,255,255,0.55)',
               fontSize: 13,
               letterSpacing: '0.07em',
               lineHeight: 1.9,
-              marginBottom: '2.5rem',
+              marginBottom: '1.2rem',
               fontFamily: "'DM Sans', Arial, sans-serif",
               fontWeight: 300,
               textShadow: '0 1px 8px rgba(0,0,0,0.5)',
@@ -206,7 +206,7 @@ export default function HeroGeometric({
             <a href="/products/" className="btn-solid-gold" style={{ paddingLeft: 36, paddingRight: 36 }}>
               Explore Products
             </a>
-            <a href="/about/" className="btn-ghost-gold" style={{
+            <a href="/about/" className="btn-ghost-gold hidden sm:inline-flex" style={{
               borderColor: 'rgba(255,255,255,0.2)',
               color: 'rgba(255,255,255,0.7)',
               paddingLeft: 28, paddingRight: 28,
@@ -231,7 +231,7 @@ export default function HeroGeometric({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.6 }}
-        className="absolute bottom-20 right-8 sm:right-12 z-20 flex items-center gap-0"
+        className="absolute bottom-14 sm:bottom-20 right-6 sm:right-12 z-20 hidden sm:flex items-center gap-0"
       >
         {STATS.map((s, i) => (
           <div key={s.label} className="flex items-center">
@@ -270,7 +270,7 @@ export default function HeroGeometric({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 z-20"
       >
         <span style={{
           color: 'rgba(195,134,54,0.5)', fontSize: 8,

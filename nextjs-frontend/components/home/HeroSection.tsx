@@ -42,7 +42,7 @@ export default function HeroSection() {
       {/* Brand manifesto strip — anchors the hero to the page story */}
       <ScrollReveal>
         <div
-          className="w-full py-20 px-5"
+          className="w-full py-10 sm:py-20 px-5"
           style={{ background: '#faf8f4', borderBottom: '1px solid rgba(195,134,54,0.1)' }}
         >
           <div className="max-w-3xl mx-auto text-center">
