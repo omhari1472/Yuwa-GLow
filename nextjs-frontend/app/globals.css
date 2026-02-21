@@ -349,3 +349,50 @@
   box-shadow: 0 20px 60px rgba(0,0,0,0.12);
   transform: translateY(-4px);
 }
+
+/* ─── GLOBAL INTERACTIVE ELEMENTS ──────────────────────────────────────────── */
+/* Ensure all buttons, selects, and clickable labels have pointer cursor */
+button,
+select,
+[role="button"],
+label[class*="cursor"],
+input[type="file"] + label,
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* ─── QUILL RICH TEXT EDITOR (Admin) ─────────────────────────────────────── */
+.admin-quill .ql-toolbar {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: #f9fafb !important;
+}
+.admin-quill .ql-container {
+  border: 1px solid #e5e7eb !important;
+  border-top: none !important;
+  border-radius: 0 0 12px 12px !important;
+  font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 14px !important;
+  min-height: 200px;
+}
+.admin-quill .ql-editor {
+  min-height: 200px;
+  padding: 16px 20px;
+}
+.admin-quill .ql-editor.ql-blank::before {
+  font-style: normal;
+  color: #9ca3af;
+}
+.admin-quill .ql-toolbar button:hover,
+.admin-quill .ql-toolbar .ql-active {
+  color: #C38636 !important;
+}
+.admin-quill .ql-toolbar .ql-active .ql-stroke {
+  stroke: #C38636 !important;
+}
+.admin-quill .ql-toolbar button:hover .ql-stroke {
+  stroke: #C38636 !important;
+}
+.admin-quill .ql-toolbar .ql-active .ql-fill {
+  fill: #C38636 !important;
+}

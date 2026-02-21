@@ -3,10 +3,25 @@
 import { BRAND, NAV_LINKS } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [nlMsg, setNlMsg] = useState('');
+  const [nlLoading, setNlLoading] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNlLoading(true); setNlMsg('');
+    try {
+      const res = await fetch(`${API}/newsletter/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ email }) });
+      const data = await res.json();
+      if (data.success) { setNlMsg('✓ Subscribed!'); setEmail(''); } else { setNlMsg(data.message || 'Failed'); }
+    } catch { setNlMsg('Connection error'); } finally { setNlLoading(false); setTimeout(() => setNlMsg(''), 4000); }
+  };
 
   return (
     <footer style={{ position: 'relative', overflow: 'hidden' }}>
@@ -71,13 +86,15 @@ export default function Footer() {
 
           {/* Email form */}
           <form
-            onSubmit={e => e.preventDefault()}
+            onSubmit={handleNewsletterSubmit}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
           >
             <input
               type="email"
               placeholder="your@email.com"
               required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               style={{
                 flex: 1,
                 width: '100%',
@@ -93,11 +110,14 @@ export default function Footer() {
             />
             <button
               type="submit"
+              disabled={nlLoading}
               className="btn-solid-gold whitespace-nowrap flex-shrink-0"
+              style={{ opacity: nlLoading ? 0.6 : 1 }}
             >
-              Subscribe
+              {nlLoading ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
+          {nlMsg && <p style={{ color: nlMsg.startsWith('✓') ? '#4ade80' : '#ef4444', fontSize: 12, marginTop: 8, textAlign: 'center' }}>{nlMsg}</p>}
         </div>
       </div>
 

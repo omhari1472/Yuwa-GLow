@@ -1,8 +1,4 @@
-import AnnouncementBar from "@/components/layout/AnnouncementBar";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import ChatBot from "@/components/shared/ChatBot";
-import WhatsAppFloat from "@/components/shared/WhatsAppFloat";
+import SiteWrapper from "@/components/layout/SiteWrapper";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -32,12 +28,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="antialiased" style={{ background: '#f5f2ed' }}>
-        <AnnouncementBar />
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <WhatsAppFloat />
-        <ChatBot />
+        <SiteWrapper>
+          {children}
+        </SiteWrapper>
       </body>
     </html>
   );
