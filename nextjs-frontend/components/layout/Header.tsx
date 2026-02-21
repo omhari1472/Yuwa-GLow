@@ -11,14 +11,10 @@ import { useEffect, useState } from 'react';
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [announceDismissed, setAnnounceDismissed] = useState(true);
+
   const pathname = usePathname();
 
-  useEffect(() => {
-    // Check for announcement bar
-    const dismissed = sessionStorage.getItem('yg-announce-dismissed');
-    setAnnounceDismissed(!!dismissed);
-  }, []);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -29,8 +25,7 @@ export default function Header() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
-  // Top offset: 36px (announcement bar) when visible, 0 when dismissed
-  const topOffset = announceDismissed ? 0 : 36;
+
 
   const isHeroPage = pathname === '/';
 
@@ -38,7 +33,7 @@ export default function Header() {
     <header
       className="fixed inset-x-0 z-50 transition-all duration-500"
       style={{
-        top: topOffset,
+        top: 0,
         background: scrolled
           ? 'rgba(250,248,244,0.95)'
           : isHeroPage
